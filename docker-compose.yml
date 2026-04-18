@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  agent:
+    build: .
+    env_file:
+      - .env
+    volumes:
+      - ./audit_log.json:/app/audit_log.json
+      - ./dlq.json:/app/dlq.json
+    environment:
+      - PYTHONUNBUFFERED=1

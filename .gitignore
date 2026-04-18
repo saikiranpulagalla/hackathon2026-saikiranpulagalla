@@ -1,0 +1,13 @@
+.env
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+*.egg-info/
+dist/
+build/
+.mypy_cache/
+audit_log.json
+dlq.json
+.venv/
+venv/
