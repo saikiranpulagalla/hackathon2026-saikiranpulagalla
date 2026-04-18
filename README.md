@@ -55,17 +55,17 @@ graph TD
     AC --> AL
     AC --> DLQ
 
-    RS <--> GT
-    RS <--> CR
-    RS <--> IR
-    RS <--> SK
-    RS <--> GP
-    RS <--> SR
-    ESC <--> ES
-    ESC <--> SR
-    CF <-->|"parallel prefetch"| GT
-    CF <-->|"parallel prefetch"| GC
-    CF <-->|"parallel prefetch"| GP
+    RS --> GT
+    RS --> CR
+    RS --> IR
+    RS --> SK
+    RS --> GP
+    RS --> SR
+    ESC --> ES
+    ESC --> SR
+    CF -->|"parallel prefetch"| GT
+    CF -->|"parallel prefetch"| GC
+    CF -->|"parallel prefetch"| GP
 ```
 
 ### Concurrency Model
