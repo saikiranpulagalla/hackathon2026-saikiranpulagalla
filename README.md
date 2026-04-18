@@ -121,7 +121,7 @@ flowchart LR
 
 ```bash
 # Clone the repository
-git clone https://github.com/[your-username]/shopwave-support-agent
+git clone https://github.com/saikiranpulagalla/hackathon2026-saikiranpulagalla.git
 cd shopwave-support-agent
 
 # Set up environment
