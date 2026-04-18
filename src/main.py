@@ -2,10 +2,14 @@
 
 from __future__ import annotations
 
+from dotenv import load_dotenv
+load_dotenv()
+
 # --- LangSmith Tracing Setup (must be before other imports) ---
 import os
 os.environ["LANGCHAIN_TRACING_V2"] = os.getenv("LANGCHAIN_TRACING_V2", "false")
-os.environ["LANGCHAIN_API_KEY"] = os.getenv("LANGSMITH_API_KEY", "")
+if os.getenv("LANGSMITH_API_KEY"):
+    os.environ["LANGCHAIN_API_KEY"] = os.getenv("LANGSMITH_API_KEY")
 os.environ["LANGCHAIN_PROJECT"] = os.getenv("LANGSMITH_PROJECT", "shopwave-hackathon-2026")
 
 import asyncio
@@ -16,11 +20,7 @@ import time
 from datetime import datetime
 from pathlib import Path
 
-from dotenv import load_dotenv
-
-# Load environment variables before any imports that use them
-load_dotenv()
-
+# Environment variables loaded at the top
 from src.agent.graph import build_workflow
 from src.agent.state import AuditRecord, DLQEntry, RawTicket
 from src.evaluation.metrics import ProcessingReport
