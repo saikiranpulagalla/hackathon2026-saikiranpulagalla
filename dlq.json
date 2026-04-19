@@ -1,1 +1,68 @@
-[]
+[
+  {
+    "ticket_id": "TKT-011",
+    "customer_id": "C001",
+    "error_type": "validation",
+    "error_message": "4 validation errors for EscalationResult\nescalation_id\n  Input should be a valid string [type=string_type, input_value=None, input_type=NoneType]\n    For further information visit https://errors.pydantic.dev/2.11/v/string_type\nassigned_team\n  Field required [type=missing, input_value={'escalation_id': None, 'priority': 'unknown'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.11/v/missing\npriority\n  Input should be 'low', 'medium', 'high' or 'urgent' [type=lite",
+    "node_history": [
+      "classifier",
+      "context_fetcher",
+      "router",
+      "resolver",
+      "audit_close"
+    ],
+    "tool_calls": [
+      {
+        "tool_name": "get_customer",
+        "attempt": 1,
+        "timestamp": "2026-04-19T20:38:43.830200",
+        "input_args": {
+          "email": "alice.turner@email.com"
+        },
+        "success": true,
+        "error_type": null,
+        "duration_ms": 93.99999999914144,
+        "validated": true
+      },
+      {
+        "tool_name": "get_order",
+        "attempt": 1,
+        "timestamp": "2026-04-19T20:38:43.830200",
+        "input_args": {
+          "order_id": "ORD-1011"
+        },
+        "success": true,
+        "error_type": null,
+        "duration_ms": 93.99999999914144,
+        "validated": true
+      },
+      {
+        "tool_name": "get_product",
+        "attempt": 2,
+        "timestamp": "2026-04-19T20:38:44.640205",
+        "input_args": {
+          "product_id": "P006"
+        },
+        "success": true,
+        "error_type": null,
+        "duration_ms": 155.99999999903957,
+        "validated": true
+      },
+      {
+        "tool_name": "escalate",
+        "attempt": 1,
+        "timestamp": "2026-04-19T20:38:44.718365",
+        "input_args": {
+          "ticket_id": "TKT-011",
+          "summary": "{\"ticket_id\": \"TKT-011\", \"intent\": \"complaint\", \"urgency\": \"medium\", \"confidence\": 0.9, \"customer_data\": {\"customer_id\": \"C001\", \"name\": \"Alice Turner\", \"email\": \"alice.turner@email.com\", \"phone\": \"+1-415-555-0101\", \"tier\": \"vip\", \"member_since\": \"2019-03-12\", \"total_orders\": 47, \"total_spent\": 6840.5, \"address\": {\"street\": \"12 Maple Avenue\", \"city\": \"San Francisco\", \"state\": \"CA\", \"zip\": \"94102\"}, \"notes\": \"Long-standing VIP. Has had 2 refunds in the past year, both approved.\"}, \"order_data\": {\"order_id\": \"ORD-1011\", \"customer_id\": \"C001\", \"product_id\": \"P006\", \"quantity\": 1, \"amount\": 249.99, \"status\": \"delivered\", \"order_date\": \"2024-03-08\", \"delivery_date\": \"2024-03-11\", \"return_deadline\": \"2024-03-26\", \"refund_status\": null, \"notes\": \"Customer reported receiving wrong colour variant. Correct order was Blue, received Black.\"}, \"reasoning\": \"The customer explicitly states they received the wrong colour watch, which is a clear-cut product issue that can be resolved through a straightforward replacement or return process.\"}",
+          "priority": "medium"
+        },
+        "success": false,
+        "error_type": "validation",
+        "duration_ms": 61.99999999989814,
+        "validated": false
+      }
+    ],
+    "timestamp": "2026-04-19T20:39:19.438475"
+  }
+]
