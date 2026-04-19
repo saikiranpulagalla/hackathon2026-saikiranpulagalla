@@ -40,7 +40,7 @@ async def process_all_tickets(
     tickets: list[RawTicket],
     audit_path: str = "audit_log.json",
     dlq_path: str = "dlq.json",
-    max_concurrent: int = 3,
+    max_concurrent: int = 2,
 ) -> ProcessingReport:
     """
     Process all tickets concurrently with a semaphore cap.
@@ -92,11 +92,17 @@ async def process_all_tickets(
                 logger.error(f"[{ticket.ticket_id}] Unhandled exception: {e}")
                 return e
 
-    # Create tasks for all tickets
-    tasks = [run_one(ticket) for ticket in tickets]
+    # Stagger ticket launches to avoid Groq rate limit cascades
+    # (free tier: 12K TPM / 100K TPD)
+    tasks = []
+    for i, ticket in enumerate(tickets):
+        tasks.append(run_one(ticket))
+        if i < len(tickets) - 1:
+            await asyncio.sleep(1.5)  # spread out LLM calls
 
-    # Run all concurrently
+    # Run all concurrently (already launched above with staggered starts)
     results = await asyncio.gather(*tasks, return_exceptions=True)
+
 
     # Process results
     for ticket, result in zip(tickets, results):

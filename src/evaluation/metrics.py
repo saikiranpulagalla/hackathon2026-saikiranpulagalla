@@ -25,7 +25,7 @@ class ProcessingReport:
         "total": 0, "success": 0, "retries": 0, "dlq": 0
     }))
     _individual_durations: list[float] = field(default_factory=list)
-    _max_concurrent: int = 3
+    _max_concurrent: int = 2
 
     def add_result(self, state: dict) -> None:
         """Add a ticket result to the report."""

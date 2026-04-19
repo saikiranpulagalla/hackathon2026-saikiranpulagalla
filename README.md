@@ -14,7 +14,7 @@ An autonomous AI customer support agent built with **LangGraph** and **Groq (Lla
 graph TD
     subgraph Ingestion
         TQ["Ticket Queue<br/>20 tickets from tickets.json"]
-        SEM["asyncio.Semaphore(5)<br/>max 5 concurrent"]
+        SEM["asyncio.Semaphore(2)<br/>max 2 concurrent"]
     end
 
     subgraph LangGraph StateGraph
@@ -73,7 +73,7 @@ graph TD
 ```mermaid
 sequenceDiagram
     participant Main as main.py
-    participant Sem as Semaphore(5)
+    participant Sem as Semaphore(2)
     participant WF as LangGraph Workflow
     participant T1 as get_customer
     participant T2 as get_order
@@ -191,7 +191,7 @@ shopwave-support-agent/
 | Decision | Rationale |
 |---|---|
 | **LangGraph StateGraph** | Explicit state machine with typed state. Every transition is deterministic and inspectable. State fields use `Annotated[list, operator.add]` reducers — `tool_calls`, `errors`, and `node_history` are append-only by design, never overwritten. This gives a built-in, tamper-evident audit trail. |
-| **asyncio.Semaphore(5)** | Caps concurrent LLM calls to prevent rate limiting while achieving meaningful parallelism. Within each ticket, context fetcher runs `get_customer` + `get_order` simultaneously via `asyncio.gather`. |
+| **asyncio.Semaphore(2)** | Caps concurrent LLM calls to prevent rate limiting while achieving meaningful parallelism. Within each ticket, context fetcher runs `get_customer` + `get_order` simultaneously via `asyncio.gather`. |
 | **Pydantic v2 schema validation** | Every tool output is validated at the boundary. Malformed responses are *returned* as bad dicts (not raised), matching real HTTP 200 with garbage body behavior. `ValidationError` is non-recoverable — no wasted retries on deterministic failures. |
 | **Graceful Failure Recovery** | Validation failures during context fetching do NOT crash the agent into the DLQ. Instead, the agent captures the `ValidationError` as recoverable, flags the state with `context_incomplete=True`, and proceeds. The router then intelligently decides if it can auto-resolve with partial data or must escalate. |
 | **Intent-Based Routing Engine** | Pure confidence scoring is dangerous for certain topics. We implemented a strict `ALWAYS_ESCALATE_INTENTS` rule so that high-risk categories (e.g., `legal_threat`, `complaint`) always route to human support, bypassing the standard confidence gates. |
@@ -203,7 +203,7 @@ shopwave-support-agent/
 
 ## Key Features
 
-- **Concurrent batch processing** — 20 tickets via `asyncio.gather` with `Semaphore(5)`
+- **Concurrent batch processing** — 20 tickets via `asyncio.gather` with `Semaphore(2)`
 - **Parallel context fetching** — `get_customer` + `get_order` run simultaneously per ticket
 - **Process-Isolated UI Concurrency** — Streamlit UI uses `concurrent.futures.ThreadPoolExecutor` with fresh event loops for highly stable Windows background execution.
 - **Intent-Specific LLM Prompting** — Resolver uses dynamically generated, category-specific instructions (e.g., tailored tool chains for refund vs. order status) instead of a single generic prompt.
@@ -319,7 +319,7 @@ This shows: classification reasoning, confidence score, the timeout that was ret
 | Criterion | Points | Implementation |
 |---|---|---|
 | **Production Readiness** | 30 | Modular `src/` structure, Pydantic v2 validation on every tool output, retry with exponential backoff, no hardcoded secrets (`.env`), Docker + docker-compose, structured error handling |
-| **Engineering Depth** | 30 | `asyncio.Semaphore(5)` batch + `asyncio.gather` within-ticket parallelism, 8 mock tools with configurable failure rates, LangGraph `TypedDict` state with `Annotated` reducers, 23 tests (unit + hypothesis property tests) |
+| **Engineering Depth** | 30 | `asyncio.Semaphore(2)` batch + `asyncio.gather` within-ticket parallelism, 8 mock tools with configurable failure rates, LangGraph `TypedDict` state with `Annotated` reducers, 23 tests (unit + hypothesis property tests) |
 | **Presentation** | 20 | 4 Mermaid architecture diagrams, comprehensive README, sample audit log, tool signature table, failure modes doc, demo-ready |
 | **Agentic Design** | 10 | Confidence gates (0.65 primary + 0.80 secondary for high-value refunds), explicit "when NOT to act" principle, structured escalation with context, idempotency guard on irreversible actions |
 | **Evaluation** | 10 | Confidence scoring at classify → route → resolve stages, `ProcessingReport` with resolution/escalation/failure metrics, DLQ for feedback loop analysis |
