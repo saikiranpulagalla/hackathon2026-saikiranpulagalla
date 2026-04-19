@@ -55,33 +55,14 @@ async def _run_agent_async(ticket_state: dict) -> dict:
 import concurrent.futures
 
 def run_agent_sync(ticket_state: dict) -> dict:
-    """Run async agent in a completely isolated process-level event loop"""
+    """Run async agent from Streamlit's sync context safely."""
     import asyncio
-    import sys
-    
-    # Force a completely fresh event loop
-    if sys.platform == 'win32':
-        asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
-    
-    loop = asyncio.new_event_loop()
-    asyncio.set_event_loop(loop)
-    
     try:
-        return loop.run_until_complete(_run_agent_async(ticket_state))
+        return asyncio.run(_run_agent_async(ticket_state))
     except Exception as e:
         return {"resolution_status": "failed", "ticket_id": ticket_state.get("ticket_id", "?"),
                 "errors": [{"error_type": type(e).__name__, "message": str(e), "recoverable": False}],
                 "node_history": [], "tool_calls": []}
-    finally:
-        try:
-            # Cancel pending tasks
-            pending = asyncio.all_tasks(loop)
-            for task in pending:
-                task.cancel()
-            if pending:
-                loop.run_until_complete(asyncio.gather(*pending, return_exceptions=True))
-        finally:
-            loop.close()
 
 
 def render_live_tab():
