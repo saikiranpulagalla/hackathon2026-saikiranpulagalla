@@ -50,7 +50,7 @@ def test_retry_always_returns_result(fail_count, max_retries):
         }
 
     result = asyncio.run(
-        retry_with_backoff(flaky, "get_order", {}, OrderData, max_retries=max_retries, base_delay=0.001)
+        retry_with_backoff(flaky, args={}, schema=OrderData, tool_name="get_order", max_retries=max_retries, base_delay=0.001)
     )
     # Must always return a result, never raise
     assert result is not None
@@ -93,7 +93,9 @@ def test_routing_decision_always_valid(confidence, resolvability, has_unrecovera
         confidence=confidence,
         classification_reasoning="test",
         order_data=None, customer_data=None, product_data=None, knowledge_results=None,
+        context_incomplete=False,
         tool_calls=[], errors=errors, node_history=[],
+        retry_counts={},
         routing_decision=None, refund_result=None,
         resolution_status=None, reply_text=None, escalation_reason=None, audit_record=None,
     )
@@ -124,7 +126,9 @@ def test_confidence_gate(confidence):
         confidence=confidence,
         classification_reasoning="test",
         order_data=None, customer_data=None, product_data=None, knowledge_results=None,
+        context_incomplete=False,
         tool_calls=[], errors=[], node_history=[],
+        retry_counts={},
         routing_decision=None, refund_result=None,
         resolution_status=None, reply_text=None, escalation_reason=None, audit_record=None,
     )
@@ -167,7 +171,9 @@ def test_dlq_on_unrecoverable(confidence):
         confidence=confidence,
         classification_reasoning="test",
         order_data=None, customer_data=None, product_data=None, knowledge_results=None,
+        context_incomplete=False,
         tool_calls=[], errors=[error], node_history=[],
+        retry_counts={},
         routing_decision=None, refund_result=None,
         resolution_status=None, reply_text=None, escalation_reason=None, audit_record=None,
     )

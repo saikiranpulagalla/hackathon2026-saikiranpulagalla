@@ -122,7 +122,7 @@ flowchart LR
 ```bash
 # Clone the repository
 git clone https://github.com/saikiranpulagalla/hackathon2026-saikiranpulagalla.git
-cd shopwave-support-agent
+cd hackathon2026-saikiranpulagalla
 
 # Set up environment
 cp .env.example .env
@@ -193,6 +193,8 @@ shopwave-support-agent/
 | **LangGraph StateGraph** | Explicit state machine with typed state. Every transition is deterministic and inspectable. State fields use `Annotated[list, operator.add]` reducers — `tool_calls`, `errors`, and `node_history` are append-only by design, never overwritten. This gives a built-in, tamper-evident audit trail. |
 | **asyncio.Semaphore(5)** | Caps concurrent LLM calls to prevent rate limiting while achieving meaningful parallelism. Within each ticket, context fetcher runs `get_customer` + `get_order` simultaneously via `asyncio.gather`. |
 | **Pydantic v2 schema validation** | Every tool output is validated at the boundary. Malformed responses are *returned* as bad dicts (not raised), matching real HTTP 200 with garbage body behavior. `ValidationError` is non-recoverable — no wasted retries on deterministic failures. |
+| **Graceful Failure Recovery** | Validation failures during context fetching do NOT crash the agent into the DLQ. Instead, the agent captures the `ValidationError` as recoverable, flags the state with `context_incomplete=True`, and proceeds. The router then intelligently decides if it can auto-resolve with partial data or must escalate. |
+| **Intent-Based Routing Engine** | Pure confidence scoring is dangerous for certain topics. We implemented a strict `ALWAYS_ESCALATE_INTENTS` rule so that high-risk categories (e.g., `legal_threat`, `complaint`) always route to human support, bypassing the standard confidence gates. |
 | **Confidence gate at 0.65** | Better to escalate than act on uncertain information, especially for irreversible actions like refunds. Threshold is configurable in `src/agent/router.py`. |
 | **Secondary gate at 0.80 for refunds >$100** | High-value refunds with moderate confidence (0.65–0.79) are escalated. The cost of a wrong refund exceeds the cost of human review. |
 | **"When NOT to act" principle** | The agent has three explicit stop conditions: (1) confidence < 0.65 → escalate instead of attempting resolution, (2) refund amount > $100 with confidence 0.65–0.79 → escalate (wrong refund cost > human review cost), (3) `issue_refund` is NEVER called unless `check_refund_eligibility` explicitly returns `eligible: true` in the same reasoning chain. The agent does nothing rather than act on uncertainty for irreversible actions. |
@@ -203,6 +205,8 @@ shopwave-support-agent/
 
 - **Concurrent batch processing** — 20 tickets via `asyncio.gather` with `Semaphore(5)`
 - **Parallel context fetching** — `get_customer` + `get_order` run simultaneously per ticket
+- **Process-Isolated UI Concurrency** — Streamlit UI uses `concurrent.futures.ThreadPoolExecutor` with fresh event loops for highly stable Windows background execution.
+- **Intent-Specific LLM Prompting** — Resolver uses dynamically generated, category-specific instructions (e.g., tailored tool chains for refund vs. order status) instead of a single generic prompt.
 - **Retry with exponential backoff** — 3 retries, 0.5s base delay, jitter for all tool calls
 - **Schema validation** — Pydantic v2 on every tool output, 8 strict schemas
 - **Confidence-gated actions** — primary threshold at 0.65, secondary at 0.80 for high-value refunds
@@ -211,7 +215,7 @@ shopwave-support-agent/
 - **Full audit trail** — `audit_log.json` with reasoning, confidence, tool call chain, timing
 - **Dead Letter Queue** — `dlq.json` for unrecoverable failures with full partial state
 - **7 documented failure modes** — see `failure_modes.md`
-- **19 passing unit tests** — retry logic, routing, tools, schema validation
+- **23 passing tests** — retry logic, routing, tools, schema validation, property-based tests
 
 ### Mandatory 3+ Tool Call Chain (per hackathon requirement)
 
@@ -254,7 +258,6 @@ flowchart TD
     R -->|"ToolTimeoutError"| RETRY["Retry (recoverable)"]
     R -->|"ToolError (transient)"| RETRY
     R -->|"ToolError (permanent)"| FAIL["Fail immediately"]
-    R -->|"ValidationError"| FAIL
     R -->|"Success"| VALIDATE["Pydantic validate"]
 
     RETRY --> B{"Attempts < 3?"}
@@ -262,7 +265,13 @@ flowchart TD
     B -->|No| RESULT["ToolResult(success=False)"]
     WAIT --> TC
 
-    VALIDATE --> OK["ToolResult(success=True, validated_data)"]
+    VALIDATE --> VCHECK{"Valid?"}
+    VCHECK -->|"Yes"| OK["ToolResult(success=True, validated_data)"]
+    VCHECK -->|"ValidationError"| PARTIAL["Mark context_incomplete=True"]
+    PARTIAL --> GRACEFUL["ToolResult(success=False, recoverable=True)"]
+    GRACEFUL --> ROUTER{"Router decision"}
+    ROUTER -->|"Can resolve with partial data"| AUTO["Auto-resolve"]
+    ROUTER -->|"Insufficient context"| ESC["Escalate to human"]
     FAIL --> RESULT
 ```
 
@@ -310,7 +319,7 @@ This shows: classification reasoning, confidence score, the timeout that was ret
 | Criterion | Points | Implementation |
 |---|---|---|
 | **Production Readiness** | 30 | Modular `src/` structure, Pydantic v2 validation on every tool output, retry with exponential backoff, no hardcoded secrets (`.env`), Docker + docker-compose, structured error handling |
-| **Engineering Depth** | 30 | `asyncio.Semaphore(5)` batch + `asyncio.gather` within-ticket parallelism, 8 mock tools with configurable failure rates, LangGraph `TypedDict` state with `Annotated` reducers, 19 unit tests + hypothesis property tests |
+| **Engineering Depth** | 30 | `asyncio.Semaphore(5)` batch + `asyncio.gather` within-ticket parallelism, 8 mock tools with configurable failure rates, LangGraph `TypedDict` state with `Annotated` reducers, 23 tests (unit + hypothesis property tests) |
 | **Presentation** | 20 | 4 Mermaid architecture diagrams, comprehensive README, sample audit log, tool signature table, failure modes doc, demo-ready |
 | **Agentic Design** | 10 | Confidence gates (0.65 primary + 0.80 secondary for high-value refunds), explicit "when NOT to act" principle, structured escalation with context, idempotency guard on irreversible actions |
 | **Evaluation** | 10 | Confidence scoring at classify → route → resolve stages, `ProcessingReport` with resolution/escalation/failure metrics, DLQ for feedback loop analysis |
@@ -329,8 +338,8 @@ This shows: classification reasoning, confidence score, the timeout that was ret
 ## Running Tests
 
 ```bash
-# Unit tests (19 tests)
-pytest tests/unit/ -v
+# Unit tests (23 tests)
+pytest tests/ -v
 
 # Property-based tests
 pytest tests/property/ -v
@@ -376,6 +385,7 @@ streamlit run streamlit_app.py
 
 Submit any customer support ticket and watch the agent process it in real-time:
 
+- **Demo Confidence Override** — Set `DEMO_CONFIDENCE_OVERRIDE=0.72` in `.env` to artificially clamp the LLM's confidence score, perfectly demonstrating the secondary $100 refund escalation gate to judges. Streamlit will display a clear warning banner when this mode is active.
 - **6 pre-built example tickets** — covering every agent behavior (auto-resolve, escalate via primary gate, escalate via secondary $100 gate, DLQ scenario)
 - **Confidence meter** — visual bar showing your ticket's confidence vs the 0.65 and 0.80 thresholds
 - **Live execution trace** — see each node (Classifier → Context Fetcher → Router → Resolver) complete in sequence
@@ -432,8 +442,8 @@ python smoke_test.py
 # Expected: 6/6 PASS
 
 # Run the test suite
-pytest tests/unit/ -v
-# Expected: 19/19 PASS
+pytest tests/ -v
+# Expected: 23/23 PASS
 
 # Launch the dashboard (Analytics tab shows placeholder without audit_log.json)
 streamlit run streamlit_app.py
@@ -441,7 +451,8 @@ streamlit run streamlit_app.py
 
 ## Demo Video
 
-[Watch the 5-minute demo](https://[link-to-video])
+<!-- Replace the URL below with your actual Loom/YouTube demo link before final push -->
+[Watch the 5-minute demo](https://link-to-video)
 
 **Demo walkthrough:**
 - 0:00 — Project structure and architecture overview

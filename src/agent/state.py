@@ -141,6 +141,7 @@ class AgentState(TypedDict):
     customer_data: Optional[dict]
     product_data: Optional[dict]
     knowledge_results: Optional[list]
+    context_incomplete: Optional[bool]
 
     # --- Execution Tracking (append-only via reducers) ---
     tool_calls: Annotated[list, operator.add]

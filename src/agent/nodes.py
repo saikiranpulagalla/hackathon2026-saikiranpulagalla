@@ -378,7 +378,16 @@ async def context_fetcher_node(state: dict) -> dict:
             elif name == "get_product":
                 product_data = result.validated_data.model_dump() if hasattr(result.validated_data, "model_dump") else result.validated_data
         else:
-            new_errors.append(_make_error_record(result, "context_fetcher"))
+            err_record = _make_error_record(result, "context_fetcher")
+            # Validation failure or tool error — store as None, log the issue
+            # context fetch failure is recoverable — agent will escalate
+            err_record.recoverable = True
+            new_errors.append(err_record)
+
+    context_incomplete = any([
+        order_data is None and state.get("order_id") is not None,
+        customer_data is None,
+    ])
 
     logger.info(
         f"[{state['ticket_id']}] Context fetched: "
@@ -391,6 +400,7 @@ async def context_fetcher_node(state: dict) -> dict:
         "order_data": order_data,
         "customer_data": customer_data,
         "product_data": product_data,
+        "context_incomplete": context_incomplete,
         "tool_calls": new_tool_calls,
         "errors": new_errors,
         "node_history": ["context_fetcher"],
@@ -409,12 +419,21 @@ def router_node(state: dict) -> dict:
     resolvability = state.get("resolvability", "human")
     intent = state.get("intent", "unknown")
     errors = state.get("errors", [])
+    urgency = state.get("urgency", "low")
+    context_incomplete = state.get("context_incomplete", False)
 
-    routing_decision = determine_routing(confidence, resolvability, intent, errors)
+    routing_decision = determine_routing(
+        confidence=confidence,
+        resolvability=resolvability,
+        intent=intent,
+        errors=errors,
+        urgency=urgency,
+        context_incomplete=context_incomplete
+    )
 
     logger.info(
         f"[{state['ticket_id']}] Routing: {routing_decision} "
-        f"(confidence={confidence:.2f}, resolvability={resolvability})"
+        f"(confidence={confidence:.2f}, resolvability={resolvability}, intent={intent})"
     )
 
     return {
@@ -530,6 +549,44 @@ async def _auto_resolve_path(state: dict) -> dict:
     if state.get("product_data"):
         context_parts.append(f"Product Data: {json.dumps(state['product_data'], default=str)}")
 
+    category_instructions = {
+        "refund_request": """
+You are resolving a REFUND REQUEST. Follow this exact sequence:
+1. Call check_refund_eligibility(order_id) to verify eligibility FIRST
+2. If eligible AND refund amount <= $100: call issue_refund(order_id, amount), then send_reply with refund confirmation
+3. If eligible AND refund amount > $100 AND your confidence is below 0.80: DO NOT issue refund, call escalate() instead
+4. If NOT eligible: call search_knowledge_base("refund policy") then send_reply explaining the policy politely
+NEVER call issue_refund without first confirming eligibility in this same chain.
+""",
+        "order_status": """
+You are resolving an ORDER STATUS inquiry. Follow this exact sequence:
+1. Call get_order(order_id) to fetch current status and tracking information
+2. If order found: call send_reply with specific order status, estimated delivery date, and tracking number if available
+3. If order not found or data incomplete: call escalate() with context
+DO NOT send a generic reply. The customer wants their specific order status.
+""",
+        "product_inquiry": """
+You are resolving a PRODUCT INQUIRY. Follow this exact sequence:
+1. Call get_product(product_id) if a product ID or name is mentioned
+2. Call search_knowledge_base(query) with the specific question about the product
+3. Call send_reply with the specific product information, warranty details, and compatibility info found
+""",
+        "shipping_inquiry": """
+You are resolving a SHIPPING INQUIRY. Follow this exact sequence:
+1. Call get_order(order_id) to fetch shipping status and tracking
+2. If in_transit or delayed: call search_knowledge_base("shipping policy delays") for relevant policy
+3. Call send_reply with tracking status and estimated delivery information
+""",
+    }
+
+    # Get category-specific instructions or fall back to generic
+    category_instruction = category_instructions.get(intent, """
+Resolve this customer inquiry by:
+1. Calling the most relevant tool to get information about their issue
+2. Calling search_knowledge_base if you need policy or FAQ information
+3. Calling send_reply with a helpful, specific response
+""")
+
     system_prompt = f"""You are a customer support agent for ShopWave, an e-commerce platform.
 You must resolve the customer's issue by using the available tools.
 
@@ -538,6 +595,8 @@ Here is what we know so far:
 
 The customer wrote:
 {state['ticket_text']}
+
+{category_instruction}
 
 IMPORTANT RULES:
 1. Use tools to gather information and take action BEFORE writing a reply.
@@ -632,7 +691,11 @@ IMPORTANT RULES:
                     confidence = state.get("confidence", 0.0)
                     if amount > 100.0 and confidence < 0.80:
                         logger.info(f"[{state['ticket_id']}] High-value refund (${amount}) with low confidence ({confidence}) -- escalating")
-                        return await _escalation_path(state)
+                        esc_result = await _escalation_path(state)
+                        # Preserve tool calls accumulated before the gate fired
+                        esc_result["tool_calls"] = new_tool_calls + esc_result.get("tool_calls", [])
+                        esc_result["errors"] = new_errors + esc_result.get("errors", [])
+                        return esc_result
 
                 # Execute the tool via retry wrapper
                 schema = SCHEMA_REGISTRY.get(tool_name)

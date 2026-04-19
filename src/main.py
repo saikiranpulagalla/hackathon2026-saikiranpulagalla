@@ -73,6 +73,7 @@ async def process_all_tickets(
                     "customer_data": None,
                     "product_data": None,
                     "knowledge_results": None,
+                    "context_incomplete": False,
                     "tool_calls": [],
                     "errors": [],
                     "node_history": [],

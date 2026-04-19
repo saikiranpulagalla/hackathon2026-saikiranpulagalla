@@ -20,10 +20,10 @@ EXAMPLES = [
      "Hi, I need to return my order ORD-7823 placed last week. The laptop keyboard stopped working after 2 days. I'd like a full refund please.",
      "alice@example.com",
      "Expected: AUTO-RESOLVE → 4 tool calls → issue_refund → send_reply"),
-    ("💰 High Value >$100",
+    ("💰 Refund (High Value >$100)",
      "I want to return the premium camera bundle I ordered (ORD-9934), it was $349. The image quality is much worse than advertised.",
      "bob@example.com",
-     "Expected: ESCALATE → secondary 0.80 gate triggers (refund >$100, confidence 0.65-0.79)"),
+     "Expected: ESCALATE via secondary gate. Set DEMO_CONFIDENCE_OVERRIDE=0.72 in .env to demonstrate this gate. With override: confidence 0.72 < 0.80 threshold for high-value refunds → escalates."),
     ("📦 Order Status",
      "Where is my package? I ordered 5 days ago (ORD-2291) and still haven't received a tracking number. Starting to get worried.",
      "carol@example.com",
@@ -52,10 +52,20 @@ async def _run_agent_async(ticket_state: dict) -> dict:
     return await workflow.ainvoke(ticket_state)
 
 
+import concurrent.futures
+
 def run_agent_sync(ticket_state: dict) -> dict:
-    """Thread-safe sync wrapper for the async agent."""
+    """Run async agent in a completely isolated process-level event loop"""
+    import asyncio
+    import sys
+    
+    # Force a completely fresh event loop
+    if sys.platform == 'win32':
+        asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
+    
     loop = asyncio.new_event_loop()
     asyncio.set_event_loop(loop)
+    
     try:
         return loop.run_until_complete(_run_agent_async(ticket_state))
     except Exception as e:
@@ -63,7 +73,15 @@ def run_agent_sync(ticket_state: dict) -> dict:
                 "errors": [{"error_type": type(e).__name__, "message": str(e), "recoverable": False}],
                 "node_history": [], "tool_calls": []}
     finally:
-        loop.close()
+        try:
+            # Cancel pending tasks
+            pending = asyncio.all_tasks(loop)
+            for task in pending:
+                task.cancel()
+            if pending:
+                loop.run_until_complete(asyncio.gather(*pending, return_exceptions=True))
+        finally:
+            loop.close()
 
 
 def render_live_tab():
@@ -79,6 +97,10 @@ def render_live_tab():
         st.code("GROQ_API_KEY=your_key_here", language="bash")
         st.info("Get a free key at https://console.groq.com/keys")
         return
+
+    demo_override = float(os.getenv("DEMO_CONFIDENCE_OVERRIDE", "0"))
+    if demo_override > 0:
+        st.warning(f"⚠️ DEMO MODE: Confidence override active at {demo_override:.0%}. Set DEMO_CONFIDENCE_OVERRIDE=0 in .env to disable.")
 
     # --- Example Tickets ---
     st.markdown("#### 📋 Quick Test Tickets")
@@ -136,7 +158,8 @@ def render_live_tab():
             "intent": None, "urgency": None, "resolvability": None,
             "confidence": None, "classification_reasoning": None,
             "order_data": None, "customer_data": None, "product_data": None,
-            "knowledge_results": None, "tool_calls": [], "errors": [],
+            "knowledge_results": None, "context_incomplete": False,
+            "tool_calls": [], "errors": [],
             "node_history": [], "retry_counts": {}, "routing_decision": None,
             "resolution_status": None, "reply_text": None,
             "escalation_reason": None, "refund_result": None,
@@ -145,33 +168,31 @@ def render_live_tab():
 
         with st.status("🔄 Processing ticket through agent pipeline...", expanded=True) as status:
             st.write("📋 Initializing ticket state...")
-            container = {}
 
-            def _run():
-                container["result"] = run_agent_sync(initial_state)
+            with concurrent.futures.ThreadPoolExecutor(max_workers=1) as executor:
+                future = executor.submit(run_agent_sync, initial_state)
+                
+                steps = [("🤖 Classifier Node (Groq LLM)...", 0.5),
+                         ("🔍 Context Fetcher (parallel tool calls)...", 0.8),
+                         ("🧭 Router Node (confidence evaluation)...", 0.5),
+                         ("⚙️ Resolver Node (tool chain execution)...", 1.2),
+                         ("📝 Audit Close Node...", 0.3)]
+                
+                for txt, delay in steps:
+                    if future.done():
+                        break
+                    st.write(txt)
+                    time.sleep(delay)
 
-            thread = threading.Thread(target=_run)
-            thread.start()
-            steps = [("🤖 Classifier Node (Groq LLM)...", 0.5),
-                     ("🔍 Context Fetcher (parallel tool calls)...", 0.8),
-                     ("🧭 Router Node (confidence evaluation)...", 0.5),
-                     ("⚙️ Resolver Node (tool chain execution)...", 1.2),
-                     ("📝 Audit Close Node...", 0.3)]
-            for txt, delay in steps:
-                if not thread.is_alive():
-                    break
-                st.write(txt)
-                time.sleep(delay)
-            thread.join(timeout=120)
-
-            if "result" in container:
-                status.update(label="✅ Processing complete!", state="complete", expanded=False)
-                st.session_state.last_result = container["result"]
-                st.session_state.last_ticket_id = ticket_id
-            else:
-                status.update(label="❌ Timed out", state="error")
-                st.error("Agent timed out after 2 minutes.")
-                return
+                try:
+                    result = future.result(timeout=120)
+                    status.update(label="✅ Processing complete!", state="complete", expanded=False)
+                    st.session_state.last_result = result
+                    st.session_state.last_ticket_id = ticket_id
+                except concurrent.futures.TimeoutError:
+                    status.update(label="❌ Timed out", state="error")
+                    st.error("Agent timed out after 2 minutes.")
+                    return
 
     # --- Display Results ---
     result = st.session_state.get("last_result")
@@ -209,7 +230,7 @@ def render_live_tab():
         fig.add_vline(x=0.65, line_dash="dash", line_color="red", annotation_text="Primary (0.65)")
         fig.add_vline(x=0.80, line_dash="dash", line_color="orange", annotation_text="High-Value (0.80)")
         fig.update_layout(xaxis_range=[0, 1], height=120, margin=dict(t=30, b=10, l=10, r=10))
-        st.plotly_chart(fig, width="stretch")
+        st.plotly_chart(fig, use_container_width=True)
 
         if confidence < 0.65:
             st.info(f"🔴 Confidence ({confidence:.0%}) fell below 0.65. Agent escalated to human review.")

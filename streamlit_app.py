@@ -101,7 +101,7 @@ with tab_analytics:
                 hole=0.4,
             )
             fig_pie.update_traces(textinfo="label+percent+value")
-            st.plotly_chart(fig_pie, width="stretch")
+            st.plotly_chart(fig_pie, use_container_width=True)
 
         with right_col:
             intents = [r.get("intent", "unknown") for r in audit_data]
@@ -114,7 +114,7 @@ with tab_analytics:
                 color_discrete_sequence=px.colors.qualitative.Set2,
             )
             fig_bar.update_layout(showlegend=False)
-            st.plotly_chart(fig_bar, width="stretch")
+            st.plotly_chart(fig_bar, use_container_width=True)
 
         # SECTION 3: Confidence Distribution
         st.markdown("---")
@@ -133,7 +133,7 @@ with tab_analytics:
             fig_hist.add_vline(x=0.80, line_dash="dash", line_color="orange",
                                 annotation_text="High-Value Refund Gate (0.80)", annotation_position="top right")
             fig_hist.update_layout(bargap=0.1)
-            st.plotly_chart(fig_hist, width="stretch")
+            st.plotly_chart(fig_hist, use_container_width=True)
             st.caption("Tickets below 0.65 are escalated regardless of category. "
                        "Refunds >$100 with confidence 0.65-0.79 are also escalated.")
 
@@ -174,7 +174,7 @@ with tab_analytics:
                     "Timeout Count": s["timeouts"],
                     "Retry Count": s["retries"],
                 })
-            st.dataframe(pd.DataFrame(rows), width="stretch", hide_index=True)
+            st.dataframe(pd.DataFrame(rows), use_container_width=True, hide_index=True)
 
         # SECTION 5: Audit Log Explorer
         st.markdown("---")
@@ -193,7 +193,7 @@ with tab_analytics:
             })
 
         df_summary = pd.DataFrame(summary_rows)
-        st.dataframe(df_summary, width="stretch", hide_index=True)
+        st.dataframe(df_summary, use_container_width=True, hide_index=True)
 
         st.markdown("**Click a ticket below to inspect its full reasoning chain:**")
         for r in audit_data:
@@ -284,7 +284,7 @@ with tab_analytics:
             )
             fig_gantt.update_yaxes(autorange="reversed")
             fig_gantt.update_layout(height=max(400, len(gantt_data) * 30))
-            st.plotly_chart(fig_gantt, width="stretch")
+            st.plotly_chart(fig_gantt, use_container_width=True)
             st.caption("Overlapping bars demonstrate asyncio.Semaphore concurrent processing")
 
             all_starts = [d["Start"] for d in gantt_data]
