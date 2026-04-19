@@ -724,9 +724,11 @@ IMPORTANT RULES:
                     is_eligible = False
                     max_allowed = 0.0
                     for tc_msg in messages:
-                        if tc_msg.get("role") == "tool":
+                        role = tc_msg.get("role") if isinstance(tc_msg, dict) else getattr(tc_msg, "role", None)
+                        if role == "tool":
+                            content = tc_msg.get("content") if isinstance(tc_msg, dict) else getattr(tc_msg, "content", None)
                             try:
-                                data = json.loads(tc_msg["content"])
+                                data = json.loads(content)
                                 if isinstance(data, dict) and "eligible" in data:
                                     is_eligible = bool(data.get("eligible"))
                                     val = data.get("max_refund_amount")

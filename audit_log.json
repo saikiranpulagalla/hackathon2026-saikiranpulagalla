@@ -23,74 +23,62 @@
       {
         "tool_name": "get_customer",
         "attempt": 1,
-        "timestamp": "2026-04-19T19:53:29.534165",
+        "timestamp": "2026-04-19T20:11:09.254040",
         "input_args": {
           "email": "alice.turner@email.com"
         },
         "success": true,
         "error_type": null,
-        "duration_ms": 63.00000000010186,
+        "duration_ms": 78.00000000133878,
         "validated": true
       },
       {
         "tool_name": "get_order",
         "attempt": 1,
-        "timestamp": "2026-04-19T19:53:29.534165",
+        "timestamp": "2026-04-19T20:11:09.254040",
         "input_args": {
           "order_id": "ORD-1001"
         },
         "success": true,
         "error_type": null,
-        "duration_ms": 188.00000000010186,
+        "duration_ms": 172.0000000004802,
         "validated": true
       },
       {
         "tool_name": "get_product",
         "attempt": 1,
-        "timestamp": "2026-04-19T19:53:29.612308",
+        "timestamp": "2026-04-19T20:11:09.402541",
         "input_args": {
           "product_id": "P001"
         },
         "success": true,
         "error_type": null,
-        "duration_ms": 77.99999999951979,
+        "duration_ms": 140.99999999962165,
         "validated": true
       },
       {
         "tool_name": "check_refund_eligibility",
         "attempt": 1,
-        "timestamp": "2026-04-19T19:53:31.077699",
+        "timestamp": "2026-04-19T20:11:09.892357",
         "input_args": {
           "order_id": "ORD-1001"
         },
         "success": true,
         "error_type": null,
-        "duration_ms": 109.99999999967258,
-        "validated": true
-      },
-      {
-        "tool_name": "search_knowledge_base",
-        "attempt": 1,
-        "timestamp": "2026-04-19T19:53:32.026925",
-        "input_args": {
-          "query": "refund policy"
-        },
-        "success": true,
-        "error_type": null,
-        "duration_ms": 110.00000000058208,
+        "duration_ms": 265.99999999962165,
         "validated": true
       },
       {
         "tool_name": "send_reply",
         "attempt": 1,
-        "timestamp": "2026-04-19T19:53:52.872407",
+        "timestamp": "2026-04-19T20:11:10.922352",
         "input_args": {
           "ticket_id": "TKT-001",
           "message": "Thank you for contacting ShopWave support. We've received your request and a team member will follow up with you shortly."
         },
         "success": true,
         "error_type": null,
-        "duration_ms": 125.0,
+        "duration_ms": 140.0000000012369,
         "validated": true
       }
     ],
@@ -99,8 +87,8 @@
         "node": "resolver",
         "tool_name": null,
         "error_type": "llm_error",
-        "message": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kpjzgxwce6wt6dzkjsjgg4g9` service tier `on_demand` on tokens per minute (TPM): Limit 12000, Used 10848, Requested 1872. Please try again in 3.599999999s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}",
-        "timestamp": "2026-04-19T19:53:52.741160",
+        "message": "Error code: 400 - {'error': {'message': \"Failed to call a function. Please adjust your prompt. See 'failed_generation' for more details.\", 'type': 'invalid_request_error', 'code': 'tool_use_failed', 'failed_generation': '<function=search_knowledge_base{\"query\": \"refund policy\"}</function>'}}",
+        "timestamp": "2026-04-19T20:11:10.770633",
         "recoverable": false
       },
       {
@@ -108,13 +96,13 @@
         "tool_name": null,
         "error_type": "max_iterations_exceeded",
         "message": "LLM did not produce a final reply within 5 iterations \u2014 fallback sent",
-        "timestamp": "2026-04-19T19:53:52.872407",
+        "timestamp": "2026-04-19T20:11:10.922352",
         "recoverable": false
       }
     ],
-    "total_duration_ms": 25321.815000000002,
-    "started_at": "2026-04-19T19:53:27.552310",
-    "completed_at": "2026-04-19T19:53:52.874125"
+    "total_duration_ms": 3678.816,
+    "started_at": "2026-04-19T20:11:07.246350",
+    "completed_at": "2026-04-19T20:11:10.925166"
   },
   {
     "ticket_id": "TKT-002",
@@ -127,8 +115,8 @@
     "confidence": 0.9,
     "classification_reasoning": "The customer explicitly states they want to return their smart watch for a refund, providing their order ID and a clear reason for the return.",
     "routing_decision": "auto_resolve",
-    "resolution_status": "escalated",
-    "reply_text": "Thank you for contacting ShopWave support. We've received your request and a team member will follow up with you shortly.",
+    "resolution_status": "resolved",
+    "reply_text": "Hello Bob, thank you for reaching out about returning your PulseX Smart Watch. I checked on the status of your order, and unfortunately, the return window for your order has expired. According to our refund policy, we cannot process a refund outside of the return window. If you have any further questions or concerns, please don't hesitate to ask.",
     "escalation_reason": null,
     "node_history": [
       "classifier",
@@ -140,86 +128,81 @@
       {
         "tool_name": "get_customer",
         "attempt": 1,
-        "timestamp": "2026-04-19T19:53:30.358994",
+        "timestamp": "2026-04-19T20:11:09.166725",
         "input_args": {
           "email": "bob.mendes@email.com"
         },
         "success": true,
         "error_type": null,
-        "duration_ms": 63.00000000010186,
+        "duration_ms": 61.99999999989814,
         "validated": true
       },
       {
         "tool_name": "get_order",
-        "attempt": 2,
-        "timestamp": "2026-04-19T19:53:30.358994",
+        "attempt": 1,
+        "timestamp": "2026-04-19T20:11:09.166725",
         "input_args": {
           "order_id": "ORD-1002"
-        },
-        "success": true,
-        "error_type": null,
-        "duration_ms": 109.99999999967258,
-        "validated": true
-      },
-      {
-        "tool_name": "get_product",
-        "attempt": 1,
-        "timestamp": "2026-04-19T19:53:30.436426",
-        "input_args": {
-          "product_id": "P006"
-        },
-        "success": true,
-        "error_type": null,
-        "duration_ms": 78.00000000042928,
-        "validated": true
-      },
-      {
-        "tool_name": "check_refund_eligibility",
-        "attempt": 1,
-        "timestamp": "2026-04-19T19:53:31.264365",
-        "input_args": {
-          "order_id": "ORD-1002"
-        },
-        "success": true,
-        "error_type": null,
-        "duration_ms": 327.9999999995198,
-        "validated": true
-      },
-      {
-        "tool_name": "send_reply",
-        "attempt": 2,
-        "timestamp": "2026-04-19T19:53:42.799504",
-        "input_args": {
-          "ticket_id": "TKT-002",
-          "message": "Thank you for contacting ShopWave support. We've received your request and a team member will follow up with you shortly."
         },
         "success": true,
         "error_type": null,
         "duration_ms": 61.99999999989814,
         "validated": true
-      }
-    ],
-    "errors": [
-      {
-        "node": "resolver",
-        "tool_name": null,
-        "error_type": "llm_error",
-        "message": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kpjzgxwce6wt6dzkjsjgg4g9` service tier `on_demand` on tokens per minute (TPM): Limit 12000, Used 11717, Requested 1310. Please try again in 5.135s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}",
-        "timestamp": "2026-04-19T19:53:41.968901",
-        "recoverable": false
       },
       {
-        "node": "resolver",
-        "tool_name": null,
-        "error_type": "max_iterations_exceeded",
-        "message": "LLM did not produce a final reply within 5 iterations \u2014 fallback sent",
-        "timestamp": "2026-04-19T19:53:42.799504",
-        "recoverable": false
+        "tool_name": "get_product",
+        "attempt": 1,
+        "timestamp": "2026-04-19T20:11:09.246117",
+        "input_args": {
+          "product_id": "P006"
+        },
+        "success": true,
+        "error_type": null,
+        "duration_ms": 77.99999999951979,
+        "validated": true
+      },
+      {
+        "tool_name": "check_refund_eligibility",
+        "attempt": 1,
+        "timestamp": "2026-04-19T20:11:09.609783",
+        "input_args": {
+          "order_id": "ORD-1002"
+        },
+        "success": true,
+        "error_type": null,
+        "duration_ms": 141.00000000144064,
+        "validated": true
+      },
+      {
+        "tool_name": "search_knowledge_base",
+        "attempt": 1,
+        "timestamp": "2026-04-19T20:11:10.923549",
+        "input_args": {
+          "query": "refund policy"
+        },
+        "success": true,
+        "error_type": null,
+        "duration_ms": 234.00000000037835,
+        "validated": true
+      },
+      {
+        "tool_name": "send_reply",
+        "attempt": 2,
+        "timestamp": "2026-04-19T20:11:12.895012",
+        "input_args": {
+          "ticket_id": "TKT-002",
+          "message": "Hello Bob, thank you for reaching out about returning your PulseX Smart Watch. I checked on the status of your order, and unfortunately, the return window for your order has expired. According to our refund policy, we cannot process a refund outside of the return window. If you have any further questions or concerns, please don't hesitate to ask."
+        },
+        "success": true,
+        "error_type": null,
+        "duration_ms": 125.0,
+        "validated": true
       }
     ],
-    "total_duration_ms": 13736.652,
-    "started_at": "2026-04-19T19:53:29.067525",
-    "completed_at": "2026-04-19T19:53:42.804177"
+    "errors": [],
+    "total_duration_ms": 4129.825000000001,
+    "started_at": "2026-04-19T20:11:08.769849",
+    "completed_at": "2026-04-19T20:11:12.899674"
   },
   {
     "ticket_id": "TKT-003",
@@ -230,7 +213,7 @@
     "urgency": "medium",
     "resolvability": "auto",
     "confidence": 0.9,
-    "classification_reasoning": "The customer is reporting a product defect and explicitly requests a replacement or refund.",
+    "classification_reasoning": "The customer explicitly states that their coffee maker has stopped working due to a defect and wants a replacement or refund.",
     "routing_decision": "auto_resolve",
     "resolution_status": "escalated",
     "reply_text": "Thank you for contacting ShopWave support. We've received your request and a team member will follow up with you shortly.",
@@ -245,62 +228,62 @@
       {
         "tool_name": "get_customer",
         "attempt": 1,
-        "timestamp": "2026-04-19T19:53:30.929150",
+        "timestamp": "2026-04-19T20:11:10.770633",
         "input_args": {
           "email": "carol.nguyen@email.com"
         },
         "success": true,
         "error_type": null,
-        "duration_ms": 78.00000000042928,
+        "duration_ms": 93.99999999914144,
         "validated": true
       },
       {
         "tool_name": "get_order",
         "attempt": 1,
-        "timestamp": "2026-04-19T19:53:30.929150",
+        "timestamp": "2026-04-19T20:11:10.770633",
         "input_args": {
           "order_id": "ORD-1003"
         },
         "success": true,
         "error_type": null,
-        "duration_ms": 78.00000000042928,
+        "duration_ms": 93.99999999914144,
         "validated": true
       },
       {
         "tool_name": "get_product",
         "attempt": 1,
-        "timestamp": "2026-04-19T19:53:31.078705",
+        "timestamp": "2026-04-19T20:11:10.874531",
         "input_args": {
           "product_id": "P003"
         },
         "success": true,
         "error_type": null,
-        "duration_ms": 140.99999999962165,
+        "duration_ms": 93.0000000007567,
         "validated": true
       },
       {
         "tool_name": "check_refund_eligibility",
         "attempt": 1,
-        "timestamp": "2026-04-19T19:53:31.731690",
+        "timestamp": "2026-04-19T20:11:11.588337",
         "input_args": {
           "order_id": "ORD-1003"
         },
         "success": true,
         "error_type": null,
-        "duration_ms": 109.99999999967258,
+        "duration_ms": 389.9999999994179,
         "validated": true
       },
       {
         "tool_name": "send_reply",
-        "attempt": 1,
-        "timestamp": "2026-04-19T19:53:41.506873",
+        "attempt": 2,
+        "timestamp": "2026-04-19T20:11:13.258625",
         "input_args": {
           "ticket_id": "TKT-003",
           "message": "Thank you for contacting ShopWave support. We've received your request and a team member will follow up with you shortly."
         },
         "success": true,
         "error_type": null,
-        "duration_ms": 46.99999999957072,
+        "duration_ms": 140.99999999962165,
         "validated": true
       }
     ],
@@ -309,8 +292,8 @@
         "node": "resolver",
         "tool_name": null,
         "error_type": "llm_error",
-        "message": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kpjzgxwce6wt6dzkjsjgg4g9` service tier `on_demand` on tokens per minute (TPM): Limit 12000, Used 11817, Requested 1336. Please try again in 5.765s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}",
-        "timestamp": "2026-04-19T19:53:41.464708",
+        "message": "Error code: 400 - {'error': {'message': \"Failed to call a function. Please adjust your prompt. See 'failed_generation' for more details.\", 'type': 'invalid_request_error', 'code': 'tool_use_failed', 'failed_generation': '<function=search_knowledge_base={\"query\": \"warranty claims policy\"}</function>'}}",
+        "timestamp": "2026-04-19T20:11:12.420611",
         "recoverable": false
       },
       {
@@ -318,13 +301,13 @@
         "tool_name": null,
         "error_type": "max_iterations_exceeded",
         "message": "LLM did not produce a final reply within 5 iterations \u2014 fallback sent",
-        "timestamp": "2026-04-19T19:53:41.506873",
+        "timestamp": "2026-04-19T20:11:13.258625",
         "recoverable": false
       }
     ],
-    "total_duration_ms": 10930.243,
-    "started_at": "2026-04-19T19:53:30.578237",
-    "completed_at": "2026-04-19T19:53:41.508480"
+    "total_duration_ms": 2973.05,
+    "started_at": "2026-04-19T20:11:10.287866",
+    "completed_at": "2026-04-19T20:11:13.260916"
   },
   {
     "ticket_id": "TKT-004",
@@ -335,7 +318,7 @@
     "urgency": "medium",
     "resolvability": "auto",
     "confidence": 0.9,
-    "classification_reasoning": "The customer explicitly states they need the correct size or a full refund immediately due to receiving the wrong size, which is a clear-cut request for a refund or replacement.",
+    "classification_reasoning": "The customer explicitly states they need the correct size or a full refund immediately, indicating a clear request for a refund or return due to a size discrepancy.",
     "routing_decision": "auto_resolve",
     "resolution_status": "escalated",
     "reply_text": "Thank you for contacting ShopWave support. We've received your request and a team member will follow up with you shortly.",
@@ -349,51 +332,63 @@
     "tool_calls": [
       {
         "tool_name": "get_customer",
-        "attempt": 2,
-        "timestamp": "2026-04-19T19:53:33.052171",
+        "attempt": 1,
+        "timestamp": "2026-04-19T20:11:12.298248",
         "input_args": {
           "email": "david.park@email.com"
         },
         "success": true,
         "error_type": null,
-        "duration_ms": 47.00000000048021,
+        "duration_ms": 77.99999999951979,
         "validated": true
       },
       {
         "tool_name": "get_order",
         "attempt": 1,
-        "timestamp": "2026-04-19T19:53:33.052171",
+        "timestamp": "2026-04-19T20:11:12.298248",
         "input_args": {
           "order_id": "ORD-1004"
         },
         "success": true,
         "error_type": null,
-        "duration_ms": 94.00000000005093,
+        "duration_ms": 109.00000000037835,
         "validated": true
       },
       {
         "tool_name": "get_product",
         "attempt": 1,
-        "timestamp": "2026-04-19T19:53:33.208203",
+        "timestamp": "2026-04-19T20:11:12.360406",
         "input_args": {
           "product_id": "P002"
         },
         "success": true,
         "error_type": null,
-        "duration_ms": 155.99999999994907,
+        "duration_ms": 63.00000000010186,
+        "validated": true
+      },
+      {
+        "tool_name": "check_refund_eligibility",
+        "attempt": 1,
+        "timestamp": "2026-04-19T20:11:12.895012",
+        "input_args": {
+          "order_id": "ORD-1004"
+        },
+        "success": true,
+        "error_type": null,
+        "duration_ms": 202.9999999995198,
         "validated": true
       },
       {
         "tool_name": "send_reply",
         "attempt": 1,
-        "timestamp": "2026-04-19T19:53:41.447656",
+        "timestamp": "2026-04-19T20:11:25.758341",
         "input_args": {
           "ticket_id": "TKT-004",
           "message": "Thank you for contacting ShopWave support. We've received your request and a team member will follow up with you shortly."
         },
         "success": true,
         "error_type": null,
-        "duration_ms": 78.99999999972351,
+        "duration_ms": 186.99999999989814,
         "validated": true
       }
     ],
@@ -402,8 +397,8 @@
         "node": "resolver",
         "tool_name": null,
         "error_type": "llm_error",
-        "message": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kpjzgxwce6wt6dzkjsjgg4g9` service tier `on_demand` on tokens per minute (TPM): Limit 12000, Used 11835, Requested 1269. Please try again in 5.52s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}",
-        "timestamp": "2026-04-19T19:53:41.377153",
+        "message": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kpjzgxwce6wt6dzkjsjgg4g9` service tier `on_demand` on tokens per minute (TPM): Limit 12000, Used 11786, Requested 1395. Please try again in 5.905s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}",
+        "timestamp": "2026-04-19T20:11:25.578673",
         "recoverable": false
       },
       {
@@ -411,13 +406,13 @@
         "tool_name": null,
         "error_type": "max_iterations_exceeded",
         "message": "LLM did not produce a final reply within 5 iterations \u2014 fallback sent",
-        "timestamp": "2026-04-19T19:53:41.447656",
+        "timestamp": "2026-04-19T20:11:25.758341",
         "recoverable": false
       }
     ],
-    "total_duration_ms": 9361.927,
-    "started_at": "2026-04-19T19:53:32.087840",
-    "completed_at": "2026-04-19T19:53:41.449767"
+    "total_duration_ms": 13963.203,
+    "started_at": "2026-04-19T20:11:11.797146",
+    "completed_at": "2026-04-19T20:11:25.760349"
   },
   {
     "ticket_id": "TKT-005",
@@ -428,11 +423,11 @@
     "urgency": "medium",
     "resolvability": "human",
     "confidence": 0.8,
-    "classification_reasoning": "The customer is requesting a return for a specific order, but mentions being past the return window, which may require human evaluation to resolve.",
+    "classification_reasoning": "The customer explicitly states they want to return the bluetooth speakers, but the return window may have passed, requiring human evaluation to resolve the issue.",
     "routing_decision": "escalate",
     "resolution_status": "escalated",
     "reply_text": "Your request has been escalated to our specialist team. You'll hear back within 2-4 hours.",
-    "escalation_reason": "{\"ticket_id\": \"TKT-005\", \"intent\": \"refund_request\", \"urgency\": \"medium\", \"confidence\": 0.8, \"customer_data\": {\"customer_id\": \"C005\", \"name\": \"Emma Collins\", \"email\": \"emma.collins@email.com\", \"phone\": \"+1-512-555-0165\", \"tier\": \"vip\", \"member_since\": \"2018-11-02\", \"total_orders\": 91, \"total_spent\": 14220.0, \"address\": {\"street\": \"7 Sunset Blvd\", \"city\": \"Austin\", \"state\": \"TX\", \"zip\": \"73301\"}, \"notes\": \"Highest lifetime value customer. Has a standing exception for extended return windows pre-approved by management.\"}, \"order_data\": {\"order_id\": \"ORD-1005\", \"customer_id\": \"C005\", \"product_id\": \"P008\", \"quantity\": 2, \"amount\": 159.98, \"status\": \"delivered\", \"order_date\": \"2023-12-15\", \"delivery_date\": \"2023-12-19\", \"return_deadline\": \"2024-01-18\", \"refund_status\": null, \"notes\": \"Return window expired. VIP customer with pre-approved extended return exception on file.\"}, \"reasoning\": \"The customer is requesting a return for a specific order, but mentions being past the return window, which may require human evaluation to resolve.\"}",
+    "escalation_reason": "{\"ticket_id\": \"TKT-005\", \"intent\": \"refund_request\", \"urgency\": \"medium\", \"confidence\": 0.8, \"customer_data\": {\"customer_id\": \"C005\", \"name\": \"Emma Collins\", \"email\": \"emma.collins@email.com\", \"phone\": \"+1-512-555-0165\", \"tier\": \"vip\", \"member_since\": \"2018-11-02\", \"total_orders\": 91, \"total_spent\": 14220.0, \"address\": {\"street\": \"7 Sunset Blvd\", \"city\": \"Austin\", \"state\": \"TX\", \"zip\": \"73301\"}, \"notes\": \"Highest lifetime value customer. Has a standing exception for extended return windows pre-approved by management.\"}, \"order_data\": {\"order_id\": \"ORD-1005\", \"customer_id\": \"C005\", \"product_id\": \"P008\", \"quantity\": 2, \"amount\": 159.98, \"status\": \"delivered\", \"order_date\": \"2023-12-15\", \"delivery_date\": \"2023-12-19\", \"return_deadline\": \"2024-01-18\", \"refund_status\": null, \"notes\": \"Return window expired. VIP customer with pre-approved extended return exception on file.\"}, \"reasoning\": \"The customer explicitly states they want to return the bluetooth speakers, but the return window may have passed, requiring human evaluation to resolve the issue.\"}",
     "node_history": [
       "classifier",
       "context_fetcher",
@@ -443,7 +438,7 @@
       {
         "tool_name": "get_customer",
         "attempt": 1,
-        "timestamp": "2026-04-19T19:53:34.257070",
+        "timestamp": "2026-04-19T20:11:14.952845",
         "input_args": {
           "email": "emma.collins@email.com"
         },
@@ -455,59 +450,59 @@
       {
         "tool_name": "get_order",
         "attempt": 1,
-        "timestamp": "2026-04-19T19:53:34.257070",
+        "timestamp": "2026-04-19T20:11:14.952845",
         "input_args": {
           "order_id": "ORD-1005"
         },
         "success": true,
         "error_type": null,
-        "duration_ms": 202.9999999995198,
+        "duration_ms": 172.0000000004802,
         "validated": true
       },
       {
         "tool_name": "get_product",
         "attempt": 1,
-        "timestamp": "2026-04-19T19:53:34.380402",
+        "timestamp": "2026-04-19T20:11:15.030437",
         "input_args": {
           "product_id": "P008"
         },
         "success": true,
         "error_type": null,
-        "duration_ms": 125.0,
+        "duration_ms": 77.99999999951979,
         "validated": true
       },
       {
         "tool_name": "escalate",
         "attempt": 1,
-        "timestamp": "2026-04-19T19:53:34.458914",
+        "timestamp": "2026-04-19T20:11:15.108729",
         "input_args": {
           "ticket_id": "TKT-005",
-          "summary": "{\"ticket_id\": \"TKT-005\", \"intent\": \"refund_request\", \"urgency\": \"medium\", \"confidence\": 0.8, \"customer_data\": {\"customer_id\": \"C005\", \"name\": \"Emma Collins\", \"email\": \"emma.collins@email.com\", \"phone\": \"+1-512-555-0165\", \"tier\": \"vip\", \"member_since\": \"2018-11-02\", \"total_orders\": 91, \"total_spent\": 14220.0, \"address\": {\"street\": \"7 Sunset Blvd\", \"city\": \"Austin\", \"state\": \"TX\", \"zip\": \"73301\"}, \"notes\": \"Highest lifetime value customer. Has a standing exception for extended return windows pre-approved by management.\"}, \"order_data\": {\"order_id\": \"ORD-1005\", \"customer_id\": \"C005\", \"product_id\": \"P008\", \"quantity\": 2, \"amount\": 159.98, \"status\": \"delivered\", \"order_date\": \"2023-12-15\", \"delivery_date\": \"2023-12-19\", \"return_deadline\": \"2024-01-18\", \"refund_status\": null, \"notes\": \"Return window expired. VIP customer with pre-approved extended return exception on file.\"}, \"reasoning\": \"The customer is requesting a return for a specific order, but mentions being past the return window, which may require human evaluation to resolve.\"}",
+          "summary": "{\"ticket_id\": \"TKT-005\", \"intent\": \"refund_request\", \"urgency\": \"medium\", \"confidence\": 0.8, \"customer_data\": {\"customer_id\": \"C005\", \"name\": \"Emma Collins\", \"email\": \"emma.collins@email.com\", \"phone\": \"+1-512-555-0165\", \"tier\": \"vip\", \"member_since\": \"2018-11-02\", \"total_orders\": 91, \"total_spent\": 14220.0, \"address\": {\"street\": \"7 Sunset Blvd\", \"city\": \"Austin\", \"state\": \"TX\", \"zip\": \"73301\"}, \"notes\": \"Highest lifetime value customer. Has a standing exception for extended return windows pre-approved by management.\"}, \"order_data\": {\"order_id\": \"ORD-1005\", \"customer_id\": \"C005\", \"product_id\": \"P008\", \"quantity\": 2, \"amount\": 159.98, \"status\": \"delivered\", \"order_date\": \"2023-12-15\", \"delivery_date\": \"2023-12-19\", \"return_deadline\": \"2024-01-18\", \"refund_status\": null, \"notes\": \"Return window expired. VIP customer with pre-approved extended return exception on file.\"}, \"reasoning\": \"The customer explicitly states they want to return the bluetooth speakers, but the return window may have passed, requiring human evaluation to resolve the issue.\"}",
           "priority": "medium"
         },
         "success": true,
         "error_type": null,
-        "duration_ms": 78.00000000042928,
+        "duration_ms": 63.00000000010186,
         "validated": true
       },
       {
         "tool_name": "send_reply",
         "attempt": 1,
-        "timestamp": "2026-04-19T19:53:34.630274",
+        "timestamp": "2026-04-19T20:11:15.295264",
         "input_args": {
           "ticket_id": "TKT-005",
           "message": "Your request has been escalated to our specialist team. You'll hear back within 2-4 hours."
         },
         "success": true,
         "error_type": null,
-        "duration_ms": 171.99999999957072,
+        "duration_ms": 186.99999999989814,
         "validated": true
       }
     ],
     "errors": [],
-    "total_duration_ms": 1032.927,
-    "started_at": "2026-04-19T19:53:33.599106",
-    "completed_at": "2026-04-19T19:53:34.632033"
+    "total_duration_ms": 1988.956,
+    "started_at": "2026-04-19T20:11:13.308139",
+    "completed_at": "2026-04-19T20:11:15.297095"
   },
   {
     "ticket_id": "TKT-006",
@@ -518,7 +513,7 @@
     "urgency": "medium",
     "resolvability": "auto",
     "confidence": 0.9,
-    "classification_reasoning": "The customer explicitly states they want to cancel their order, which implies a request for a refund.",
+    "classification_reasoning": "The customer explicitly states they want to cancel their recently placed order, which implies a refund request.",
     "routing_decision": "auto_resolve",
     "resolution_status": "escalated",
     "reply_text": "Thank you for contacting ShopWave support. We've received your request and a team member will follow up with you shortly.",
@@ -533,7 +528,7 @@
       {
         "tool_name": "get_customer",
         "attempt": 1,
-        "timestamp": "2026-04-19T19:53:35.438484",
+        "timestamp": "2026-04-19T20:11:19.358543",
         "input_args": {
           "email": "frank.osei@email.com"
         },
@@ -545,50 +540,38 @@
       {
         "tool_name": "get_customer_orders",
         "attempt": 1,
-        "timestamp": "2026-04-19T19:53:35.595326",
+        "timestamp": "2026-04-19T20:11:19.527491",
         "input_args": {
           "customer_id": "C006"
         },
         "success": true,
         "error_type": null,
-        "duration_ms": 155.99999999994907,
+        "duration_ms": 171.99999999866122,
         "validated": true
       },
       {
         "tool_name": "get_product",
         "attempt": 1,
-        "timestamp": "2026-04-19T19:53:35.657223",
+        "timestamp": "2026-04-19T20:11:19.684355",
         "input_args": {
           "product_id": "P005"
         },
         "success": true,
         "error_type": null,
-        "duration_ms": 63.00000000010186,
-        "validated": true
-      },
-      {
-        "tool_name": "check_refund_eligibility",
-        "attempt": 2,
-        "timestamp": "2026-04-19T19:53:42.039359",
-        "input_args": {
-          "order_id": "ORD-1006"
-        },
-        "success": true,
-        "error_type": null,
-        "duration_ms": 125.0,
+        "duration_ms": 156.00000000085856,
         "validated": true
       },
       {
         "tool_name": "send_reply",
         "attempt": 1,
-        "timestamp": "2026-04-19T19:53:53.868705",
+        "timestamp": "2026-04-19T20:11:31.985529",
         "input_args": {
           "ticket_id": "TKT-006",
           "message": "Thank you for contacting ShopWave support. We've received your request and a team member will follow up with you shortly."
         },
         "success": true,
         "error_type": null,
-        "duration_ms": 155.99999999994907,
+        "duration_ms": 110.00000000058208,
         "validated": true
       }
     ],
@@ -597,8 +580,8 @@
         "node": "resolver",
         "tool_name": null,
         "error_type": "llm_error",
-        "message": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kpjzgxwce6wt6dzkjsjgg4g9` service tier `on_demand` on tokens per minute (TPM): Limit 12000, Used 11513, Requested 1296. Please try again in 4.045s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}",
-        "timestamp": "2026-04-19T19:53:53.708429",
+        "message": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kpjzgxwce6wt6dzkjsjgg4g9` service tier `on_demand` on tokens per minute (TPM): Limit 12000, Used 10952, Requested 1284. Please try again in 1.18s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}",
+        "timestamp": "2026-04-19T20:11:31.870146",
         "recoverable": false
       },
       {
@@ -606,13 +589,13 @@
         "tool_name": null,
         "error_type": "max_iterations_exceeded",
         "message": "LLM did not produce a final reply within 5 iterations \u2014 fallback sent",
-        "timestamp": "2026-04-19T19:53:53.868705",
+        "timestamp": "2026-04-19T20:11:31.985529",
         "recoverable": false
       }
     ],
-    "total_duration_ms": 18756.731,
-    "started_at": "2026-04-19T19:53:35.113001",
-    "completed_at": "2026-04-19T19:53:53.869732"
+    "total_duration_ms": 17158.656,
+    "started_at": "2026-04-19T20:11:14.828390",
+    "completed_at": "2026-04-19T20:11:31.987046"
   },
   {
     "ticket_id": "TKT-007",
@@ -638,33 +621,21 @@
       {
         "tool_name": "get_customer",
         "attempt": 1,
-        "timestamp": "2026-04-19T19:53:42.971812",
+        "timestamp": "2026-04-19T20:11:16.776225",
         "input_args": {
           "email": "grace.patel@email.com"
         },
         "success": true,
         "error_type": null,
-        "duration_ms": 78.00000000042928,
+        "duration_ms": 77.99999999951979,
         "validated": true
       },
       {
         "tool_name": "get_order",
         "attempt": 1,
-        "timestamp": "2026-04-19T19:53:42.971812",
+        "timestamp": "2026-04-19T20:11:16.776225",
         "input_args": {
           "order_id": "ORD-1007"
-        },
-        "success": true,
-        "error_type": null,
-        "duration_ms": 140.00000000032742,
-        "validated": true
-      },
-      {
-        "tool_name": "get_product",
-        "attempt": 1,
-        "timestamp": "2026-04-19T19:53:43.112550",
-        "input_args": {
-          "product_id": "P004"
         },
         "success": true,
         "error_type": null,
@@ -672,9 +643,33 @@
         "validated": true
       },
       {
+        "tool_name": "get_product",
+        "attempt": 1,
+        "timestamp": "2026-04-19T20:11:16.855400",
+        "input_args": {
+          "product_id": "P004"
+        },
+        "success": true,
+        "error_type": null,
+        "duration_ms": 78.00000000133878,
+        "validated": true
+      },
+      {
+        "tool_name": "check_refund_eligibility",
+        "attempt": 1,
+        "timestamp": "2026-04-19T20:11:25.758341",
+        "input_args": {
+          "order_id": "ORD-1007"
+        },
+        "success": true,
+        "error_type": null,
+        "duration_ms": 375.0,
+        "validated": true
+      },
+      {
         "tool_name": "send_reply",
         "attempt": 1,
-        "timestamp": "2026-04-19T19:53:54.434435",
+        "timestamp": "2026-04-19T20:11:36.825976",
         "input_args": {
           "ticket_id": "TKT-007",
           "message": "Thank you for contacting ShopWave support. We've received your request and a team member will follow up with you shortly."
@@ -690,8 +685,8 @@
         "node": "resolver",
         "tool_name": null,
         "error_type": "llm_error",
-        "message": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kpjzgxwce6wt6dzkjsjgg4g9` service tier `on_demand` on tokens per minute (TPM): Limit 12000, Used 11805, Requested 1258. Please try again in 5.315s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}",
-        "timestamp": "2026-04-19T19:53:54.303900",
+        "message": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kpjzgxwce6wt6dzkjsjgg4g9` service tier `on_demand` on tokens per minute (TPM): Limit 12000, Used 11653, Requested 1342. Please try again in 4.975s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}",
+        "timestamp": "2026-04-19T20:11:36.693865",
         "recoverable": false
       },
       {
@@ -699,13 +694,13 @@
         "tool_name": null,
         "error_type": "max_iterations_exceeded",
         "message": "LLM did not produce a final reply within 5 iterations \u2014 fallback sent",
-        "timestamp": "2026-04-19T19:53:54.434435",
+        "timestamp": "2026-04-19T20:11:36.825976",
         "recoverable": false
       }
     ],
-    "total_duration_ms": 12987.075,
-    "started_at": "2026-04-19T19:53:41.452112",
-    "completed_at": "2026-04-19T19:53:54.439187"
+    "total_duration_ms": 20488.558,
+    "started_at": "2026-04-19T20:11:16.339004",
+    "completed_at": "2026-04-19T20:11:36.827562"
   },
   {
     "ticket_id": "TKT-008",
@@ -716,7 +711,7 @@
     "urgency": "medium",
     "resolvability": "auto",
     "confidence": 0.9,
-    "classification_reasoning": "The customer is reporting a damaged product and has provided their order number, indicating a clear-cut request for a refund or replacement.",
+    "classification_reasoning": "The customer explicitly states that the product arrived broken and offers photos, indicating a clear-cut request for a refund or return.",
     "routing_decision": "auto_resolve",
     "resolution_status": "escalated",
     "reply_text": "Thank you for contacting ShopWave support. We've received your request and a team member will follow up with you shortly.",
@@ -731,33 +726,9 @@
       {
         "tool_name": "get_customer",
         "attempt": 1,
-        "timestamp": "2026-04-19T19:53:45.215155",
+        "timestamp": "2026-04-19T20:11:27.786778",
         "input_args": {
           "email": "henry.marsh@email.com"
-        },
-        "success": true,
-        "error_type": null,
-        "duration_ms": 46.99999999957072,
-        "validated": true
-      },
-      {
-        "tool_name": "get_order",
-        "attempt": 1,
-        "timestamp": "2026-04-19T19:53:45.215155",
-        "input_args": {
-          "order_id": "ORD-1008"
-        },
-        "success": true,
-        "error_type": null,
-        "duration_ms": 94.00000000005093,
-        "validated": true
-      },
-      {
-        "tool_name": "get_product",
-        "attempt": 1,
-        "timestamp": "2026-04-19T19:53:45.277987",
-        "input_args": {
-          "product_id": "P007"
         },
         "success": true,
         "error_type": null,
@@ -765,17 +736,41 @@
         "validated": true
       },
       {
+        "tool_name": "get_order",
+        "attempt": 1,
+        "timestamp": "2026-04-19T20:11:27.786778",
+        "input_args": {
+          "order_id": "ORD-1008"
+        },
+        "success": true,
+        "error_type": null,
+        "duration_ms": 203.00000000133878,
+        "validated": true
+      },
+      {
+        "tool_name": "get_product",
+        "attempt": 1,
+        "timestamp": "2026-04-19T20:11:27.895008",
+        "input_args": {
+          "product_id": "P007"
+        },
+        "success": true,
+        "error_type": null,
+        "duration_ms": 109.99999999876309,
+        "validated": true
+      },
+      {
         "tool_name": "send_reply",
         "attempt": 1,
-        "timestamp": "2026-04-19T19:53:53.539388",
+        "timestamp": "2026-04-19T20:11:36.516720",
         "input_args": {
           "ticket_id": "TKT-008",
           "message": "Thank you for contacting ShopWave support. We've received your request and a team member will follow up with you shortly."
         },
-        "success": false,
-        "error_type": "validation",
-        "duration_ms": 77.99999999951979,
-        "validated": false
+        "success": true,
+        "error_type": null,
+        "duration_ms": 202.9999999995198,
+        "validated": true
       }
     ],
     "errors": [
@@ -783,16 +778,8 @@
         "node": "resolver",
         "tool_name": null,
         "error_type": "llm_error",
-        "message": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kpjzgxwce6wt6dzkjsjgg4g9` service tier `on_demand` on tokens per minute (TPM): Limit 12000, Used 11131, Requested 1248. Please try again in 1.894999999s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}",
-        "timestamp": "2026-04-19T19:53:53.469264",
-        "recoverable": false
-      },
-      {
-        "node": "resolver",
-        "tool_name": "send_reply",
-        "error_type": "validation",
-        "message": "3 validation errors for SendReplyResult\nmessage_id\n  Input should be a valid string [type=string_type, input_value=None, input_type=NoneType]\n    For further information visit https://errors.pydantic.dev/2.11/v/string_type\ndelivered\n  Input should be a valid boolean [type=bool_type, input_value='yes', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.11/v/bool_type\nchannel\n  Field required [type=missing, input_value={'message_id': None, 'delivered': 'yes'}, input_ty",
-        "timestamp": "2026-04-19T19:53:53.539388",
+        "message": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kpjzgxwce6wt6dzkjsjgg4g9` service tier `on_demand` on tokens per minute (TPM): Limit 12000, Used 11730, Requested 1251. Please try again in 4.905s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}",
+        "timestamp": "2026-04-19T20:11:36.310601",
         "recoverable": false
       },
       {
@@ -800,28 +787,28 @@
         "tool_name": null,
         "error_type": "max_iterations_exceeded",
         "message": "LLM did not produce a final reply within 5 iterations \u2014 fallback sent",
-        "timestamp": "2026-04-19T19:53:53.539388",
+        "timestamp": "2026-04-19T20:11:36.516720",
         "recoverable": false
       }
     ],
-    "total_duration_ms": 12030.657,
-    "started_at": "2026-04-19T19:53:41.510647",
-    "completed_at": "2026-04-19T19:53:53.541304"
+    "total_duration_ms": 10756.617,
+    "started_at": "2026-04-19T20:11:25.762191",
+    "completed_at": "2026-04-19T20:11:36.518808"
   },
   {
     "ticket_id": "TKT-009",
     "customer_id": "C009",
     "customer_email": "irene.castillo@email.com",
     "order_id": "ORD-1009",
-    "intent": "unknown",
-    "urgency": "high",
-    "resolvability": "human",
-    "confidence": 0.0,
-    "classification_reasoning": "Parse failure: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kpjzgxwce6wt6dzkjsjgg4g9` service tier `on_demand` on tokens per minute (TPM): Limit 12000, Used 11571, Requested 435. Please try again in 30ms. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}",
-    "routing_decision": "escalate",
+    "intent": "refund_request",
+    "urgency": "medium",
+    "resolvability": "auto",
+    "confidence": 0.9,
+    "classification_reasoning": "The customer is inquiring about the status of a refund they submitted a few days ago, indicating a clear request for confirmation of a specific transaction.",
+    "routing_decision": "auto_resolve",
     "resolution_status": "escalated",
-    "reply_text": "Your request has been escalated to our specialist team. You'll hear back within 2-4 hours.",
-    "escalation_reason": "{\"ticket_id\": \"TKT-009\", \"intent\": \"unknown\", \"urgency\": \"high\", \"confidence\": 0.0, \"customer_data\": {\"customer_id\": \"C009\", \"name\": \"Irene Castillo\", \"email\": \"irene.castillo@email.com\", \"phone\": \"+1-713-555-0156\", \"tier\": \"premium\", \"member_since\": \"2021-02-10\", \"total_orders\": 28, \"total_spent\": 3670.9, \"address\": {\"street\": \"88 Rosewood Court\", \"city\": \"Houston\", \"state\": \"TX\", \"zip\": \"77001\"}, \"notes\": \"Premium member. Has reported 2 damaged item incidents \\u2014 both verified.\"}, \"order_data\": {\"order_id\": \"ORD-1009\", \"customer_id\": \"C009\", \"product_id\": \"P001\", \"quantity\": 1, \"amount\": 129.99, \"status\": \"delivered\", \"order_date\": \"2024-02-25\", \"delivery_date\": \"2024-02-28\", \"return_deadline\": \"2024-03-29\", \"refund_status\": \"refunded\", \"notes\": \"Refund already processed on 2024-03-02 for this order. Full amount returned.\"}, \"reasoning\": \"Parse failure: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kpjzgxwce6wt6dzkjsjgg4g9` service tier `on_demand` on tokens per minute (TPM): Limit 12000, Used 11571, Requested 435. Please try again in 30ms. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}\"}",
+    "reply_text": "Thank you for contacting ShopWave support. We've received your request and a team member will follow up with you shortly.",
+    "escalation_reason": null,
     "node_history": [
       "classifier",
       "context_fetcher",
@@ -832,71 +819,86 @@
       {
         "tool_name": "get_customer",
         "attempt": 1,
-        "timestamp": "2026-04-19T19:53:47.041936",
+        "timestamp": "2026-04-19T20:11:33.405757",
         "input_args": {
           "email": "irene.castillo@email.com"
         },
         "success": true,
         "error_type": null,
-        "duration_ms": 61.99999999989814,
+        "duration_ms": 93.99999999914144,
         "validated": true
       },
       {
         "tool_name": "get_order",
-        "attempt": 1,
-        "timestamp": "2026-04-19T19:53:47.041936",
+        "attempt": 2,
+        "timestamp": "2026-04-19T20:11:33.405757",
         "input_args": {
           "order_id": "ORD-1009"
         },
         "success": true,
         "error_type": null,
-        "duration_ms": 61.99999999989814,
+        "duration_ms": 202.9999999995198,
         "validated": true
       },
       {
         "tool_name": "get_product",
         "attempt": 1,
-        "timestamp": "2026-04-19T19:53:47.137039",
+        "timestamp": "2026-04-19T20:11:33.533623",
         "input_args": {
           "product_id": "P001"
         },
         "success": true,
         "error_type": null,
-        "duration_ms": 94.00000000005093,
+        "duration_ms": 125.0,
         "validated": true
       },
       {
-        "tool_name": "escalate",
+        "tool_name": "check_refund_eligibility",
         "attempt": 1,
-        "timestamp": "2026-04-19T19:53:47.200988",
+        "timestamp": "2026-04-19T20:11:36.078898",
         "input_args": {
-          "ticket_id": "TKT-009",
-          "summary": "{\"ticket_id\": \"TKT-009\", \"intent\": \"unknown\", \"urgency\": \"high\", \"confidence\": 0.0, \"customer_data\": {\"customer_id\": \"C009\", \"name\": \"Irene Castillo\", \"email\": \"irene.castillo@email.com\", \"phone\": \"+1-713-555-0156\", \"tier\": \"premium\", \"member_since\": \"2021-02-10\", \"total_orders\": 28, \"total_spent\": 3670.9, \"address\": {\"street\": \"88 Rosewood Court\", \"city\": \"Houston\", \"state\": \"TX\", \"zip\": \"77001\"}, \"notes\": \"Premium member. Has reported 2 damaged item incidents \\u2014 both verified.\"}, \"order_data\": {\"order_id\": \"ORD-1009\", \"customer_id\": \"C009\", \"product_id\": \"P001\", \"quantity\": 1, \"amount\": 129.99, \"status\": \"delivered\", \"order_date\": \"2024-02-25\", \"delivery_date\": \"2024-02-28\", \"return_deadline\": \"2024-03-29\", \"refund_status\": \"refunded\", \"notes\": \"Refund already processed on 2024-03-02 for this order. Full amount returned.\"}, \"reasoning\": \"Parse failure: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kpjzgxwce6wt6dzkjsjgg4g9` service tier `on_demand` on tokens per minute (TPM): Limit 12000, Used 11571, Requested 435. Please try again in 30ms. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}\"}",
-          "priority": "urgent"
+          "order_id": "ORD-1009"
         },
         "success": true,
         "error_type": null,
-        "duration_ms": 63.00000000010186,
+        "duration_ms": 140.99999999962165,
         "validated": true
       },
       {
         "tool_name": "send_reply",
         "attempt": 1,
-        "timestamp": "2026-04-19T19:53:47.263321",
+        "timestamp": "2026-04-19T20:11:49.076573",
         "input_args": {
           "ticket_id": "TKT-009",
-          "message": "Your request has been escalated to our specialist team. You'll hear back within 2-4 hours."
+          "message": "Thank you for contacting ShopWave support. We've received your request and a team member will follow up with you shortly."
         },
         "success": true,
         "error_type": null,
-        "duration_ms": 61.99999999989814,
+        "duration_ms": 125.0,
         "validated": true
       }
     ],
-    "errors": [],
-    "total_duration_ms": 4459.035,
-    "started_at": "2026-04-19T19:53:42.805903",
-    "completed_at": "2026-04-19T19:53:47.264938"
+    "errors": [
+      {
+        "node": "resolver",
+        "tool_name": null,
+        "error_type": "llm_error",
+        "message": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kpjzgxwce6wt6dzkjsjgg4g9` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99734, Requested 1401. Please try again in 16m20.64s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}",
+        "timestamp": "2026-04-19T20:11:48.946448",
+        "recoverable": false
+      },
+      {
+        "node": "resolver",
+        "tool_name": null,
+        "error_type": "max_iterations_exceeded",
+        "message": "LLM did not produce a final reply within 5 iterations \u2014 fallback sent",
+        "timestamp": "2026-04-19T20:11:49.076573",
+        "recoverable": false
+      }
+    ],
+    "total_duration_ms": 17090.104,
+    "started_at": "2026-04-19T20:11:31.988046",
+    "completed_at": "2026-04-19T20:11:49.078150"
   },
   {
     "ticket_id": "TKT-010",
@@ -907,7 +909,7 @@
     "urgency": "medium",
     "resolvability": "auto",
     "confidence": 0.9,
-    "classification_reasoning": "The customer is inquiring about the location of their order, which is a clear and common request that can be resolved with automation and sufficient order information.",
+    "classification_reasoning": "The customer is inquiring about the location of their order, which has not been received after 3 days, providing the order ID for reference.",
     "routing_decision": "auto_resolve",
     "resolution_status": "escalated",
     "reply_text": "Thank you for contacting ShopWave support. We've received your request and a team member will follow up with you shortly.",
@@ -922,50 +924,50 @@
       {
         "tool_name": "get_customer",
         "attempt": 1,
-        "timestamp": "2026-04-19T19:53:47.900284",
+        "timestamp": "2026-04-19T20:11:38.262333",
         "input_args": {
           "email": "james.wu@email.com"
         },
         "success": true,
         "error_type": null,
-        "duration_ms": 94.00000000005093,
+        "duration_ms": 61.99999999989814,
         "validated": true
       },
       {
         "tool_name": "get_order",
         "attempt": 1,
-        "timestamp": "2026-04-19T19:53:47.900284",
+        "timestamp": "2026-04-19T20:11:38.262333",
         "input_args": {
           "order_id": "ORD-1010"
         },
         "success": true,
         "error_type": null,
-        "duration_ms": 172.0000000004802,
+        "duration_ms": 61.99999999989814,
         "validated": true
       },
       {
         "tool_name": "get_product",
         "attempt": 1,
-        "timestamp": "2026-04-19T19:53:48.009018",
+        "timestamp": "2026-04-19T20:11:38.403033",
         "input_args": {
           "product_id": "P003"
         },
         "success": true,
         "error_type": null,
-        "duration_ms": 108.99999999946886,
+        "duration_ms": 140.99999999962165,
         "validated": true
       },
       {
         "tool_name": "send_reply",
         "attempt": 1,
-        "timestamp": "2026-04-19T19:53:54.434435",
+        "timestamp": "2026-04-19T20:11:44.661453",
         "input_args": {
           "ticket_id": "TKT-010",
           "message": "Thank you for contacting ShopWave support. We've received your request and a team member will follow up with you shortly."
         },
         "success": true,
         "error_type": null,
-        "duration_ms": 125.0,
+        "duration_ms": 93.0000000007567,
         "validated": true
       }
     ],
@@ -974,8 +976,8 @@
         "node": "resolver",
         "tool_name": null,
         "error_type": "llm_error",
-        "message": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kpjzgxwce6wt6dzkjsjgg4g9` service tier `on_demand` on tokens per minute (TPM): Limit 12000, Used 11804, Requested 1018. Please try again in 4.11s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}",
-        "timestamp": "2026-04-19T19:53:54.312954",
+        "message": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kpjzgxwce6wt6dzkjsjgg4g9` service tier `on_demand` on tokens per minute (TPM): Limit 12000, Used 11362, Requested 1068. Please try again in 2.15s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}",
+        "timestamp": "2026-04-19T20:11:44.577417",
         "recoverable": false
       },
       {
@@ -983,13 +985,13 @@
         "tool_name": null,
         "error_type": "max_iterations_exceeded",
         "message": "LLM did not produce a final reply within 5 iterations \u2014 fallback sent",
-        "timestamp": "2026-04-19T19:53:54.434435",
+        "timestamp": "2026-04-19T20:11:44.661453",
         "recoverable": false
       }
     ],
-    "total_duration_ms": 7171.912,
-    "started_at": "2026-04-19T19:53:47.267275",
-    "completed_at": "2026-04-19T19:53:54.439187"
+    "total_duration_ms": 8143.834,
+    "started_at": "2026-04-19T20:11:36.520142",
+    "completed_at": "2026-04-19T20:11:44.663976"
   },
   {
     "ticket_id": "TKT-011",
@@ -1000,11 +1002,11 @@
     "urgency": "medium",
     "resolvability": "auto",
     "confidence": 0.9,
-    "classification_reasoning": "The customer received a different product colour than ordered, which is a clear-cut issue that can be resolved through a standard exchange or return process.",
+    "classification_reasoning": "The customer is complaining about receiving the wrong color of a product, which is a clear and specific issue that can be resolved through a straightforward replacement or return process.",
     "routing_decision": "escalate",
     "resolution_status": "escalated",
     "reply_text": "Your request has been escalated to our specialist team. You'll hear back within 2-4 hours.",
-    "escalation_reason": "{\"ticket_id\": \"TKT-011\", \"intent\": \"complaint\", \"urgency\": \"medium\", \"confidence\": 0.9, \"customer_data\": {\"customer_id\": \"C001\", \"name\": \"Alice Turner\", \"email\": \"alice.turner@email.com\", \"phone\": \"+1-415-555-0101\", \"tier\": \"vip\", \"member_since\": \"2019-03-12\", \"total_orders\": 47, \"total_spent\": 6840.5, \"address\": {\"street\": \"12 Maple Avenue\", \"city\": \"San Francisco\", \"state\": \"CA\", \"zip\": \"94102\"}, \"notes\": \"Long-standing VIP. Has had 2 refunds in the past year, both approved.\"}, \"order_data\": null, \"reasoning\": \"The customer received a different product colour than ordered, which is a clear-cut issue that can be resolved through a standard exchange or return process.\"}",
+    "escalation_reason": "{\"ticket_id\": \"TKT-011\", \"intent\": \"complaint\", \"urgency\": \"medium\", \"confidence\": 0.9, \"customer_data\": {\"customer_id\": \"C001\", \"name\": \"Alice Turner\", \"email\": \"alice.turner@email.com\", \"phone\": \"+1-415-555-0101\", \"tier\": \"vip\", \"member_since\": \"2019-03-12\", \"total_orders\": 47, \"total_spent\": 6840.5, \"address\": {\"street\": \"12 Maple Avenue\", \"city\": \"San Francisco\", \"state\": \"CA\", \"zip\": \"94102\"}, \"notes\": \"Long-standing VIP. Has had 2 refunds in the past year, both approved.\"}, \"order_data\": {\"order_id\": \"ORD-1011\", \"customer_id\": \"C001\", \"product_id\": \"P006\", \"quantity\": 1, \"amount\": 249.99, \"status\": \"delivered\", \"order_date\": \"2024-03-08\", \"delivery_date\": \"2024-03-11\", \"return_deadline\": \"2024-03-26\", \"refund_status\": null, \"notes\": \"Customer reported receiving wrong colour variant. Correct order was Blue, received Black.\"}, \"reasoning\": \"The customer is complaining about receiving the wrong color of a product, which is a clear and specific issue that can be resolved through a straightforward replacement or return process.\"}",
     "node_history": [
       "classifier",
       "context_fetcher",
@@ -1015,79 +1017,82 @@
       {
         "tool_name": "get_customer",
         "attempt": 1,
-        "timestamp": "2026-04-19T19:53:53.308093",
+        "timestamp": "2026-04-19T20:11:40.495916",
         "input_args": {
           "email": "alice.turner@email.com"
         },
         "success": true,
         "error_type": null,
-        "duration_ms": 47.00000000048021,
+        "duration_ms": 94.00000000096043,
         "validated": true
       },
       {
         "tool_name": "get_order",
         "attempt": 1,
-        "timestamp": "2026-04-19T19:53:53.308093",
+        "timestamp": "2026-04-19T20:11:40.495916",
         "input_args": {
           "order_id": "ORD-1011"
         },
-        "success": false,
-        "error_type": "validation",
-        "duration_ms": 78.00000000042928,
-        "validated": false
+        "success": true,
+        "error_type": null,
+        "duration_ms": 109.00000000037835,
+        "validated": true
+      },
+      {
+        "tool_name": "get_product",
+        "attempt": 2,
+        "timestamp": "2026-04-19T20:11:41.248289",
+        "input_args": {
+          "product_id": "P006"
+        },
+        "success": true,
+        "error_type": null,
+        "duration_ms": 61.99999999989814,
+        "validated": true
       },
       {
         "tool_name": "escalate",
         "attempt": 1,
-        "timestamp": "2026-04-19T19:53:53.416909",
+        "timestamp": "2026-04-19T20:11:41.339462",
         "input_args": {
           "ticket_id": "TKT-011",
-          "summary": "{\"ticket_id\": \"TKT-011\", \"intent\": \"complaint\", \"urgency\": \"medium\", \"confidence\": 0.9, \"customer_data\": {\"customer_id\": \"C001\", \"name\": \"Alice Turner\", \"email\": \"alice.turner@email.com\", \"phone\": \"+1-415-555-0101\", \"tier\": \"vip\", \"member_since\": \"2019-03-12\", \"total_orders\": 47, \"total_spent\": 6840.5, \"address\": {\"street\": \"12 Maple Avenue\", \"city\": \"San Francisco\", \"state\": \"CA\", \"zip\": \"94102\"}, \"notes\": \"Long-standing VIP. Has had 2 refunds in the past year, both approved.\"}, \"order_data\": null, \"reasoning\": \"The customer received a different product colour than ordered, which is a clear-cut issue that can be resolved through a standard exchange or return process.\"}",
+          "summary": "{\"ticket_id\": \"TKT-011\", \"intent\": \"complaint\", \"urgency\": \"medium\", \"confidence\": 0.9, \"customer_data\": {\"customer_id\": \"C001\", \"name\": \"Alice Turner\", \"email\": \"alice.turner@email.com\", \"phone\": \"+1-415-555-0101\", \"tier\": \"vip\", \"member_since\": \"2019-03-12\", \"total_orders\": 47, \"total_spent\": 6840.5, \"address\": {\"street\": \"12 Maple Avenue\", \"city\": \"San Francisco\", \"state\": \"CA\", \"zip\": \"94102\"}, \"notes\": \"Long-standing VIP. Has had 2 refunds in the past year, both approved.\"}, \"order_data\": {\"order_id\": \"ORD-1011\", \"customer_id\": \"C001\", \"product_id\": \"P006\", \"quantity\": 1, \"amount\": 249.99, \"status\": \"delivered\", \"order_date\": \"2024-03-08\", \"delivery_date\": \"2024-03-11\", \"return_deadline\": \"2024-03-26\", \"refund_status\": null, \"notes\": \"Customer reported receiving wrong colour variant. Correct order was Blue, received Black.\"}, \"reasoning\": \"The customer is complaining about receiving the wrong color of a product, which is a clear and specific issue that can be resolved through a straightforward replacement or return process.\"}",
           "priority": "medium"
         },
         "success": true,
         "error_type": null,
-        "duration_ms": 108.99999999946886,
+        "duration_ms": 77.99999999951979,
         "validated": true
       },
       {
         "tool_name": "send_reply",
-        "attempt": 2,
-        "timestamp": "2026-04-19T19:53:54.160889",
+        "attempt": 1,
+        "timestamp": "2026-04-19T20:11:41.525274",
         "input_args": {
           "ticket_id": "TKT-011",
           "message": "Your request has been escalated to our specialist team. You'll hear back within 2-4 hours."
         },
         "success": true,
         "error_type": null,
-        "duration_ms": 108.99999999946886,
+        "duration_ms": 188.00000000010186,
         "validated": true
       }
     ],
-    "errors": [
-      {
-        "node": "context_fetcher",
-        "tool_name": "get_order",
-        "error_type": "validation",
-        "message": "6 validation errors for OrderData\ncustomer_id\n  Field required [type=missing, input_value={'order_id': 'ORD-1011', 'status': None}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.11/v/missing\nproduct_id\n  Field required [type=missing, input_value={'order_id': 'ORD-1011', 'status': None}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.11/v/missing\nquantity\n  Field required [type=missing, input_value={'order_id': 'ORD-1011', 'stat",
-        "timestamp": "2026-04-19T19:53:53.308093",
-        "recoverable": true
-      }
-    ],
-    "total_duration_ms": 1286.886,
-    "started_at": "2026-04-19T19:53:52.876367",
-    "completed_at": "2026-04-19T19:53:54.163253"
+    "errors": [],
+    "total_duration_ms": 4697.614,
+    "started_at": "2026-04-19T20:11:36.829885",
+    "completed_at": "2026-04-19T20:11:41.527499"
   },
   {
     "ticket_id": "TKT-012",
-    "customer_id": "",
+    "customer_id": "C003",
     "customer_email": "carol.nguyen@email.com",
     "order_id": "ORD-1012",
     "intent": "refund_request",
     "urgency": "medium",
     "resolvability": "auto",
     "confidence": 0.9,
-    "classification_reasoning": "The customer explicitly requests to cancel their order before it ships, which implies they want to avoid receiving the product and likely seek a refund.",
+    "classification_reasoning": "The customer is requesting to cancel their order before it ships, which implies they want to stop the transaction and potentially get a refund.",
     "routing_decision": "auto_resolve",
     "resolution_status": "escalated",
     "reply_text": "Thank you for contacting ShopWave support. We've received your request and a team member will follow up with you shortly.",
@@ -1102,68 +1107,60 @@
       {
         "tool_name": "get_customer",
         "attempt": 1,
-        "timestamp": "2026-04-19T19:53:53.977070",
+        "timestamp": "2026-04-19T20:11:42.991224",
         "input_args": {
           "email": "carol.nguyen@email.com"
         },
-        "success": false,
-        "error_type": "validation",
-        "duration_ms": 63.00000000010186,
-        "validated": false
+        "success": true,
+        "error_type": null,
+        "duration_ms": 77.99999999951979,
+        "validated": true
       },
       {
         "tool_name": "get_order",
         "attempt": 1,
-        "timestamp": "2026-04-19T19:53:53.977070",
+        "timestamp": "2026-04-19T20:11:42.991224",
         "input_args": {
           "order_id": "ORD-1012"
         },
         "success": true,
         "error_type": null,
-        "duration_ms": 63.00000000010186,
+        "duration_ms": 77.99999999951979,
         "validated": true
       },
       {
         "tool_name": "get_product",
         "attempt": 1,
-        "timestamp": "2026-04-19T19:53:54.102376",
+        "timestamp": "2026-04-19T20:11:43.101329",
         "input_args": {
           "product_id": "P002"
         },
         "success": true,
         "error_type": null,
-        "duration_ms": 125.0,
+        "duration_ms": 110.00000000058208,
         "validated": true
       },
       {
         "tool_name": "send_reply",
         "attempt": 1,
-        "timestamp": "2026-04-19T19:54:03.432416",
+        "timestamp": "2026-04-19T20:11:48.389333",
         "input_args": {
           "ticket_id": "TKT-012",
           "message": "Thank you for contacting ShopWave support. We've received your request and a team member will follow up with you shortly."
         },
         "success": true,
         "error_type": null,
-        "duration_ms": 155.99999999994907,
+        "duration_ms": 140.99999999962165,
         "validated": true
       }
     ],
     "errors": [
       {
-        "node": "context_fetcher",
-        "tool_name": "get_customer",
-        "error_type": "validation",
-        "message": "8 validation errors for CustomerData\nname\n  Input should be a valid string [type=string_type, input_value=None, input_type=NoneType]\n    For further information visit https://errors.pydantic.dev/2.11/v/string_type\nemail\n  Field required [type=missing, input_value={'customer_id': 'INVALID', 'name': None}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.11/v/missing\nphone\n  Field required [type=missing, input_value={'customer_id': 'INVALID', 'name': None}, input_ty",
-        "timestamp": "2026-04-19T19:53:53.977070",
-        "recoverable": true
-      },
-      {
         "node": "resolver",
         "tool_name": null,
         "error_type": "llm_error",
-        "message": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kpjzgxwce6wt6dzkjsjgg4g9` service tier `on_demand` on tokens per minute (TPM): Limit 12000, Used 11708, Requested 1117. Please try again in 4.125s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}",
-        "timestamp": "2026-04-19T19:54:03.281028",
+        "message": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kpjzgxwce6wt6dzkjsjgg4g9` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99339, Requested 1292. Please try again in 9m5.183999999s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}",
+        "timestamp": "2026-04-19T20:11:48.240569",
         "recoverable": false
       },
       {
@@ -1171,13 +1168,13 @@
         "tool_name": null,
         "error_type": "max_iterations_exceeded",
         "message": "LLM did not produce a final reply within 5 iterations \u2014 fallback sent",
-        "timestamp": "2026-04-19T19:54:03.432416",
+        "timestamp": "2026-04-19T20:11:48.389333",
         "recoverable": false
       }
     ],
-    "total_duration_ms": 9890.623,
-    "started_at": "2026-04-19T19:53:53.543385",
-    "completed_at": "2026-04-19T19:54:03.434008"
+    "total_duration_ms": 6864.982999999999,
+    "started_at": "2026-04-19T20:11:41.528546",
+    "completed_at": "2026-04-19T20:11:48.393529"
   },
   {
     "ticket_id": "TKT-013",
@@ -1188,7 +1185,7 @@
     "urgency": "medium",
     "resolvability": "auto",
     "confidence": 0.9,
-    "classification_reasoning": "The customer explicitly states they want to return a product due to poor sound quality, providing a clear order ID.",
+    "classification_reasoning": "The customer explicitly states they want to return a product due to poor sound quality, providing the order ID for reference.",
     "routing_decision": "auto_resolve",
     "resolution_status": "escalated",
     "reply_text": "Thank you for contacting ShopWave support. We've received your request and a team member will follow up with you shortly.",
@@ -1203,50 +1200,50 @@
       {
         "tool_name": "get_customer",
         "attempt": 1,
-        "timestamp": "2026-04-19T19:53:54.534020",
+        "timestamp": "2026-04-19T20:11:45.149586",
         "input_args": {
           "email": "grace.patel@email.com"
         },
         "success": true,
         "error_type": null,
-        "duration_ms": 94.00000000005093,
+        "duration_ms": 30.999999999039574,
         "validated": true
       },
       {
         "tool_name": "get_order",
         "attempt": 1,
-        "timestamp": "2026-04-19T19:53:54.534020",
+        "timestamp": "2026-04-19T20:11:45.149586",
         "input_args": {
           "order_id": "ORD-1013"
         },
         "success": true,
         "error_type": null,
-        "duration_ms": 61.99999999989814,
+        "duration_ms": 171.99999999866122,
         "validated": true
       },
       {
         "tool_name": "get_product",
         "attempt": 1,
-        "timestamp": "2026-04-19T19:53:54.645078",
+        "timestamp": "2026-04-19T20:11:45.243869",
         "input_args": {
           "product_id": "P008"
         },
         "success": true,
         "error_type": null,
-        "duration_ms": 125.0,
+        "duration_ms": 93.0000000007567,
         "validated": true
       },
       {
         "tool_name": "send_reply",
         "attempt": 1,
-        "timestamp": "2026-04-19T19:54:05.004696",
+        "timestamp": "2026-04-19T20:11:45.415391",
         "input_args": {
           "ticket_id": "TKT-013",
           "message": "Thank you for contacting ShopWave support. We've received your request and a team member will follow up with you shortly."
         },
         "success": true,
         "error_type": null,
-        "duration_ms": 186.99999999989814,
+        "duration_ms": 109.00000000037835,
         "validated": true
       }
     ],
@@ -1255,8 +1252,8 @@
         "node": "resolver",
         "tool_name": null,
         "error_type": "llm_error",
-        "message": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kpjzgxwce6wt6dzkjsjgg4g9` service tier `on_demand` on tokens per minute (TPM): Limit 12000, Used 11807, Requested 1270. Please try again in 5.385s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}",
-        "timestamp": "2026-04-19T19:54:04.820427",
+        "message": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kpjzgxwce6wt6dzkjsjgg4g9` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 98918, Requested 1273. Please try again in 2m45.024s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}",
+        "timestamp": "2026-04-19T20:11:45.305148",
         "recoverable": false
       },
       {
@@ -1264,114 +1261,24 @@
         "tool_name": null,
         "error_type": "max_iterations_exceeded",
         "message": "LLM did not produce a final reply within 5 iterations \u2014 fallback sent",
-        "timestamp": "2026-04-19T19:54:05.004696",
+        "timestamp": "2026-04-19T20:11:45.415391",
         "recoverable": false
       }
     ],
-    "total_duration_ms": 11134.885,
-    "started_at": "2026-04-19T19:53:53.871494",
-    "completed_at": "2026-04-19T19:54:05.006379"
+    "total_duration_ms": 751.444,
+    "started_at": "2026-04-19T20:11:44.665541",
+    "completed_at": "2026-04-19T20:11:45.416985"
   },
   {
     "ticket_id": "TKT-014",
     "customer_id": "C008",
     "customer_email": "henry.marsh@email.com",
     "order_id": "ORD-1014",
-    "intent": "unknown",
-    "urgency": "high",
-    "resolvability": "human",
-    "confidence": 0.0,
-    "classification_reasoning": "Parse failure: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kpjzgxwce6wt6dzkjsjgg4g9` service tier `on_demand` on tokens per minute (TPM): Limit 12000, Used 11833, Requested 428. Please try again in 1.305s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}",
-    "routing_decision": "escalate",
-    "resolution_status": "escalated",
-    "reply_text": "Your request has been escalated to our specialist team. You'll hear back within 2-4 hours.",
-    "escalation_reason": "{\"ticket_id\": \"TKT-014\", \"intent\": \"unknown\", \"urgency\": \"high\", \"confidence\": 0.0, \"customer_data\": {\"customer_id\": \"C008\", \"name\": \"Henry Marsh\", \"email\": \"henry.marsh@email.com\", \"phone\": \"+1-303-555-0188\", \"tier\": \"standard\", \"member_since\": \"2022-05-19\", \"total_orders\": 14, \"total_spent\": 1120.6, \"address\": {\"street\": \"210 Cedar Drive\", \"city\": \"Denver\", \"state\": \"CO\", \"zip\": \"80201\"}, \"notes\": \"Regular customer. No flags.\"}, \"order_data\": {\"order_id\": \"ORD-1014\", \"customer_id\": \"C008\", \"product_id\": \"P006\", \"quantity\": 1, \"amount\": 249.99, \"status\": \"delivered\", \"order_date\": \"2024-03-01\", \"delivery_date\": \"2024-03-04\", \"return_deadline\": \"2024-03-19\", \"refund_status\": null, \"notes\": \"Within return window. No issues logged.\"}, \"reasoning\": \"Parse failure: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kpjzgxwce6wt6dzkjsjgg4g9` service tier `on_demand` on tokens per minute (TPM): Limit 12000, Used 11833, Requested 428. Please try again in 1.305s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}\"}",
-    "node_history": [
-      "classifier",
-      "context_fetcher",
-      "router",
-      "resolver"
-    ],
-    "tool_calls": [
-      {
-        "tool_name": "get_customer",
-        "attempt": 1,
-        "timestamp": "2026-04-19T19:53:58.438432",
-        "input_args": {
-          "email": "henry.marsh@email.com"
-        },
-        "success": true,
-        "error_type": null,
-        "duration_ms": 94.00000000005093,
-        "validated": true
-      },
-      {
-        "tool_name": "get_order",
-        "attempt": 1,
-        "timestamp": "2026-04-19T19:53:58.438432",
-        "input_args": {
-          "order_id": "ORD-1014"
-        },
-        "success": true,
-        "error_type": null,
-        "duration_ms": 46.99999999957072,
-        "validated": true
-      },
-      {
-        "tool_name": "get_product",
-        "attempt": 1,
-        "timestamp": "2026-04-19T19:53:58.548174",
-        "input_args": {
-          "product_id": "P006"
-        },
-        "success": true,
-        "error_type": null,
-        "duration_ms": 108.99999999946886,
-        "validated": true
-      },
-      {
-        "tool_name": "escalate",
-        "attempt": 2,
-        "timestamp": "2026-04-19T19:53:59.220937",
-        "input_args": {
-          "ticket_id": "TKT-014",
-          "summary": "{\"ticket_id\": \"TKT-014\", \"intent\": \"unknown\", \"urgency\": \"high\", \"confidence\": 0.0, \"customer_data\": {\"customer_id\": \"C008\", \"name\": \"Henry Marsh\", \"email\": \"henry.marsh@email.com\", \"phone\": \"+1-303-555-0188\", \"tier\": \"standard\", \"member_since\": \"2022-05-19\", \"total_orders\": 14, \"total_spent\": 1120.6, \"address\": {\"street\": \"210 Cedar Drive\", \"city\": \"Denver\", \"state\": \"CO\", \"zip\": \"80201\"}, \"notes\": \"Regular customer. No flags.\"}, \"order_data\": {\"order_id\": \"ORD-1014\", \"customer_id\": \"C008\", \"product_id\": \"P006\", \"quantity\": 1, \"amount\": 249.99, \"status\": \"delivered\", \"order_date\": \"2024-03-01\", \"delivery_date\": \"2024-03-04\", \"return_deadline\": \"2024-03-19\", \"refund_status\": null, \"notes\": \"Within return window. No issues logged.\"}, \"reasoning\": \"Parse failure: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kpjzgxwce6wt6dzkjsjgg4g9` service tier `on_demand` on tokens per minute (TPM): Limit 12000, Used 11833, Requested 428. Please try again in 1.305s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}\"}",
-          "priority": "urgent"
-        },
-        "success": true,
-        "error_type": null,
-        "duration_ms": 30.99999999994907,
-        "validated": true
-      },
-      {
-        "tool_name": "send_reply",
-        "attempt": 1,
-        "timestamp": "2026-04-19T19:53:59.282667",
-        "input_args": {
-          "ticket_id": "TKT-014",
-          "message": "Your request has been escalated to our specialist team. You'll hear back within 2-4 hours."
-        },
-        "success": true,
-        "error_type": null,
-        "duration_ms": 63.00000000010186,
-        "validated": true
-      }
-    ],
-    "errors": [],
-    "total_duration_ms": 5123.072999999999,
-    "started_at": "2026-04-19T19:53:54.164862",
-    "completed_at": "2026-04-19T19:53:59.287935"
-  },
-  {
-    "ticket_id": "TKT-015",
-    "customer_id": "C005",
-    "customer_email": "emma.collins@email.com",
-    "order_id": "ORD-1015",
     "intent": "refund_request",
     "urgency": "medium",
     "resolvability": "auto",
-    "confidence": 0.9,
-    "classification_reasoning": "The customer is requesting a replacement due to a damaged product, which is a clear-cut request with sufficient information to act.",
+    "confidence": 0.8,
+    "classification_reasoning": "The customer is inquiring about the return process for their smart watch, indicating a potential refund request.",
     "routing_decision": "auto_resolve",
     "resolution_status": "escalated",
     "reply_text": "Thank you for contacting ShopWave support. We've received your request and a team member will follow up with you shortly.",
@@ -1386,38 +1293,38 @@
       {
         "tool_name": "get_customer",
         "attempt": 1,
-        "timestamp": "2026-04-19T19:53:56.051701",
+        "timestamp": "2026-04-19T20:11:47.613256",
         "input_args": {
-          "email": "emma.collins@email.com"
+          "email": "henry.marsh@email.com"
         },
         "success": true,
         "error_type": null,
-        "duration_ms": 109.00000000037835,
+        "duration_ms": 46.999999998661224,
         "validated": true
       },
       {
         "tool_name": "get_order",
-        "attempt": 1,
-        "timestamp": "2026-04-19T19:53:56.051701",
+        "attempt": 2,
+        "timestamp": "2026-04-19T20:11:47.613256",
         "input_args": {
-          "order_id": "ORD-1015"
+          "order_id": "ORD-1014"
         },
         "success": false,
         "error_type": "validation",
-        "duration_ms": 203.00000000042928,
+        "duration_ms": 764.9999999994179,
         "validated": false
       },
       {
         "tool_name": "send_reply",
         "attempt": 1,
-        "timestamp": "2026-04-19T19:54:05.362364",
+        "timestamp": "2026-04-19T20:11:47.770110",
         "input_args": {
-          "ticket_id": "TKT-015",
+          "ticket_id": "TKT-014",
           "message": "Thank you for contacting ShopWave support. We've received your request and a team member will follow up with you shortly."
         },
         "success": true,
         "error_type": null,
-        "duration_ms": 140.99999999962165,
+        "duration_ms": 93.99999999914144,
         "validated": true
       }
     ],
@@ -1426,16 +1333,16 @@
         "node": "context_fetcher",
         "tool_name": "get_order",
         "error_type": "validation",
-        "message": "6 validation errors for OrderData\ncustomer_id\n  Field required [type=missing, input_value={'order_id': 'ORD-1015', 'status': None}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.11/v/missing\nproduct_id\n  Field required [type=missing, input_value={'order_id': 'ORD-1015', 'status': None}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.11/v/missing\nquantity\n  Field required [type=missing, input_value={'order_id': 'ORD-1015', 'stat",
-        "timestamp": "2026-04-19T19:53:56.051701",
+        "message": "6 validation errors for OrderData\ncustomer_id\n  Field required [type=missing, input_value={'order_id': 'ORD-1014', 'status': None}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.11/v/missing\nproduct_id\n  Field required [type=missing, input_value={'order_id': 'ORD-1014', 'status': None}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.11/v/missing\nquantity\n  Field required [type=missing, input_value={'order_id': 'ORD-1014', 'stat",
+        "timestamp": "2026-04-19T20:11:47.613256",
         "recoverable": true
       },
       {
         "node": "resolver",
         "tool_name": null,
         "error_type": "llm_error",
-        "message": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kpjzgxwce6wt6dzkjsjgg4g9` service tier `on_demand` on tokens per minute (TPM): Limit 12000, Used 11729, Requested 1079. Please try again in 4.04s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}",
-        "timestamp": "2026-04-19T19:54:05.217210",
+        "message": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kpjzgxwce6wt6dzkjsjgg4g9` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99340, Requested 1073. Please try again in 5m56.832s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}",
+        "timestamp": "2026-04-19T20:11:47.676188",
         "recoverable": false
       },
       {
@@ -1443,13 +1350,103 @@
         "tool_name": null,
         "error_type": "max_iterations_exceeded",
         "message": "LLM did not produce a final reply within 5 iterations \u2014 fallback sent",
-        "timestamp": "2026-04-19T19:54:05.362364",
+        "timestamp": "2026-04-19T20:11:47.770110",
         "recoverable": false
       }
     ],
-    "total_duration_ms": 10922.901,
-    "started_at": "2026-04-19T19:53:54.441494",
-    "completed_at": "2026-04-19T19:54:05.364395"
+    "total_duration_ms": 2353.301,
+    "started_at": "2026-04-19T20:11:45.418407",
+    "completed_at": "2026-04-19T20:11:47.771708"
+  },
+  {
+    "ticket_id": "TKT-015",
+    "customer_id": "C005",
+    "customer_email": "emma.collins@email.com",
+    "order_id": "ORD-1015",
+    "intent": "unknown",
+    "urgency": "high",
+    "resolvability": "human",
+    "confidence": 0.0,
+    "classification_reasoning": "Parse failure: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kpjzgxwce6wt6dzkjsjgg4g9` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99734, Requested 439. Please try again in 2m29.472s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}",
+    "routing_decision": "escalate",
+    "resolution_status": "escalated",
+    "reply_text": "Your request has been escalated to our specialist team. You'll hear back within 2-4 hours.",
+    "escalation_reason": "{\"ticket_id\": \"TKT-015\", \"intent\": \"unknown\", \"urgency\": \"high\", \"confidence\": 0.0, \"customer_data\": {\"customer_id\": \"C005\", \"name\": \"Emma Collins\", \"email\": \"emma.collins@email.com\", \"phone\": \"+1-512-555-0165\", \"tier\": \"vip\", \"member_since\": \"2018-11-02\", \"total_orders\": 91, \"total_spent\": 14220.0, \"address\": {\"street\": \"7 Sunset Blvd\", \"city\": \"Austin\", \"state\": \"TX\", \"zip\": \"73301\"}, \"notes\": \"Highest lifetime value customer. Has a standing exception for extended return windows pre-approved by management.\"}, \"order_data\": {\"order_id\": \"ORD-1015\", \"customer_id\": \"C005\", \"product_id\": \"P003\", \"quantity\": 1, \"amount\": 199.99, \"status\": \"delivered\", \"order_date\": \"2024-02-18\", \"delivery_date\": \"2024-02-22\", \"return_deadline\": \"2024-03-23\", \"refund_status\": null, \"notes\": \"Item arrived with cracked water tank. Customer sent photo evidence.\"}, \"reasoning\": \"Parse failure: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kpjzgxwce6wt6dzkjsjgg4g9` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99734, Requested 439. Please try again in 2m29.472s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}\"}",
+    "node_history": [
+      "classifier",
+      "context_fetcher",
+      "router",
+      "resolver"
+    ],
+    "tool_calls": [
+      {
+        "tool_name": "get_customer",
+        "attempt": 1,
+        "timestamp": "2026-04-19T20:11:49.077134",
+        "input_args": {
+          "email": "emma.collins@email.com"
+        },
+        "success": true,
+        "error_type": null,
+        "duration_ms": 78.99999999972351,
+        "validated": true
+      },
+      {
+        "tool_name": "get_order",
+        "attempt": 1,
+        "timestamp": "2026-04-19T20:11:49.077134",
+        "input_args": {
+          "order_id": "ORD-1015"
+        },
+        "success": true,
+        "error_type": null,
+        "duration_ms": 203.9999999997235,
+        "validated": true
+      },
+      {
+        "tool_name": "get_product",
+        "attempt": 1,
+        "timestamp": "2026-04-19T20:11:49.138724",
+        "input_args": {
+          "product_id": "P003"
+        },
+        "success": true,
+        "error_type": null,
+        "duration_ms": 61.99999999989814,
+        "validated": true
+      },
+      {
+        "tool_name": "escalate",
+        "attempt": 2,
+        "timestamp": "2026-04-19T20:11:49.780200",
+        "input_args": {
+          "ticket_id": "TKT-015",
+          "summary": "{\"ticket_id\": \"TKT-015\", \"intent\": \"unknown\", \"urgency\": \"high\", \"confidence\": 0.0, \"customer_data\": {\"customer_id\": \"C005\", \"name\": \"Emma Collins\", \"email\": \"emma.collins@email.com\", \"phone\": \"+1-512-555-0165\", \"tier\": \"vip\", \"member_since\": \"2018-11-02\", \"total_orders\": 91, \"total_spent\": 14220.0, \"address\": {\"street\": \"7 Sunset Blvd\", \"city\": \"Austin\", \"state\": \"TX\", \"zip\": \"73301\"}, \"notes\": \"Highest lifetime value customer. Has a standing exception for extended return windows pre-approved by management.\"}, \"order_data\": {\"order_id\": \"ORD-1015\", \"customer_id\": \"C005\", \"product_id\": \"P003\", \"quantity\": 1, \"amount\": 199.99, \"status\": \"delivered\", \"order_date\": \"2024-02-18\", \"delivery_date\": \"2024-02-22\", \"return_deadline\": \"2024-03-23\", \"refund_status\": null, \"notes\": \"Item arrived with cracked water tank. Customer sent photo evidence.\"}, \"reasoning\": \"Parse failure: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kpjzgxwce6wt6dzkjsjgg4g9` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99734, Requested 439. Please try again in 2m29.472s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}\"}",
+          "priority": "urgent"
+        },
+        "success": true,
+        "error_type": null,
+        "duration_ms": 46.999999998661224,
+        "validated": true
+      },
+      {
+        "tool_name": "send_reply",
+        "attempt": 1,
+        "timestamp": "2026-04-19T20:11:49.891036",
+        "input_args": {
+          "ticket_id": "TKT-015",
+          "message": "Your request has been escalated to our specialist team. You'll hear back within 2-4 hours."
+        },
+        "success": true,
+        "error_type": null,
+        "duration_ms": 109.00000000037835,
+        "validated": true
+      }
+    ],
+    "errors": [],
+    "total_duration_ms": 2119.363,
+    "started_at": "2026-04-19T20:11:47.773927",
+    "completed_at": "2026-04-19T20:11:49.893290"
   },
   {
     "ticket_id": "TKT-016",
@@ -1460,11 +1457,11 @@
     "urgency": "medium",
     "resolvability": "human",
     "confidence": 0.8,
-    "classification_reasoning": "The customer explicitly states they want a refund, but lacks order ID, making the situation somewhat ambiguous and requiring human assistance.",
+    "classification_reasoning": "The customer explicitly states they want a refund, but lacks order ID, requiring human assistance to resolve.",
     "routing_decision": "escalate",
     "resolution_status": "escalated",
     "reply_text": "Your request has been escalated to our specialist team. You'll hear back within 2-4 hours.",
-    "escalation_reason": "{\"ticket_id\": \"TKT-016\", \"intent\": \"refund_request\", \"urgency\": \"medium\", \"confidence\": 0.8, \"customer_data\": null, \"order_data\": null, \"reasoning\": \"The customer explicitly states they want a refund, but lacks order ID, making the situation somewhat ambiguous and requiring human assistance.\"}",
+    "escalation_reason": "{\"ticket_id\": \"TKT-016\", \"intent\": \"refund_request\", \"urgency\": \"medium\", \"confidence\": 0.8, \"customer_data\": null, \"order_data\": null, \"reasoning\": \"The customer explicitly states they want a refund, but lacks order ID, requiring human assistance to resolve.\"}",
     "node_history": [
       "classifier",
       "context_fetcher",
@@ -1475,40 +1472,40 @@
       {
         "tool_name": "get_customer",
         "attempt": 1,
-        "timestamp": "2026-04-19T19:53:58.160874",
+        "timestamp": "2026-04-19T20:11:48.812038",
         "input_args": {
           "email": "unknown.user@email.com"
         },
         "success": false,
         "error_type": "error",
-        "duration_ms": 77.99999999951979,
+        "duration_ms": 94.00000000096043,
         "validated": false
       },
       {
         "tool_name": "escalate",
         "attempt": 1,
-        "timestamp": "2026-04-19T19:53:58.237930",
+        "timestamp": "2026-04-19T20:11:48.864244",
         "input_args": {
           "ticket_id": "TKT-016",
-          "summary": "{\"ticket_id\": \"TKT-016\", \"intent\": \"refund_request\", \"urgency\": \"medium\", \"confidence\": 0.8, \"customer_data\": null, \"order_data\": null, \"reasoning\": \"The customer explicitly states they want a refund, but lacks order ID, making the situation somewhat ambiguous and requiring human assistance.\"}",
+          "summary": "{\"ticket_id\": \"TKT-016\", \"intent\": \"refund_request\", \"urgency\": \"medium\", \"confidence\": 0.8, \"customer_data\": null, \"order_data\": null, \"reasoning\": \"The customer explicitly states they want a refund, but lacks order ID, requiring human assistance to resolve.\"}",
           "priority": "medium"
         },
         "success": true,
         "error_type": null,
-        "duration_ms": 78.00000000042928,
+        "duration_ms": 46.000000000276486,
         "validated": true
       },
       {
         "tool_name": "send_reply",
         "attempt": 1,
-        "timestamp": "2026-04-19T19:53:58.376181",
+        "timestamp": "2026-04-19T20:11:49.014411",
         "input_args": {
           "ticket_id": "TKT-016",
           "message": "Your request has been escalated to our specialist team. You'll hear back within 2-4 hours."
         },
         "success": true,
         "error_type": null,
-        "duration_ms": 125.0,
+        "duration_ms": 140.99999999962165,
         "validated": true
       }
     ],
@@ -1518,28 +1515,28 @@
         "tool_name": "get_customer",
         "error_type": "error",
         "message": "Customer with email unknown.user@email.com not found",
-        "timestamp": "2026-04-19T19:53:58.160874",
+        "timestamp": "2026-04-19T20:11:48.812038",
         "recoverable": true
       }
     ],
-    "total_duration_ms": 3935.797,
-    "started_at": "2026-04-19T19:53:54.442724",
-    "completed_at": "2026-04-19T19:53:58.378521"
+    "total_duration_ms": 620.053,
+    "started_at": "2026-04-19T20:11:48.396146",
+    "completed_at": "2026-04-19T20:11:49.016199"
   },
   {
     "ticket_id": "TKT-017",
     "customer_id": "C004",
     "customer_email": "david.park@email.com",
     "order_id": "ORD-9999",
-    "intent": "refund_request",
+    "intent": "unknown",
     "urgency": "high",
     "resolvability": "human",
-    "confidence": 0.8,
-    "classification_reasoning": "The customer explicitly requests a refund and mentions their lawyer will be in touch if not resolved, indicating a high-urgency and potentially complex situation.",
+    "confidence": 0.0,
+    "classification_reasoning": "Parse failure: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kpjzgxwce6wt6dzkjsjgg4g9` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99734, Requested 470. Please try again in 2m56.256s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}",
     "routing_decision": "escalate",
     "resolution_status": "escalated",
     "reply_text": "Your request has been escalated to our specialist team. You'll hear back within 2-4 hours.",
-    "escalation_reason": "{\"ticket_id\": \"TKT-017\", \"intent\": \"refund_request\", \"urgency\": \"high\", \"confidence\": 0.8, \"customer_data\": {\"customer_id\": \"C004\", \"name\": \"David Park\", \"email\": \"david.park@email.com\", \"phone\": \"+1-206-555-0177\", \"tier\": \"standard\", \"member_since\": \"2022-01-30\", \"total_orders\": 9, \"total_spent\": 780.2, \"address\": {\"street\": \"300 Pine Road\", \"city\": \"Seattle\", \"state\": \"WA\", \"zip\": \"98101\"}, \"notes\": \"Has raised 1 chargeback dispute in the past \\u2014 resolved in ShopWave's favour.\"}, \"order_data\": null, \"reasoning\": \"The customer explicitly requests a refund and mentions their lawyer will be in touch if not resolved, indicating a high-urgency and potentially complex situation.\"}",
+    "escalation_reason": "{\"ticket_id\": \"TKT-017\", \"intent\": \"unknown\", \"urgency\": \"high\", \"confidence\": 0.0, \"customer_data\": {\"customer_id\": \"C004\", \"name\": \"David Park\", \"email\": \"david.park@email.com\", \"phone\": \"+1-206-555-0177\", \"tier\": \"standard\", \"member_since\": \"2022-01-30\", \"total_orders\": 9, \"total_spent\": 780.2, \"address\": {\"street\": \"300 Pine Road\", \"city\": \"Seattle\", \"state\": \"WA\", \"zip\": \"98101\"}, \"notes\": \"Has raised 1 chargeback dispute in the past \\u2014 resolved in ShopWave's favour.\"}, \"order_data\": null, \"reasoning\": \"Parse failure: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kpjzgxwce6wt6dzkjsjgg4g9` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99734, Requested 470. Please try again in 2m56.256s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}\"}",
     "node_history": [
       "classifier",
       "context_fetcher",
@@ -1550,327 +1547,35 @@
       {
         "tool_name": "get_customer",
         "attempt": 1,
-        "timestamp": "2026-04-19T19:54:03.060354",
+        "timestamp": "2026-04-19T20:11:49.293387",
         "input_args": {
           "email": "david.park@email.com"
         },
         "success": true,
         "error_type": null,
-        "duration_ms": 92.9999999998472,
+        "duration_ms": 63.00000000010186,
         "validated": true
       },
       {
         "tool_name": "get_order",
         "attempt": 1,
-        "timestamp": "2026-04-19T19:54:03.060354",
+        "timestamp": "2026-04-19T20:11:49.293387",
         "input_args": {
           "order_id": "ORD-9999"
         },
         "success": false,
         "error_type": "error",
-        "duration_ms": 155.99999999994907,
+        "duration_ms": 203.00000000133878,
         "validated": false
       },
       {
         "tool_name": "escalate",
         "attempt": 1,
-        "timestamp": "2026-04-19T19:54:03.138388",
+        "timestamp": "2026-04-19T20:11:49.354956",
         "input_args": {
           "ticket_id": "TKT-017",
-          "summary": "{\"ticket_id\": \"TKT-017\", \"intent\": \"refund_request\", \"urgency\": \"high\", \"confidence\": 0.8, \"customer_data\": {\"customer_id\": \"C004\", \"name\": \"David Park\", \"email\": \"david.park@email.com\", \"phone\": \"+1-206-555-0177\", \"tier\": \"standard\", \"member_since\": \"2022-01-30\", \"total_orders\": 9, \"total_spent\": 780.2, \"address\": {\"street\": \"300 Pine Road\", \"city\": \"Seattle\", \"state\": \"WA\", \"zip\": \"98101\"}, \"notes\": \"Has raised 1 chargeback dispute in the past \\u2014 resolved in ShopWave's favour.\"}, \"order_data\": null, \"reasoning\": \"The customer explicitly requests a refund and mentions their lawyer will be in touch if not resolved, indicating a high-urgency and potentially complex situation.\"}",
+          "summary": "{\"ticket_id\": \"TKT-017\", \"intent\": \"unknown\", \"urgency\": \"high\", \"confidence\": 0.0, \"customer_data\": {\"customer_id\": \"C004\", \"name\": \"David Park\", \"email\": \"david.park@email.com\", \"phone\": \"+1-206-555-0177\", \"tier\": \"standard\", \"member_since\": \"2022-01-30\", \"total_orders\": 9, \"total_spent\": 780.2, \"address\": {\"street\": \"300 Pine Road\", \"city\": \"Seattle\", \"state\": \"WA\", \"zip\": \"98101\"}, \"notes\": \"Has raised 1 chargeback dispute in the past \\u2014 resolved in ShopWave's favour.\"}, \"order_data\": null, \"reasoning\": \"Parse failure: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kpjzgxwce6wt6dzkjsjgg4g9` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99734, Requested 470. Please try again in 2m56.256s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}\"}",
           "priority": "urgent"
-        },
-        "success": true,
-        "error_type": null,
-        "duration_ms": 61.99999999989814,
-        "validated": true
-      },
-      {
-        "tool_name": "send_reply",
-        "attempt": 1,
-        "timestamp": "2026-04-19T19:54:03.215012",
-        "input_args": {
-          "ticket_id": "TKT-017",
-          "message": "Your request has been escalated to our specialist team. You'll hear back within 2-4 hours."
-        },
-        "success": true,
-        "error_type": null,
-        "duration_ms": 78.00000000042928,
-        "validated": true
-      }
-    ],
-    "errors": [
-      {
-        "node": "context_fetcher",
-        "tool_name": "get_order",
-        "error_type": "error",
-        "message": "Order ORD-9999 not found",
-        "timestamp": "2026-04-19T19:54:03.060354",
-        "recoverable": true
-      }
-    ],
-    "total_duration_ms": 4836.144,
-    "started_at": "2026-04-19T19:53:58.381576",
-    "completed_at": "2026-04-19T19:54:03.217720"
-  },
-  {
-    "ticket_id": "TKT-018",
-    "customer_id": "C002",
-    "customer_email": "bob.mendes@email.com",
-    "order_id": "ORD-1002",
-    "intent": "refund_request",
-    "urgency": "high",
-    "resolvability": "auto",
-    "confidence": 0.9,
-    "classification_reasoning": "The customer is a premium member requesting an immediate refund with a valid order ID, quoting the premium policy for instant refunds.",
-    "routing_decision": "auto_resolve",
-    "resolution_status": "escalated",
-    "reply_text": "Thank you for contacting ShopWave support. We've received your request and a team member will follow up with you shortly.",
-    "escalation_reason": null,
-    "node_history": [
-      "classifier",
-      "context_fetcher",
-      "router",
-      "resolver"
-    ],
-    "tool_calls": [
-      {
-        "tool_name": "get_customer",
-        "attempt": 1,
-        "timestamp": "2026-04-19T19:54:00.904790",
-        "input_args": {
-          "email": "bob.mendes@email.com"
-        },
-        "success": true,
-        "error_type": null,
-        "duration_ms": 110.00000000058208,
-        "validated": true
-      },
-      {
-        "tool_name": "get_order",
-        "attempt": 1,
-        "timestamp": "2026-04-19T19:54:00.904790",
-        "input_args": {
-          "order_id": "ORD-1002"
-        },
-        "success": true,
-        "error_type": null,
-        "duration_ms": 110.00000000058208,
-        "validated": true
-      },
-      {
-        "tool_name": "get_product",
-        "attempt": 1,
-        "timestamp": "2026-04-19T19:54:01.044990",
-        "input_args": {
-          "product_id": "P006"
-        },
-        "success": true,
-        "error_type": null,
-        "duration_ms": 139.99999999941792,
-        "validated": true
-      },
-      {
-        "tool_name": "send_reply",
-        "attempt": 1,
-        "timestamp": "2026-04-19T19:54:11.410845",
-        "input_args": {
-          "ticket_id": "TKT-018",
-          "message": "Thank you for contacting ShopWave support. We've received your request and a team member will follow up with you shortly."
-        },
-        "success": true,
-        "error_type": null,
-        "duration_ms": 186.99999999989814,
-        "validated": true
-      }
-    ],
-    "errors": [
-      {
-        "node": "resolver",
-        "tool_name": null,
-        "error_type": "llm_error",
-        "message": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kpjzgxwce6wt6dzkjsjgg4g9` service tier `on_demand` on tokens per minute (TPM): Limit 12000, Used 10937, Requested 1272. Please try again in 1.044999999s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}",
-        "timestamp": "2026-04-19T19:54:11.230242",
-        "recoverable": false
-      },
-      {
-        "node": "resolver",
-        "tool_name": null,
-        "error_type": "max_iterations_exceeded",
-        "message": "LLM did not produce a final reply within 5 iterations \u2014 fallback sent",
-        "timestamp": "2026-04-19T19:54:11.410845",
-        "recoverable": false
-      }
-    ],
-    "total_duration_ms": 12121.337000000001,
-    "started_at": "2026-04-19T19:53:59.290084",
-    "completed_at": "2026-04-19T19:54:11.411421"
-  },
-  {
-    "ticket_id": "TKT-019",
-    "customer_id": "C009",
-    "customer_email": "irene.castillo@email.com",
-    "order_id": null,
-    "intent": "refund_request",
-    "urgency": "low",
-    "resolvability": "auto",
-    "confidence": 0.8,
-    "classification_reasoning": "The customer is inquiring about the return policy for electronics, which is a general question related to refund and return procedures.",
-    "routing_decision": "auto_resolve",
-    "resolution_status": "resolved",
-    "reply_text": "Hello Irene, thank you for reaching out about your return inquiry. Our refund policy states that refunds cannot be re-issued once processed, as per our policy. For electronics, we offer a 30-day return window, and items must be in their original condition to be eligible for a refund. Since a refund has already been processed for your order (ORD-1009) on 2024-03-02, we cannot issue another refund. However, if you're interested in an exchange, we'd be happy to help with that, subject to stock availability. Please let us know how we can further assist you.",
-    "escalation_reason": null,
-    "node_history": [
-      "classifier",
-      "context_fetcher",
-      "router",
-      "resolver"
-    ],
-    "tool_calls": [
-      {
-        "tool_name": "get_customer",
-        "attempt": 1,
-        "timestamp": "2026-04-19T19:54:04.771267",
-        "input_args": {
-          "email": "irene.castillo@email.com"
-        },
-        "success": true,
-        "error_type": null,
-        "duration_ms": 78.00000000042928,
-        "validated": true
-      },
-      {
-        "tool_name": "get_customer_orders",
-        "attempt": 1,
-        "timestamp": "2026-04-19T19:54:04.958143",
-        "input_args": {
-          "customer_id": "C009"
-        },
-        "success": true,
-        "error_type": null,
-        "duration_ms": 186.99999999989814,
-        "validated": true
-      },
-      {
-        "tool_name": "get_product",
-        "attempt": 1,
-        "timestamp": "2026-04-19T19:54:05.097403",
-        "input_args": {
-          "product_id": "P001"
-        },
-        "success": true,
-        "error_type": null,
-        "duration_ms": 140.99999999962165,
-        "validated": true
-      },
-      {
-        "tool_name": "check_refund_eligibility",
-        "attempt": 1,
-        "timestamp": "2026-04-19T19:54:13.735367",
-        "input_args": {
-          "order_id": "ORD-1009"
-        },
-        "success": true,
-        "error_type": null,
-        "duration_ms": 171.99999999957072,
-        "validated": true
-      },
-      {
-        "tool_name": "search_knowledge_base",
-        "attempt": 1,
-        "timestamp": "2026-04-19T19:54:20.003922",
-        "input_args": {
-          "query": "refund policy"
-        },
-        "success": true,
-        "error_type": null,
-        "duration_ms": 140.99999999962165,
-        "validated": true
-      },
-      {
-        "tool_name": "send_reply",
-        "attempt": 1,
-        "timestamp": "2026-04-19T19:54:29.784090",
-        "input_args": {
-          "ticket_id": "TKT-019",
-          "message": "Hello Irene, thank you for reaching out about your return inquiry. Our refund policy states that refunds cannot be re-issued once processed, as per our policy. For electronics, we offer a 30-day return window, and items must be in their original condition to be eligible for a refund. Since a refund has already been processed for your order (ORD-1009) on 2024-03-02, we cannot issue another refund. However, if you're interested in an exchange, we'd be happy to help with that, subject to stock availability. Please let us know how we can further assist you."
-        },
-        "success": true,
-        "error_type": null,
-        "duration_ms": 157.0000000001528,
-        "validated": true
-      }
-    ],
-    "errors": [],
-    "total_duration_ms": 26566.55,
-    "started_at": "2026-04-19T19:54:03.219843",
-    "completed_at": "2026-04-19T19:54:29.786393"
-  },
-  {
-    "ticket_id": "TKT-020",
-    "customer_id": "C010",
-    "customer_email": "james.wu@email.com",
-    "order_id": null,
-    "intent": "complaint",
-    "urgency": "medium",
-    "resolvability": "human",
-    "confidence": 0.7,
-    "classification_reasoning": "The customer reports a product defect, which is a common reason for complaints, but lacks specific details, requiring human intervention to resolve.",
-    "routing_decision": "escalate",
-    "resolution_status": "escalated",
-    "reply_text": "Your request has been escalated to our specialist team. You'll hear back within 2-4 hours.",
-    "escalation_reason": "{\"ticket_id\": \"TKT-020\", \"intent\": \"complaint\", \"urgency\": \"medium\", \"confidence\": 0.7, \"customer_data\": {\"customer_id\": \"C010\", \"name\": \"James Wu\", \"email\": \"james.wu@email.com\", \"phone\": \"+1-858-555-0199\", \"tier\": \"standard\", \"member_since\": \"2023-03-28\", \"total_orders\": 6, \"total_spent\": 430.15, \"address\": {\"street\": \"40 Harbor View\", \"city\": \"San Diego\", \"state\": \"CA\", \"zip\": \"92101\"}, \"notes\": \"No issues on record.\"}, \"order_data\": [{\"order_id\": \"ORD-1010\", \"customer_id\": \"C010\", \"product_id\": \"P003\", \"quantity\": 1, \"amount\": 199.99, \"status\": \"shipped\", \"order_date\": \"2024-03-12\", \"delivery_date\": null, \"return_deadline\": null, \"refund_status\": null, \"notes\": \"In transit. Expected delivery 2024-03-16. Tracking: TRK-88291.\"}], \"reasoning\": \"The customer reports a product defect, which is a common reason for complaints, but lacks specific details, requiring human intervention to resolve.\"}",
-    "node_history": [
-      "classifier",
-      "context_fetcher",
-      "router",
-      "resolver"
-    ],
-    "tool_calls": [
-      {
-        "tool_name": "get_customer",
-        "attempt": 1,
-        "timestamp": "2026-04-19T19:54:07.091600",
-        "input_args": {
-          "email": "james.wu@email.com"
-        },
-        "success": true,
-        "error_type": null,
-        "duration_ms": 94.00000000005093,
-        "validated": true
-      },
-      {
-        "tool_name": "get_customer_orders",
-        "attempt": 1,
-        "timestamp": "2026-04-19T19:54:07.261201",
-        "input_args": {
-          "customer_id": "C010"
-        },
-        "success": true,
-        "error_type": null,
-        "duration_ms": 171.99999999957072,
-        "validated": true
-      },
-      {
-        "tool_name": "get_product",
-        "attempt": 1,
-        "timestamp": "2026-04-19T19:54:07.417671",
-        "input_args": {
-          "product_id": "P003"
-        },
-        "success": true,
-        "error_type": null,
-        "duration_ms": 155.99999999994907,
-        "validated": true
-      },
-      {
-        "tool_name": "escalate",
-        "attempt": 1,
-        "timestamp": "2026-04-19T19:54:07.480586",
-        "input_args": {
-          "ticket_id": "TKT-020",
-          "summary": "{\"ticket_id\": \"TKT-020\", \"intent\": \"complaint\", \"urgency\": \"medium\", \"confidence\": 0.7, \"customer_data\": {\"customer_id\": \"C010\", \"name\": \"James Wu\", \"email\": \"james.wu@email.com\", \"phone\": \"+1-858-555-0199\", \"tier\": \"standard\", \"member_since\": \"2023-03-28\", \"total_orders\": 6, \"total_spent\": 430.15, \"address\": {\"street\": \"40 Harbor View\", \"city\": \"San Diego\", \"state\": \"CA\", \"zip\": \"92101\"}, \"notes\": \"No issues on record.\"}, \"order_data\": [{\"order_id\": \"ORD-1010\", \"customer_id\": \"C010\", \"product_id\": \"P003\", \"quantity\": 1, \"amount\": 199.99, \"status\": \"shipped\", \"order_date\": \"2024-03-12\", \"delivery_date\": null, \"return_deadline\": null, \"refund_status\": null, \"notes\": \"In transit. Expected delivery 2024-03-16. Tracking: TRK-88291.\"}], \"reasoning\": \"The customer reports a product defect, which is a common reason for complaints, but lacks specific details, requiring human intervention to resolve.\"}",
-          "priority": "medium"
         },
         "success": true,
         "error_type": null,
@@ -1880,20 +1585,308 @@
       {
         "tool_name": "send_reply",
         "attempt": 1,
-        "timestamp": "2026-04-19T19:54:07.559599",
+        "timestamp": "2026-04-19T20:11:49.528856",
+        "input_args": {
+          "ticket_id": "TKT-017",
+          "message": "Your request has been escalated to our specialist team. You'll hear back within 2-4 hours."
+        },
+        "success": true,
+        "error_type": null,
+        "duration_ms": 171.99999999866122,
+        "validated": true
+      }
+    ],
+    "errors": [
+      {
+        "node": "context_fetcher",
+        "tool_name": "get_order",
+        "error_type": "error",
+        "message": "Order ORD-9999 not found",
+        "timestamp": "2026-04-19T20:11:49.293387",
+        "recoverable": true
+      }
+    ],
+    "total_duration_ms": 512.026,
+    "started_at": "2026-04-19T20:11:49.018405",
+    "completed_at": "2026-04-19T20:11:49.530431"
+  },
+  {
+    "ticket_id": "TKT-018",
+    "customer_id": "C002",
+    "customer_email": "bob.mendes@email.com",
+    "order_id": "ORD-1002",
+    "intent": "unknown",
+    "urgency": "high",
+    "resolvability": "human",
+    "confidence": 0.0,
+    "classification_reasoning": "Parse failure: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kpjzgxwce6wt6dzkjsjgg4g9` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99734, Requested 488. Please try again in 3m11.808s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}",
+    "routing_decision": "escalate",
+    "resolution_status": "escalated",
+    "reply_text": "Your request has been escalated to our specialist team. You'll hear back within 2-4 hours.",
+    "escalation_reason": "{\"ticket_id\": \"TKT-018\", \"intent\": \"unknown\", \"urgency\": \"high\", \"confidence\": 0.0, \"customer_data\": {\"customer_id\": \"C002\", \"name\": \"Bob Mendes\", \"email\": \"bob.mendes@email.com\", \"phone\": \"+1-212-555-0198\", \"tier\": \"standard\", \"member_since\": \"2023-10-05\", \"total_orders\": 3, \"total_spent\": 210.0, \"address\": {\"street\": \"88 Birch Street\", \"city\": \"New York\", \"state\": \"NY\", \"zip\": \"10001\"}, \"notes\": \"New customer. No prior refund history.\"}, \"order_data\": {\"order_id\": \"ORD-1002\", \"customer_id\": \"C002\", \"product_id\": \"P006\", \"quantity\": 1, \"amount\": 249.99, \"status\": \"delivered\", \"order_date\": \"2024-03-01\", \"delivery_date\": \"2024-03-04\", \"return_deadline\": \"2024-03-19\", \"refund_status\": null, \"notes\": \"High-value item. 15-day return window applies.\"}, \"reasoning\": \"Parse failure: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kpjzgxwce6wt6dzkjsjgg4g9` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99734, Requested 488. Please try again in 3m11.808s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}\"}",
+    "node_history": [
+      "classifier",
+      "context_fetcher",
+      "router",
+      "resolver"
+    ],
+    "tool_calls": [
+      {
+        "tool_name": "get_customer",
+        "attempt": 1,
+        "timestamp": "2026-04-19T20:11:49.293387",
+        "input_args": {
+          "email": "bob.mendes@email.com"
+        },
+        "success": true,
+        "error_type": null,
+        "duration_ms": 78.00000000133878,
+        "validated": true
+      },
+      {
+        "tool_name": "get_order",
+        "attempt": 1,
+        "timestamp": "2026-04-19T20:11:49.294096",
+        "input_args": {
+          "order_id": "ORD-1002"
+        },
+        "success": true,
+        "error_type": null,
+        "duration_ms": 140.0000000012369,
+        "validated": true
+      },
+      {
+        "tool_name": "get_product",
+        "attempt": 2,
+        "timestamp": "2026-04-19T20:11:50.015244",
+        "input_args": {
+          "product_id": "P006"
+        },
+        "success": true,
+        "error_type": null,
+        "duration_ms": 77.99999999951979,
+        "validated": true
+      },
+      {
+        "tool_name": "escalate",
+        "attempt": 1,
+        "timestamp": "2026-04-19T20:11:50.108921",
+        "input_args": {
+          "ticket_id": "TKT-018",
+          "summary": "{\"ticket_id\": \"TKT-018\", \"intent\": \"unknown\", \"urgency\": \"high\", \"confidence\": 0.0, \"customer_data\": {\"customer_id\": \"C002\", \"name\": \"Bob Mendes\", \"email\": \"bob.mendes@email.com\", \"phone\": \"+1-212-555-0198\", \"tier\": \"standard\", \"member_since\": \"2023-10-05\", \"total_orders\": 3, \"total_spent\": 210.0, \"address\": {\"street\": \"88 Birch Street\", \"city\": \"New York\", \"state\": \"NY\", \"zip\": \"10001\"}, \"notes\": \"New customer. No prior refund history.\"}, \"order_data\": {\"order_id\": \"ORD-1002\", \"customer_id\": \"C002\", \"product_id\": \"P006\", \"quantity\": 1, \"amount\": 249.99, \"status\": \"delivered\", \"order_date\": \"2024-03-01\", \"delivery_date\": \"2024-03-04\", \"return_deadline\": \"2024-03-19\", \"refund_status\": null, \"notes\": \"High-value item. 15-day return window applies.\"}, \"reasoning\": \"Parse failure: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kpjzgxwce6wt6dzkjsjgg4g9` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99734, Requested 488. Please try again in 3m11.808s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}\"}",
+          "priority": "urgent"
+        },
+        "success": true,
+        "error_type": null,
+        "duration_ms": 78.00000000133878,
+        "validated": true
+      },
+      {
+        "tool_name": "send_reply",
+        "attempt": 1,
+        "timestamp": "2026-04-19T20:11:50.312111",
+        "input_args": {
+          "ticket_id": "TKT-018",
+          "message": "Your request has been escalated to our specialist team. You'll hear back within 2-4 hours."
+        },
+        "success": true,
+        "error_type": null,
+        "duration_ms": 202.9999999995198,
+        "validated": true
+      }
+    ],
+    "errors": [],
+    "total_duration_ms": 1232.594,
+    "started_at": "2026-04-19T20:11:49.081418",
+    "completed_at": "2026-04-19T20:11:50.314012"
+  },
+  {
+    "ticket_id": "TKT-019",
+    "customer_id": "C009",
+    "customer_email": "irene.castillo@email.com",
+    "order_id": null,
+    "intent": "unknown",
+    "urgency": "high",
+    "resolvability": "human",
+    "confidence": 0.0,
+    "classification_reasoning": "Parse failure: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kpjzgxwce6wt6dzkjsjgg4g9` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99733, Requested 461. Please try again in 2m47.616s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}",
+    "routing_decision": "escalate",
+    "resolution_status": "escalated",
+    "reply_text": "Your request has been escalated to our specialist team. You'll hear back within 2-4 hours.",
+    "escalation_reason": "{\"ticket_id\": \"TKT-019\", \"intent\": \"unknown\", \"urgency\": \"high\", \"confidence\": 0.0, \"customer_data\": {\"customer_id\": \"C009\", \"name\": \"Irene Castillo\", \"email\": \"irene.castillo@email.com\", \"phone\": \"+1-713-555-0156\", \"tier\": \"premium\", \"member_since\": \"2021-02-10\", \"total_orders\": 28, \"total_spent\": 3670.9, \"address\": {\"street\": \"88 Rosewood Court\", \"city\": \"Houston\", \"state\": \"TX\", \"zip\": \"77001\"}, \"notes\": \"Premium member. Has reported 2 damaged item incidents \\u2014 both verified.\"}, \"order_data\": [{\"order_id\": \"ORD-1009\", \"customer_id\": \"C009\", \"product_id\": \"P001\", \"quantity\": 1, \"amount\": 129.99, \"status\": \"delivered\", \"order_date\": \"2024-02-25\", \"delivery_date\": \"2024-02-28\", \"return_deadline\": \"2024-03-29\", \"refund_status\": \"refunded\", \"notes\": \"Refund already processed on 2024-03-02 for this order. Full amount returned.\"}], \"reasoning\": \"Parse failure: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kpjzgxwce6wt6dzkjsjgg4g9` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99733, Requested 461. Please try again in 2m47.616s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}\"}",
+    "node_history": [
+      "classifier",
+      "context_fetcher",
+      "router",
+      "resolver"
+    ],
+    "tool_calls": [
+      {
+        "tool_name": "get_customer",
+        "attempt": 1,
+        "timestamp": "2026-04-19T20:11:49.653194",
+        "input_args": {
+          "email": "irene.castillo@email.com"
+        },
+        "success": true,
+        "error_type": null,
+        "duration_ms": 63.00000000010186,
+        "validated": true
+      },
+      {
+        "tool_name": "get_customer_orders",
+        "attempt": 1,
+        "timestamp": "2026-04-19T20:11:49.732781",
+        "input_args": {
+          "customer_id": "C009"
+        },
+        "success": true,
+        "error_type": null,
+        "duration_ms": 78.00000000133878,
+        "validated": true
+      },
+      {
+        "tool_name": "get_product",
+        "attempt": 1,
+        "timestamp": "2026-04-19T20:11:49.890432",
+        "input_args": {
+          "product_id": "P001"
+        },
+        "success": false,
+        "error_type": "validation",
+        "duration_ms": 155.99999999903957,
+        "validated": false
+      },
+      {
+        "tool_name": "escalate",
+        "attempt": 1,
+        "timestamp": "2026-04-19T20:11:50.015244",
+        "input_args": {
+          "ticket_id": "TKT-019",
+          "summary": "{\"ticket_id\": \"TKT-019\", \"intent\": \"unknown\", \"urgency\": \"high\", \"confidence\": 0.0, \"customer_data\": {\"customer_id\": \"C009\", \"name\": \"Irene Castillo\", \"email\": \"irene.castillo@email.com\", \"phone\": \"+1-713-555-0156\", \"tier\": \"premium\", \"member_since\": \"2021-02-10\", \"total_orders\": 28, \"total_spent\": 3670.9, \"address\": {\"street\": \"88 Rosewood Court\", \"city\": \"Houston\", \"state\": \"TX\", \"zip\": \"77001\"}, \"notes\": \"Premium member. Has reported 2 damaged item incidents \\u2014 both verified.\"}, \"order_data\": [{\"order_id\": \"ORD-1009\", \"customer_id\": \"C009\", \"product_id\": \"P001\", \"quantity\": 1, \"amount\": 129.99, \"status\": \"delivered\", \"order_date\": \"2024-02-25\", \"delivery_date\": \"2024-02-28\", \"return_deadline\": \"2024-03-29\", \"refund_status\": \"refunded\", \"notes\": \"Refund already processed on 2024-03-02 for this order. Full amount returned.\"}], \"reasoning\": \"Parse failure: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kpjzgxwce6wt6dzkjsjgg4g9` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99733, Requested 461. Please try again in 2m47.616s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}\"}",
+          "priority": "urgent"
+        },
+        "success": true,
+        "error_type": null,
+        "duration_ms": 109.00000000037835,
+        "validated": true
+      },
+      {
+        "tool_name": "send_reply",
+        "attempt": 1,
+        "timestamp": "2026-04-19T20:11:50.156173",
+        "input_args": {
+          "ticket_id": "TKT-019",
+          "message": "Your request has been escalated to our specialist team. You'll hear back within 2-4 hours."
+        },
+        "success": true,
+        "error_type": null,
+        "duration_ms": 140.99999999962165,
+        "validated": true
+      }
+    ],
+    "errors": [
+      {
+        "node": "context_fetcher",
+        "tool_name": "get_product",
+        "error_type": "validation",
+        "message": "6 validation errors for ProductData\nname\n  Field required [type=missing, input_value={'product_id': 'P001', 'p...e', 'in_stock': 'maybe'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.11/v/missing\ncategory\n  Field required [type=missing, input_value={'product_id': 'P001', 'p...e', 'in_stock': 'maybe'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.11/v/missing\nprice\n  Input should be a valid number, unable to parse string as ",
+        "timestamp": "2026-04-19T20:11:49.890432",
+        "recoverable": true
+      }
+    ],
+    "total_duration_ms": 626.222,
+    "started_at": "2026-04-19T20:11:49.531567",
+    "completed_at": "2026-04-19T20:11:50.157789"
+  },
+  {
+    "ticket_id": "TKT-020",
+    "customer_id": "C010",
+    "customer_email": "james.wu@email.com",
+    "order_id": null,
+    "intent": "unknown",
+    "urgency": "high",
+    "resolvability": "human",
+    "confidence": 0.0,
+    "classification_reasoning": "Parse failure: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kpjzgxwce6wt6dzkjsjgg4g9` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99733, Requested 460. Please try again in 2m46.752s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}",
+    "routing_decision": "escalate",
+    "resolution_status": "escalated",
+    "reply_text": "Your request has been escalated to our specialist team. You'll hear back within 2-4 hours.",
+    "escalation_reason": "{\"ticket_id\": \"TKT-020\", \"intent\": \"unknown\", \"urgency\": \"high\", \"confidence\": 0.0, \"customer_data\": {\"customer_id\": \"C010\", \"name\": \"James Wu\", \"email\": \"james.wu@email.com\", \"phone\": \"+1-858-555-0199\", \"tier\": \"standard\", \"member_since\": \"2023-03-28\", \"total_orders\": 6, \"total_spent\": 430.15, \"address\": {\"street\": \"40 Harbor View\", \"city\": \"San Diego\", \"state\": \"CA\", \"zip\": \"92101\"}, \"notes\": \"No issues on record.\"}, \"order_data\": [{\"order_id\": \"ORD-1010\", \"customer_id\": \"C010\", \"product_id\": \"P003\", \"quantity\": 1, \"amount\": 199.99, \"status\": \"shipped\", \"order_date\": \"2024-03-12\", \"delivery_date\": null, \"return_deadline\": null, \"refund_status\": null, \"notes\": \"In transit. Expected delivery 2024-03-16. Tracking: TRK-88291.\"}], \"reasoning\": \"Parse failure: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kpjzgxwce6wt6dzkjsjgg4g9` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99733, Requested 460. Please try again in 2m46.752s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}\"}",
+    "node_history": [
+      "classifier",
+      "context_fetcher",
+      "router",
+      "resolver"
+    ],
+    "tool_calls": [
+      {
+        "tool_name": "get_customer",
+        "attempt": 1,
+        "timestamp": "2026-04-19T20:11:49.983248",
+        "input_args": {
+          "email": "james.wu@email.com"
+        },
+        "success": true,
+        "error_type": null,
+        "duration_ms": 31.000000000858563,
+        "validated": true
+      },
+      {
+        "tool_name": "get_customer_orders",
+        "attempt": 1,
+        "timestamp": "2026-04-19T20:11:50.156173",
+        "input_args": {
+          "customer_id": "C010"
+        },
+        "success": true,
+        "error_type": null,
+        "duration_ms": 171.99999999866122,
+        "validated": true
+      },
+      {
+        "tool_name": "get_product",
+        "attempt": 2,
+        "timestamp": "2026-04-19T20:11:51.032578",
+        "input_args": {
+          "product_id": "P003"
+        },
+        "success": true,
+        "error_type": null,
+        "duration_ms": 156.9999999992433,
+        "validated": true
+      },
+      {
+        "tool_name": "escalate",
+        "attempt": 1,
+        "timestamp": "2026-04-19T20:11:51.079083",
+        "input_args": {
+          "ticket_id": "TKT-020",
+          "summary": "{\"ticket_id\": \"TKT-020\", \"intent\": \"unknown\", \"urgency\": \"high\", \"confidence\": 0.0, \"customer_data\": {\"customer_id\": \"C010\", \"name\": \"James Wu\", \"email\": \"james.wu@email.com\", \"phone\": \"+1-858-555-0199\", \"tier\": \"standard\", \"member_since\": \"2023-03-28\", \"total_orders\": 6, \"total_spent\": 430.15, \"address\": {\"street\": \"40 Harbor View\", \"city\": \"San Diego\", \"state\": \"CA\", \"zip\": \"92101\"}, \"notes\": \"No issues on record.\"}, \"order_data\": [{\"order_id\": \"ORD-1010\", \"customer_id\": \"C010\", \"product_id\": \"P003\", \"quantity\": 1, \"amount\": 199.99, \"status\": \"shipped\", \"order_date\": \"2024-03-12\", \"delivery_date\": null, \"return_deadline\": null, \"refund_status\": null, \"notes\": \"In transit. Expected delivery 2024-03-16. Tracking: TRK-88291.\"}], \"reasoning\": \"Parse failure: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kpjzgxwce6wt6dzkjsjgg4g9` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99733, Requested 460. Please try again in 2m46.752s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}\"}",
+          "priority": "urgent"
+        },
+        "success": true,
+        "error_type": null,
+        "duration_ms": 31.9999999992433,
+        "validated": true
+      },
+      {
+        "tool_name": "send_reply",
+        "attempt": 1,
+        "timestamp": "2026-04-19T20:11:51.218803",
         "input_args": {
           "ticket_id": "TKT-020",
           "message": "Your request has been escalated to our specialist team. You'll hear back within 2-4 hours."
         },
         "success": true,
         "error_type": null,
-        "duration_ms": 78.00000000042928,
+        "duration_ms": 139.99999999941792,
         "validated": true
       }
     ],
     "errors": [],
-    "total_duration_ms": 4125.023999999999,
-    "started_at": "2026-04-19T19:54:03.436225",
-    "completed_at": "2026-04-19T19:54:07.561249"
+    "total_duration_ms": 1324.006,
+    "started_at": "2026-04-19T20:11:49.896627",
+    "completed_at": "2026-04-19T20:11:51.220633"
   }
 ]

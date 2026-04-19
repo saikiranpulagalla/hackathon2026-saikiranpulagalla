@@ -41,7 +41,7 @@ async def process_all_tickets(
     tickets: list[RawTicket],
     audit_path: str = "audit_log.json",
     dlq_path: str = "dlq.json",
-    max_concurrent: int = 5,
+    max_concurrent: int = 3,
 ) -> ProcessingReport:
     """
     Process all tickets concurrently with a semaphore cap.

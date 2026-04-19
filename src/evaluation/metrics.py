@@ -27,7 +27,7 @@ class ProcessingReport:
         "total": 0, "success": 0, "retries": 0, "dlq": 0
     }))
     _individual_durations: list[float] = field(default_factory=list)
-    _max_concurrent: int = 5
+    _max_concurrent: int = 3
     
     # Golden Answer Accuracy Tracking
     _golden_answers: dict = field(default_factory=dict)
