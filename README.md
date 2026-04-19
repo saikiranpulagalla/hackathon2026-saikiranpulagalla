@@ -8,52 +8,68 @@ An autonomous AI customer support agent built with **LangGraph** and **Groq (Lla
 
 ## Architecture
 
-### High-Level System Diagram
+### High-Level Design (HLD)
+
+![ShopWave Architecture](architecture.png)
+
+### Low-Level Design (LLD)
 
 ```mermaid
-graph LR
-    %% Custom Styles
-    classDef queue fill:#f8f9fa,stroke:#ced4da,stroke-width:2px,rx:5px,ry:5px;
-    classDef filter fill:#ffffff,stroke:#6c757d,stroke-width:2px;
-    classDef blueBox fill:#3b82f6,stroke:#1e40af,stroke-width:2px,color:#ffffff;
-    classDef greenBox fill:#22c55e,stroke:#166534,stroke-width:2px,color:#ffffff;
-    classDef orangeBox fill:#f97316,stroke:#9a3412,stroke-width:2px,color:#ffffff;
-    classDef purpleBox fill:#a855f7,stroke:#6b21a8,stroke-width:2px,color:#ffffff;
-    classDef grayBox fill:#94a3b8,stroke:#475569,stroke-width:2px,color:#ffffff;
-    classDef redBox fill:#ef4444,stroke:#991b1b,stroke-width:2px,color:#ffffff;
-    classDef toolBox fill:#ffffff,stroke:#343a40,stroke-width:2px,rx:5px,ry:5px;
-
-    %% Entry and Exit Points
-    TQ["Ticket Queue<br>(20 tickets)"]:::queue
-    SEM{{"asyncio.<br>Semaphore(2)"}}:::filter
-    DLQ["Dead Letter Queue<br>---<br>for failures"]:::redBox
-
-    %% Core StateGraph
-    subgraph LangGraph StateGraph
-        direction LR
-        CL["Classifier<br>---<br>Groq LLM,<br>intent/urgency/<br>confidence"]:::blueBox
-        CF["Context Fetcher<br>---<br>asyncio.gather(),<br>get_customer +<br>get_order"]:::greenBox
-        RT["Router<br>---<br>Confidence gates:<br>0.65 primary,<br>0.80 refund"]:::orangeBox
-        RS["Resolver<br>---<br>Tool-use loop,<br>issue_refund,<br>send_reply"]:::purpleBox
-        ESC["Escalate"]:::orangeBox
-        AC["Audit Close<br>---<br>Write<br>audit_log.json"]:::grayBox
-
-        CL --> CF
-        CF --> RT
-        RT -- "If confidence >= threshold" --> RS
-        RT -- "confidence < threshold" --> ESC
-        RS --> AC
-        ESC --> AC
+graph TD
+    subgraph Ingestion
+        TQ["Ticket Queue<br/>20 tickets from tickets.json"]
+        SEM["asyncio.Semaphore(2)<br/>max 2 concurrent"]
     end
 
-    %% Tools Layer
-    TOOLS["8 Mock Tools<br>---<br>get_order, get_customer, get_product, check_refund,<br>issue_refund, search_kb, send_reply, escalate"]:::toolBox
+    subgraph LangGraph StateGraph
+        CL["1. Classifier Node<br/>Groq llama-3.3-70b<br/>intent + urgency + confidence"]
+        CF["2. Context Fetcher Node<br/>parallel asyncio.gather"]
+        RT["3. Router Node<br/>pure logic, no LLM"]
+        RS["4. Resolver Node<br/>Groq llama-3.3-70b tool-use<br/>auto-resolve path"]
+        ESC["4b. Escalation Path<br/>escalate() + send_reply()"]
+        AC["5. Audit Close Node<br/>persist + emit"]
+    end
 
-    %% Connections
-    TQ -- "gateway" --> SEM
+    subgraph Tools Layer
+        GT[get_order]
+        GC[get_customer]
+        CR[check_refund_eligibility]
+        IR[issue_refund]
+        SK[search_knowledge_base]
+        GP[get_product]
+        SR[send_reply]
+        ES[escalate]
+    end
+
+    subgraph Outputs
+        AL["audit_log.json<br/>JSON array"]
+        DLQ["dlq.json<br/>failed tickets"]
+    end
+
+    TQ --> SEM
     SEM --> CL
+    CL --> CF
+    CF --> RT
+    RT -->|"confidence >= 0.65<br/>resolvability = auto"| RS
+    RT -->|"confidence < 0.65<br/>OR resolvability = human"| ESC
+    RT -->|"unrecoverable error"| AC
+    RS -->|"resolved"| AC
+    RS -->|"needs escalation<br/>(e.g. refund >$100, conf 0.65-0.79)"| ESC
+    ESC --> AC
+    AC --> AL
     AC --> DLQ
-    TOOLS -. "retry_with_backoff()" .-> RS
+
+    RS --> GT
+    RS --> CR
+    RS --> IR
+    RS --> SK
+    RS --> GP
+    RS --> SR
+    ESC --> ES
+    ESC --> SR
+    CF -->|"parallel prefetch"| GT
+    CF -->|"parallel prefetch"| GC
+    CF -->|"parallel prefetch"| GP
 ```
 
 ### Concurrency Model
