@@ -303,17 +303,26 @@ async def classifier_node(state: dict) -> dict:
 
 async def context_fetcher_node(state: dict) -> dict:
     """
-    Pre-fetch order, customer, and product data in parallel.
+    Pre-fetch order, customer, and product data.
+    Phase 1: customer + order in parallel.
+    Phase 2: product fetched using product_id from order data.
     Failures are soft — downstream nodes handle None gracefully.
     """
     from ..tools.schemas import OrderData, CustomerData, ProductData
 
-    tasks = []
-    task_names = []
+    order_data = None
+    customer_data = None
+    product_data = None
+    new_tool_calls = []
+    new_errors = []
+    resolved_customer_id = ""
 
-    # Always fetch customer by email
+    # ── Phase 1: Fetch customer + order in parallel ──
+    phase1_tasks = []
+    phase1_names = []
+
     if state.get("customer_email"):
-        tasks.append(
+        phase1_tasks.append(
             retry_with_backoff(
                 TOOL_REGISTRY["get_customer"],
                 {"email": state["customer_email"]},
@@ -321,11 +330,10 @@ async def context_fetcher_node(state: dict) -> dict:
                 tool_name="get_customer",
             )
         )
-        task_names.append("get_customer")
+        phase1_names.append("get_customer")
 
-    # Fetch order if order_id exists
     if state.get("order_id"):
-        tasks.append(
+        phase1_tasks.append(
             retry_with_backoff(
                 TOOL_REGISTRY["get_order"],
                 {"order_id": state["order_id"]},
@@ -333,40 +341,16 @@ async def context_fetcher_node(state: dict) -> dict:
                 tool_name="get_order",
             )
         )
-        task_names.append("get_order")
+        phase1_names.append("get_order")
 
-    # Fetch product for product-related intents
-    if state.get("intent") in ("product_question",):
-        # Try to extract product ID from ticket text
-        product_match = re.search(r'PROD-\d+', state.get("ticket_text", ""))
-        if product_match:
-            tasks.append(
-                retry_with_backoff(
-                    TOOL_REGISTRY["get_product"],
-                    {"product_id": product_match.group()},
-                    ProductData,
-                    tool_name="get_product",
-                )
-            )
-            task_names.append("get_product")
+    phase1_results = await asyncio.gather(*phase1_tasks) if phase1_tasks else []
 
-    # Run all fetches in parallel
-    results = await asyncio.gather(*tasks) if tasks else []
-
-    order_data = None
-    customer_data = None
-    product_data = None
-    new_tool_calls = []
-    new_errors = []
-
-    for result, name in zip(results, task_names):
+    for result, name in zip(phase1_results, phase1_names):
         args = {}
         if name == "get_customer":
             args = {"email": state.get("customer_email", "")}
         elif name == "get_order":
             args = {"order_id": state.get("order_id", "")}
-        elif name == "get_product":
-            args = {"product_id": "extracted"}
 
         new_tool_calls.append(_make_tool_call_record(result, args))
 
@@ -375,14 +359,59 @@ async def context_fetcher_node(state: dict) -> dict:
                 order_data = result.validated_data.model_dump() if hasattr(result.validated_data, "model_dump") else result.validated_data
             elif name == "get_customer":
                 customer_data = result.validated_data.model_dump() if hasattr(result.validated_data, "model_dump") else result.validated_data
-            elif name == "get_product":
-                product_data = result.validated_data.model_dump() if hasattr(result.validated_data, "model_dump") else result.validated_data
+                resolved_customer_id = customer_data.get("customer_id", "")
         else:
             err_record = _make_error_record(result, "context_fetcher")
-            # Validation failure or tool error — store as None, log the issue
-            # context fetch failure is recoverable — agent will escalate
             err_record.recoverable = True
             new_errors.append(err_record)
+
+    # ── Phase 1b: If no order_id was provided, try to find orders by customer ──
+    if not state.get("order_id") and resolved_customer_id and "get_customer_orders" in TOOL_REGISTRY:
+        from ..tools.schemas import OrderData as _OD
+        try:
+            orders_result = await retry_with_backoff(
+                TOOL_REGISTRY["get_customer_orders"],
+                {"customer_id": resolved_customer_id},
+                _OD,
+                tool_name="get_customer_orders",
+            )
+            new_tool_calls.append(_make_tool_call_record(orders_result, {"customer_id": resolved_customer_id}))
+            if orders_result.success and orders_result.validated_data:
+                # Store the list; resolver will pick the right one
+                if isinstance(orders_result.validated_data, list):
+                    order_data = [o.model_dump() if hasattr(o, "model_dump") else o for o in orders_result.validated_data]
+                else:
+                    order_data = orders_result.validated_data.model_dump() if hasattr(orders_result.validated_data, "model_dump") else orders_result.validated_data
+        except Exception as e:
+            logger.debug(f"[{state['ticket_id']}] get_customer_orders fallback failed: {e}")
+
+    # ── Phase 2: Fetch product using product_id from order data ──
+    product_id_to_fetch = None
+    if isinstance(order_data, dict) and order_data.get("product_id"):
+        product_id_to_fetch = order_data["product_id"]
+    elif isinstance(order_data, list) and len(order_data) > 0:
+        product_id_to_fetch = order_data[0].get("product_id")
+
+    # Also check ticket text for P-XXX pattern
+    if not product_id_to_fetch:
+        pmatch = re.search(r'\bP\d{3}\b', state.get("ticket_text", ""))
+        if pmatch:
+            product_id_to_fetch = pmatch.group()
+
+    if product_id_to_fetch:
+        prod_result = await retry_with_backoff(
+            TOOL_REGISTRY["get_product"],
+            {"product_id": product_id_to_fetch},
+            ProductData,
+            tool_name="get_product",
+        )
+        new_tool_calls.append(_make_tool_call_record(prod_result, {"product_id": product_id_to_fetch}))
+        if prod_result.success:
+            product_data = prod_result.validated_data.model_dump() if hasattr(prod_result.validated_data, "model_dump") else prod_result.validated_data
+        else:
+            err = _make_error_record(prod_result, "context_fetcher")
+            err.recoverable = True
+            new_errors.append(err)
 
     context_incomplete = any([
         order_data is None and state.get("order_id") is not None,
@@ -391,15 +420,17 @@ async def context_fetcher_node(state: dict) -> dict:
 
     logger.info(
         f"[{state['ticket_id']}] Context fetched: "
-        f"order={'OK' if order_data else 'FAIL'}, "
-        f"customer={'OK' if customer_data else 'FAIL'}, "
-        f"product={'OK' if product_data else 'N/A'}"
+        f"order={'OK' if order_data else 'MISS'}, "
+        f"customer={'OK' if customer_data else 'MISS'}, "
+        f"product={'OK' if product_data else 'N/A'}, "
+        f"customer_id={resolved_customer_id}"
     )
 
     return {
         "order_data": order_data,
         "customer_data": customer_data,
         "product_data": product_data,
+        "customer_id": resolved_customer_id,
         "context_incomplete": context_incomplete,
         "tool_calls": new_tool_calls,
         "errors": new_errors,

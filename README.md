@@ -38,6 +38,7 @@ graph TD
     subgraph Tools Layer
         GT[get_order]
         GC[get_customer]
+        GCO[get_customer_orders]
         CR[check_refund_eligibility]
         IR[issue_refund]
         SK[search_knowledge_base]
@@ -74,6 +75,7 @@ graph TD
     ESC --> SR
     CF -->|"parallel prefetch"| GT
     CF -->|"parallel prefetch"| GC
+    CF -->|"parallel prefetch"| GCO
     CF -->|"parallel prefetch"| GP
 ```
 

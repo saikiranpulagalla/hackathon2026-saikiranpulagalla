@@ -15,6 +15,7 @@ os.environ["LANGCHAIN_PROJECT"] = os.getenv("LANGSMITH_PROJECT", "shopwave-hacka
 import asyncio
 import json
 import logging
+import re
 import sys
 import time
 from datetime import datetime
@@ -58,12 +59,17 @@ async def process_all_tickets(
         """Process a single ticket within the semaphore."""
         async with semaphore:
             try:
+                # Extract order_id from ticket body (e.g., "ORD-1001")
+                ticket_text = f"Subject: {ticket.subject}\n\n{ticket.body}"
+                order_match = re.search(r'ORD-\d+', ticket_text)
+                extracted_order_id = order_match.group() if order_match else None
+
                 initial_state = {
                     "ticket_id": ticket.ticket_id,
-                    "ticket_text": ticket.ticket_text,
-                    "customer_id": ticket.customer_id,
+                    "ticket_text": ticket_text,
+                    "customer_id": "",
                     "customer_email": ticket.customer_email,
-                    "order_id": ticket.order_id,
+                    "order_id": extracted_order_id,
                     "intent": None,
                     "urgency": None,
                     "resolvability": None,

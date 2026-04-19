@@ -31,7 +31,7 @@ def _fail(name: str, error: str):
 
 
 async def test_mock_tools():
-    """Test 1: All 8 mock tools can be imported and called via retry wrapper."""
+    """Test 1: All 9 mock tools can be imported and called via retry wrapper."""
     try:
         from src.tools.mock_tools import TOOL_REGISTRY
         from src.tools.retry import retry_with_backoff
@@ -41,12 +41,13 @@ async def test_mock_tools():
             KnowledgeResult, SendReplyResult, EscalationResult,
         )
 
-        assert len(TOOL_REGISTRY) == 8, f"Expected 8 tools, got {len(TOOL_REGISTRY)}"
+        assert len(TOOL_REGISTRY) == 9, f"Expected 9 tools, got {len(TOOL_REGISTRY)}"
 
         # Call each tool through the retry wrapper (handles simulated failures)
         test_cases = [
             ("get_order", {"order_id": "ORD-TEST"}, OrderData),
             ("get_customer", {"email": "test@example.com"}, CustomerData),
+            ("get_customer_orders", {"customer_id": "C001"}, OrderData),
             ("get_product", {"product_id": "PROD-TEST"}, ProductData),
             ("check_refund_eligibility", {"order_id": "ORD-TEST"}, RefundEligibilityData),
             ("issue_refund", {"order_id": "ORD-TEST", "amount": 10.0}, RefundResult),
@@ -65,7 +66,7 @@ async def test_mock_tools():
             assert hasattr(result, "success"), f"{name} didn't return ToolResult"
             callable_count += 1
 
-        _pass(f"Mock tools importable and callable ({callable_count}/8)")
+        _pass(f"Mock tools importable and callable ({callable_count}/9)")
     except Exception as e:
         _fail("Mock tools importable and callable", str(e))
 
@@ -106,15 +107,19 @@ async def test_pydantic_schemas():
 
         # Valid dict should pass
         valid = {
-            "order_id": "ORD-001", "customer_id": "CUST-001",
-            "status": "shipped", "items": [], "total_amount": 50.0,
-            "created_at": "2024-01-01T00:00:00",
+            "order_id": "ORD-1001",
+            "customer_id": "C001",
+            "product_id": "P001",
+            "quantity": 1,
+            "amount": 129.99,
+            "status": "delivered",
+            "order_date": "2024-02-10",
         }
         parsed = OrderData.model_validate(valid)
-        assert parsed.order_id == "ORD-001"
+        assert parsed.order_id == "ORD-1001"
 
         # Malformed dict should fail
-        malformed = {"order_id": "ORD-001", "status": None, "items": "INVALID"}
+        malformed = {"order_id": "ORD-001", "status": None}
         try:
             OrderData.model_validate(malformed)
             assert False, "Should have raised ValidationError"

@@ -1,0 +1,37 @@
+
+        <html>
+        <body style="background-color: #1e1e1e; color: #d4d4d4; font-family: Consolas, 'Courier New', monospace; margin: 20px;">
+            <pre style="font-size: 14px;">+==============================================================+
+|             SHOPWAVE SUPPORT AGENT -- RUN COMPLETE           |
++==============================================================+
+|  Total tickets processed:  20                                |
+|  Wall-clock time:          100.5s  (2 concurrent lanes)      |
+|  Est. sequential time:     135.5s  (speedup: 1.3x)           |
++--------------------------------------------------------------+
+|  OUTCOMES                                                    |
+|    Resolved:    8  (40%)                                     |
+|    Escalated:   11  (55%)                                    |
+|    DLQ/Failed:  1  (5%)                                      |
++--------------------------------------------------------------+
+|  TOOL RELIABILITY                                            |
+|    check_refund_eligibility:      3/3 success  (0 retries)   |
+|    escalate:                      4/5 success  (0 retries)   |
+|    get_customer:                  19/20 success  (0 retries) |
+|    get_order:                     15/17 success  (4 retries) |
+|    get_product:                   5/5 success  (1 retries)   |
+|    issue_refund:                  3/3 success  (1 retries)   |
+|    search_knowledge_base:         3/3 success  (1 retries)   |
+|    send_reply:                    19/19 success  (2 retries) |
++--------------------------------------------------------------+
+|  CONFIDENCE STATS                                            |
+|    Mean: 0.84  Median: 0.90  Min: 0.00  Max: 0.90            |
+|    Tickets below 0.65 threshold: 1 (all correctly escalated) |
++--------------------------------------------------------------+
+|  OUTPUTS SAVED                                               |
+|    audit_log.json  (20 records)                              |
+|    dlq.json        (1 records)                               |
++==============================================================+
+</pre>
+        </body>
+        </html>
+        

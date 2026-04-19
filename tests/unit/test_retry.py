@@ -14,9 +14,13 @@ from src.tools.schemas import OrderData
 async def test_success_on_first_attempt():
     async def good_tool(**kwargs):
         return {
-            "order_id": "ORD-001", "customer_id": "CUST-001",
-            "status": "shipped", "items": [], "total_amount": 50.0,
-            "created_at": "2024-01-01T00:00:00",
+            "order_id": "ORD-1001",
+            "customer_id": "C001",
+            "product_id": "P001",
+            "quantity": 1,
+            "amount": 129.99,
+            "status": "delivered",
+            "order_date": "2024-02-10",
         }
 
     result = await retry_with_backoff(good_tool, {"order_id": "ORD-001"}, OrderData, tool_name="get_order", base_delay=0.01)
@@ -34,9 +38,13 @@ async def test_retries_on_timeout_then_succeeds():
         if call_count < 2:
             raise ToolTimeoutError("timeout")
         return {
-            "order_id": "ORD-001", "customer_id": "CUST-001",
-            "status": "shipped", "items": [], "total_amount": 50.0,
-            "created_at": "2024-01-01T00:00:00",
+            "order_id": "ORD-1001",
+            "customer_id": "C001",
+            "product_id": "P001",
+            "quantity": 1,
+            "amount": 129.99,
+            "status": "delivered",
+            "order_date": "2024-02-10",
         }
 
     result = await retry_with_backoff(flaky_tool, {}, OrderData, tool_name="get_order", max_retries=3, base_delay=0.01)

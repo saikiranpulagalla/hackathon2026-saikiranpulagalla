@@ -1,0 +1,56 @@
+[
+  {
+    "ticket_id": "TKT-017",
+    "customer_id": "C004",
+    "error_type": "validation",
+    "error_message": "Order ORD-9999 not found; 4 validation errors for EscalationResult\nescalation_id\n  Input should be a valid string [type=string_type, input_value=None, input_type=NoneType]\n    For further information visit https://errors.pydantic.dev/2.11/v/string_type\nassigned_team\n  Field required [type=missing, input_value={'escalation_id': None, 'priority': 'unknown'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.11/v/missing\npriority\n  Input should be 'low', 'medium', 'high' or 'urgent' [type=lite",
+    "node_history": [
+      "classifier",
+      "context_fetcher",
+      "router",
+      "resolver",
+      "audit_close"
+    ],
+    "tool_calls": [
+      {
+        "tool_name": "get_customer",
+        "attempt": 1,
+        "timestamp": "2026-04-19T19:13:04.812982",
+        "input_args": {
+          "email": "david.park@email.com"
+        },
+        "success": true,
+        "error_type": null,
+        "duration_ms": 94.00000000005093,
+        "validated": true
+      },
+      {
+        "tool_name": "get_order",
+        "attempt": 1,
+        "timestamp": "2026-04-19T19:13:04.812982",
+        "input_args": {
+          "order_id": "ORD-9999"
+        },
+        "success": false,
+        "error_type": "error",
+        "duration_ms": 94.00000000005093,
+        "validated": false
+      },
+      {
+        "tool_name": "escalate",
+        "attempt": 1,
+        "timestamp": "2026-04-19T19:13:04.889788",
+        "input_args": {
+          "ticket_id": "TKT-017",
+          "summary": "{\"ticket_id\": \"TKT-017\", \"intent\": \"refund_request\", \"urgency\": \"high\", \"confidence\": 0.8, \"customer_data\": {\"customer_id\": \"C004\", \"name\": \"David Park\", \"email\": \"david.park@email.com\", \"phone\": \"+1-206-555-0177\", \"tier\": \"standard\", \"member_since\": \"2022-01-30\", \"total_orders\": 9, \"total_spent\": 780.2, \"address\": {\"street\": \"300 Pine Road\", \"city\": \"Seattle\", \"state\": \"WA\", \"zip\": \"98101\"}, \"notes\": \"Has raised 1 chargeback dispute in the past \\u2014 resolved in ShopWave's favour.\"}, \"order_data\": null, \"reasoning\": \"The customer explicitly requests a refund and mentions a lawyer, indicating a potential legal threat that requires human attention.\"}",
+          "priority": "urgent"
+        },
+        "success": false,
+        "error_type": "validation",
+        "duration_ms": 61.99999999989814,
+        "validated": false
+      }
+    ],
+    "timestamp": "2026-04-19T19:13:25.945160"
+  }
+]

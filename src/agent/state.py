@@ -14,11 +14,13 @@ from pydantic import BaseModel
 class RawTicket(BaseModel):
     """Input ticket from data/tickets.json."""
     ticket_id: str
-    customer_id: str
     customer_email: str
-    order_id: Optional[str] = None
-    ticket_text: str
+    subject: str
+    body: str
+    source: str
     created_at: datetime
+    tier: int
+    expected_action: str
 
 
 class ToolCallRecord(BaseModel):

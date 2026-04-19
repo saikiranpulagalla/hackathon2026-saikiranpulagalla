@@ -10,38 +10,45 @@ from pydantic import BaseModel, ConfigDict
 
 # --- Order ---
 
-class OrderItem(BaseModel):
-    product_id: str
-    name: str
-    quantity: int
-    unit_price: float
-
-
 class OrderData(BaseModel):
     """Schema for get_order() responses."""
     order_id: str
     customer_id: str
-    status: Literal["pending", "shipped", "delivered", "cancelled", "returned"]
-    items: list[OrderItem]
-    total_amount: float
-    created_at: datetime
-    tracking_number: Optional[str] = None
+    product_id: str
+    quantity: int
+    amount: float
+    status: Literal["processing", "shipped", "delivered", "cancelled", "returned"]
+    order_date: str
+    delivery_date: Optional[str] = None
+    return_deadline: Optional[str] = None
+    refund_status: Optional[str] = None
+    notes: Optional[str] = None
 
     model_config = ConfigDict(strict=False)
 
 
 # --- Customer ---
 
+class Address(BaseModel):
+    street: str
+    city: str
+    state: str
+    zip: str
+
 class CustomerData(BaseModel):
     """Schema for get_customer() responses."""
     customer_id: str
     name: str
     email: str
+    phone: str
     tier: Literal["standard", "premium", "vip"]
+    member_since: str
     total_orders: int
-    account_created: datetime
+    total_spent: float
+    address: Address
+    notes: Optional[str] = None
 
-    model_config = ConfigDict(strict=False)  # mock tools return datetime as ISO strings
+    model_config = ConfigDict(strict=False)
 
 
 # --- Product ---
@@ -50,10 +57,12 @@ class ProductData(BaseModel):
     """Schema for get_product() responses."""
     product_id: str
     name: str
-    description: str
-    price: float
-    in_stock: bool
     category: str
+    price: float
+    warranty_months: int
+    return_window_days: int
+    returnable: bool
+    notes: Optional[str] = None
 
     model_config = ConfigDict(strict=False)
 
