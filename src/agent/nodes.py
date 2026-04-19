@@ -21,20 +21,14 @@ from .state import AuditRecord, DLQEntry, ErrorRecord, ToolCallRecord
 logger = logging.getLogger(__name__)
 
 # --- Groq Client (lazy init) - uses OpenAI SDK ---
-_client: AsyncOpenAI | None = None
-
-
 def _get_client() -> AsyncOpenAI:
-    global _client
-    if _client is None:
-        api_key = os.getenv("GROQ_API_KEY")
-        if not api_key:
-            raise ValueError("GROQ_API_KEY environment variable not set")
-        _client = AsyncOpenAI(
-            api_key=api_key,
-            base_url="https://api.groq.com/openai/v1",
-        )
-    return _client
+    api_key = os.getenv("GROQ_API_KEY")
+    if not api_key:
+        raise ValueError("GROQ_API_KEY environment variable not set")
+    return AsyncOpenAI(
+        api_key=api_key,
+        base_url="https://api.groq.com/openai/v1",
+    )
 
 
 # --- Classification Prompt ---
