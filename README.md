@@ -2,11 +2,16 @@
 
 > **KSOLVES Agentic AI Hackathon 2026** — "AI First, Always"
 
-An autonomous AI customer support agent built with **LangGraph** and **Groq (Llama 3.3 70B)**. Processes 20 e-commerce support tickets end-to-end — classifying intent, fetching context, resolving with tools, and escalating intelligently — all with full audit trails, fault tolerance, and graceful failure handling.
+An autonomous AI customer support agent built with **LangGraph** and **Groq (Llama 3.3 70B)**. Processes support tickets at scale (demonstrated on 20 tickets for evaluation) — classifying intent, fetching context, resolving with tools, and escalating intelligently — all with full audit trails, fault tolerance, and graceful failure handling.
 
 > **Quick demo:** `cp .env.example .env && pip install -r requirements.txt && python -m src.main && streamlit run streamlit_app.py`
+> **Demo Video:** [Watch the 5-minute walkthrough here](https://link-to-video)
 
 ## Architecture
+
+This system is designed with production principles: observability (audit logs), reliability (retries, DLQ), safety (confidence gating), and scalability (async concurrency).
+
+The agent operates as a continuous loop: classify → gather context → decide → act (tool calls) → observe → update state → repeat until resolution or escalation.
 
 ### High-Level Design (HLD)
 
@@ -203,13 +208,13 @@ shopwave-support-agent/
 | **Secondary gate at 0.80 for refunds >$100** | High-value refunds with moderate confidence (0.65–0.79) are escalated. The cost of a wrong refund exceeds the cost of human review. |
 | **"When NOT to act" principle** | The agent has three explicit stop conditions: (1) confidence < 0.65 → escalate instead of attempting resolution, (2) refund amount > $100 with confidence 0.65–0.79 → escalate (wrong refund cost > human review cost), (3) `issue_refund` is NEVER called unless `check_refund_eligibility` explicitly returns `eligible: true` in the same reasoning chain. The agent does nothing rather than act on uncertainty for irreversible actions. |
 | **Dead Letter Queue (DLQ)** | The DLQ acts as a safety net for unrecoverable failures, preserving full partial state. This ensures no ticket is ever lost and enables manual recovery or replay — a key production-grade reliability pattern. |
-| **ReAct Resolver Engine** | The resolver uses LLM-driven tool selection with dynamic reasoning (ReAct-style: reason → act → observe → repeat), not hardcoded workflows. Category-specific prompting guides the agent, but the LLM autonomously determines the exact tool sequence at runtime. |
+| **ReAct Resolver Engine** | While high-level routing is guided by intent categories, the resolver itself is not rule-based. It dynamically selects tools and sequences actions using LLM reasoning (ReAct loop), adapting to tool responses and failures in real time. |
 | **Groq (Llama 3.3 70B)** | Fast inference with tool-use support via OpenAI-compatible API. Free tier sufficient for hackathon. Same model for both classification and resolution. |
 
 ## Key Features
 
 - **Not a Chatbot** — The system is a task-oriented autonomous agent that takes actions (refunds, escalations) rather than generating conversational responses.
-- **Failure-First Mindset** — The system is designed with a failure-first mindset: every tool call is assumed to potentially fail, and the agent is built to recover, retry, or gracefully degrade.
+- **Failure-First Mindset** — Failures are treated as first-class citizens in the system. Every tool call is expected to potentially fail, and the agent is designed to recover, retry, or gracefully degrade without breaking the workflow.
 - **Multi-Level Parallelism** — Parallelism is implemented at two levels: 1. Across tickets (`asyncio.gather`) and 2. Within tickets (parallel tool calls in context fetching).
 - **Concurrent batch processing** — 20 tickets via `asyncio.gather` with `Semaphore(2)`
 - **Parallel context fetching** — `get_customer` + `get_order` run simultaneously per ticket
