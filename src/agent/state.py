@@ -39,7 +39,7 @@ class ErrorRecord(BaseModel):
     tool_name: Optional[str] = None
     error_type: str
     message: str = ""
-    timestamp: datetime = None
+    timestamp: Optional[datetime] = None
     recoverable: bool = True
 
     def __init__(self, **data):

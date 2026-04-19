@@ -5,11 +5,11 @@ from __future__ import annotations
 import asyncio
 import json
 import logging
+import os
 import re
 from datetime import datetime
 from typing import Any
 
-import os
 from openai import AsyncOpenAI
 
 from ..tools.mock_tools import TOOL_REGISTRY
@@ -842,27 +842,37 @@ async def audit_close_node(state: dict) -> dict:
         else:
             resolution_status = "unknown"
 
-    audit_record = AuditRecord(
-        ticket_id=state["ticket_id"],
-        customer_id=state["customer_id"],
-        customer_email=state.get("customer_email", ""),
-        order_id=state.get("order_id"),
-        intent=state.get("intent"),
-        urgency=state.get("urgency"),
-        resolvability=state.get("resolvability"),
-        confidence=state.get("confidence"),
-        classification_reasoning=state.get("classification_reasoning"),
-        routing_decision=state.get("routing_decision"),
-        resolution_status=resolution_status,
-        reply_text=state.get("reply_text"),
-        escalation_reason=state.get("escalation_reason"),
-        node_history=state.get("node_history", []),
-        tool_calls=state.get("tool_calls", []),
-        errors=state.get("errors", []),
-        total_duration_ms=duration_ms,
-        started_at=started_dt,
-        completed_at=now,
-    )
+    try:
+        audit_record = AuditRecord(
+            ticket_id=state["ticket_id"],
+            customer_id=state["customer_id"],
+            customer_email=state.get("customer_email", ""),
+            order_id=state.get("order_id"),
+            intent=state.get("intent"),
+            urgency=state.get("urgency"),
+            resolvability=state.get("resolvability"),
+            confidence=state.get("confidence"),
+            classification_reasoning=state.get("classification_reasoning"),
+            routing_decision=state.get("routing_decision"),
+            resolution_status=resolution_status,
+            reply_text=state.get("reply_text"),
+            escalation_reason=state.get("escalation_reason"),
+            node_history=state.get("node_history", []),
+            tool_calls=state.get("tool_calls", []),
+            errors=state.get("errors", []),
+            total_duration_ms=duration_ms,
+            started_at=started_dt,
+            completed_at=now,
+        )
+        audit_dict = audit_record.model_dump(mode="json")
+    except Exception as e:
+        logger.error(f"[{state.get('ticket_id', 'unknown')}] Failed to create AuditRecord: {e}")
+        # Fallback dict that won't crash the system
+        audit_dict = {
+            "ticket_id": state.get("ticket_id", "unknown"),
+            "resolution_status": resolution_status,
+            "error_in_audit": str(e)
+        }
 
     logger.info(
         f"[{state['ticket_id']}] Audit close: status={resolution_status}, "
@@ -871,7 +881,7 @@ async def audit_close_node(state: dict) -> dict:
     )
 
     return {
-        "audit_record": audit_record.model_dump(mode="json"),
+        "audit_record": audit_dict,
         "resolution_status": resolution_status,
         "node_history": ["audit_close"],
     }
