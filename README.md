@@ -2,10 +2,10 @@
 
 > **KSOLVES Agentic AI Hackathon 2026** — "AI First, Always"
 
-An autonomous AI customer support agent built with **LangGraph** and **Groq (Llama 3.3 70B)**. Processes support tickets at scale (demonstrated on 20 tickets for evaluation) — classifying intent, fetching context, resolving with tools, and escalating intelligently — all with full audit trails, fault tolerance, and graceful failure handling.
+An autonomous AI customer support agent built with **LangGraph** and **Groq (Llama 3.3 70B)**. Processes support tickets in a production-style pipeline (demonstrated on 20 tickets for evaluation) — classifying intent, fetching context, resolving with tools, and escalating intelligently — all with full audit trails, fault tolerance, and graceful failure handling.
 
 > **Quick demo:** `cp .env.example .env && pip install -r requirements.txt && python -m src.main && streamlit run streamlit_app.py`
-> **Demo Video:** [Watch the 5-minute walkthrough here](https://link-to-video)
+> **Demo Video:** [Watch the 5-minute walkthrough here](#INSERT-YOUR-VIDEO-LINK-HERE)
 
 ## Architecture
 
@@ -78,6 +78,8 @@ graph TD
 ```
 
 ### Concurrency Model
+
+Concurrency reduces end-to-end latency and ensures the system can handle real-world ticket volumes without sequential bottlenecks.
 
 ```mermaid
 sequenceDiagram
@@ -462,19 +464,7 @@ pytest tests/ -v
 streamlit run streamlit_app.py
 ```
 
-## Demo Video
 
-<!-- Replace the URL below with your actual Loom/YouTube demo link before final push -->
-[Watch the 5-minute demo](https://link-to-video)
-
-**Demo walkthrough:**
-- 0:00 — Project structure and architecture overview
-- 0:45 — `python -m src.main` processing all 20 tickets live (concurrency visible in terminal)
-- 2:00 — Terminal ProcessingReport output (resolved/escalated/DLQ counts + speedup)
-- 2:30 — Streamlit Live Testing Tab: submit refund ticket → watch agent reason step by step
-- 3:30 — Clicking "💰 Refund (High Value)" → secondary 0.80 gate triggers → escalation
-- 4:15 — Analytics Dashboard: Gantt chart proving concurrent execution
-- 4:45 — audit_log.json walkthrough: confidence, tool call chain, retry recovery
 
 ## License
 
