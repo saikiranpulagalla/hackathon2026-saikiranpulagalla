@@ -4,6 +4,7 @@
 
 An autonomous AI customer support agent built with **LangGraph** and **Groq (Llama 3.3 70B)**. Processes support tickets in a production-style pipeline (demonstrated on 20 tickets for evaluation) — classifying intent, fetching context, resolving with tools, and escalating intelligently — all with full audit trails, fault tolerance, and graceful failure handling.
 
+> **🚀 Live Dashboard:** [https://hackathon2026-saikiranpulagalla.streamlit.app/](https://hackathon2026-saikiranpulagalla.streamlit.app/)
 > **Quick demo:** `cp .env.example .env && pip install -r requirements.txt && python -m src.main && streamlit run streamlit_app.py`
 > **Demo Video:** [Watch the 5-minute walkthrough here](https://drive.google.com/drive/folders/1KSQd3qdIN0pUEESrvHT7iyJxb5QsUzaV?usp=sharing)
 
@@ -23,7 +24,7 @@ The agent operates as a continuous loop: classify → gather context → decide 
 graph TD
     subgraph Ingestion
         TQ["Ticket Queue<br/>20 tickets from tickets.json"]
-        SEM["asyncio.Semaphore(2)<br/>max 2 concurrent"]
+        SEM["asyncio.Semaphore(3)<br/>max 3 concurrent"]
     end
 
     subgraph LangGraph StateGraph
