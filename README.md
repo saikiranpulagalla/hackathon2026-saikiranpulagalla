@@ -195,18 +195,22 @@ shopwave-support-agent/
 | Decision | Rationale |
 |---|---|
 | **LangGraph StateGraph** | Explicit state machine with typed state. Every transition is deterministic and inspectable. State fields use `Annotated[list, operator.add]` reducers — `tool_calls`, `errors`, and `node_history` are append-only by design, never overwritten. This gives a built-in, tamper-evident audit trail. |
-| **asyncio.Semaphore(2)** | Caps concurrent LLM calls to prevent rate limiting while achieving meaningful parallelism. Within each ticket, context fetcher runs `get_customer` + `get_order` simultaneously via `asyncio.gather`. |
+| **asyncio.Semaphore(2)** | We intentionally use Semaphore(2) to balance concurrency with LLM rate limits and ensure stable execution under constrained environments. The architecture supports scaling to higher concurrency (e.g., 5–10) with no code changes. |
 | **Pydantic v2 schema validation** | Every tool output is validated at the boundary. Malformed responses are *returned* as bad dicts (not raised), matching real HTTP 200 with garbage body behavior. `ValidationError` is non-recoverable — no wasted retries on deterministic failures. |
 | **Graceful Failure Recovery** | Validation failures during context fetching do NOT crash the agent into the DLQ. Instead, the agent captures the `ValidationError` as recoverable, flags the state with `context_incomplete=True`, and proceeds. The router then intelligently decides if it can auto-resolve with partial data or must escalate. |
 | **Intent-Based Routing Engine** | Pure confidence scoring is dangerous for certain topics. We implemented a strict `ALWAYS_ESCALATE_INTENTS` rule so that high-risk categories (e.g., `legal_threat`, `complaint`) always route to human support, bypassing the standard confidence gates. |
 | **Confidence gate at 0.65** | Better to escalate than act on uncertain information, especially for irreversible actions like refunds. Threshold is configurable in `src/agent/router.py`. |
 | **Secondary gate at 0.80 for refunds >$100** | High-value refunds with moderate confidence (0.65–0.79) are escalated. The cost of a wrong refund exceeds the cost of human review. |
 | **"When NOT to act" principle** | The agent has three explicit stop conditions: (1) confidence < 0.65 → escalate instead of attempting resolution, (2) refund amount > $100 with confidence 0.65–0.79 → escalate (wrong refund cost > human review cost), (3) `issue_refund` is NEVER called unless `check_refund_eligibility` explicitly returns `eligible: true` in the same reasoning chain. The agent does nothing rather than act on uncertainty for irreversible actions. |
-| **Dead Letter Queue** | Tickets that fail completely are preserved with full partial state. Nothing is silently dropped. Operators can review `dlq.json` and process manually. |
+| **Dead Letter Queue (DLQ)** | The DLQ acts as a safety net for unrecoverable failures, preserving full partial state. This ensures no ticket is ever lost and enables manual recovery or replay — a key production-grade reliability pattern. |
+| **ReAct Resolver Engine** | The resolver uses LLM-driven tool selection with dynamic reasoning (ReAct-style: reason → act → observe → repeat), not hardcoded workflows. Category-specific prompting guides the agent, but the LLM autonomously determines the exact tool sequence at runtime. |
 | **Groq (Llama 3.3 70B)** | Fast inference with tool-use support via OpenAI-compatible API. Free tier sufficient for hackathon. Same model for both classification and resolution. |
 
 ## Key Features
 
+- **Not a Chatbot** — The system is a task-oriented autonomous agent that takes actions (refunds, escalations) rather than generating conversational responses.
+- **Failure-First Mindset** — The system is designed with a failure-first mindset: every tool call is assumed to potentially fail, and the agent is built to recover, retry, or gracefully degrade.
+- **Multi-Level Parallelism** — Parallelism is implemented at two levels: 1. Across tickets (`asyncio.gather`) and 2. Within tickets (parallel tool calls in context fetching).
 - **Concurrent batch processing** — 20 tickets via `asyncio.gather` with `Semaphore(2)`
 - **Parallel context fetching** — `get_customer` + `get_order` run simultaneously per ticket
 - **Process-Isolated UI Concurrency** — Streamlit UI uses `concurrent.futures.ThreadPoolExecutor` with fresh event loops for highly stable Windows background execution.
@@ -239,7 +243,7 @@ For **order status tickets**:
 2. `get_order(order_id)` — fetch tracking + status
 3. `send_reply(ticket_id, message)` — share tracking info
 
-The 3-call minimum is enforced by the resolver prompt — it never calls `send_reply` without first completing context + action verification steps.
+The resolver enforces a minimum of 3 tool calls per reasoning chain by design — it never sends a reply without completing context retrieval and action validation steps.
 
 ## Tool Signatures
 
