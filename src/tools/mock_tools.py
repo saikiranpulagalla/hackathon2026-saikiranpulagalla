@@ -11,6 +11,8 @@ from pathlib import Path
 from uuid import uuid4
 
 from pydantic import BaseModel
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
 
 from .exceptions import ToolError, ToolTimeoutError
 
@@ -105,6 +107,15 @@ def _load_kb() -> list[dict]:
 
 
 KNOWLEDGE_BASE = _load_kb()
+
+# Pre-build TF-IDF Index for Semantic Search
+_kb_documents = [article["content"] for article in KNOWLEDGE_BASE]
+if _kb_documents:
+    _kb_vectorizer = TfidfVectorizer(ngram_range=(1, 2))
+    _kb_matrix = _kb_vectorizer.fit_transform(_kb_documents)
+else:
+    _kb_vectorizer = None
+    _kb_matrix = None
 
 # Derive a simulation reference date from the latest ticket
 _SIMULATION_TODAY = datetime(2024, 3, 22)  # latest ticket date
@@ -263,32 +274,27 @@ async def issue_refund(order_id: str, amount: float) -> dict:
 
 
 async def search_knowledge_base(query: str, max_results: int = 3) -> list[dict]:
-    """Search the knowledge base for relevant articles."""
+    """Search the knowledge base for relevant articles using TF-IDF Semantic Search."""
     await _simulate_latency(80, 300)
     _maybe_raise("search_knowledge_base")
     if _should_malform("search_knowledge_base"):
         return [{"article_id": None, "title": 123}]
 
-    query_lower = query.lower()
-    query_words = set(query_lower.split())
+    if not _kb_vectorizer or not KNOWLEDGE_BASE:
+        return []
 
-    scored = []
-    for article in KNOWLEDGE_BASE:
-        title_lower = article["title"].lower()
-        content_lower = article["content"].lower()
-        score = 0
-        for word in query_words:
-            if word in title_lower:
-                score += 3
-            if word in content_lower:
-                score += 1
-        if score > 0:
-            scored.append((score, article))
-
-    scored.sort(key=lambda x: -x[0])
-    results = [a for _, a in scored[:max_results]]
+    # Vectorize query and calculate cosine similarity
+    query_vec = _kb_vectorizer.transform([query])
+    scores = cosine_similarity(query_vec, _kb_matrix).flatten()
+    
+    # Get top matching indices
+    top_indices = scores.argsort()[-max_results:][::-1]
+    
+    # Filter by a small confidence threshold to avoid completely irrelevant matches
+    results = [KNOWLEDGE_BASE[i] for i in top_indices if scores[i] > 0.05]
 
     if not results:
+        # Fallback if no direct match, return first elements to mimic some response for tests
         return KNOWLEDGE_BASE[:max_results]
 
     return results

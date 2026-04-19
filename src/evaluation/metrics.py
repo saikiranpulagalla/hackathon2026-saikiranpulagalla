@@ -2,9 +2,11 @@
 
 from __future__ import annotations
 
+import json
 from collections import defaultdict
 from dataclasses import dataclass, field
 from statistics import mean, median
+from pathlib import Path
 
 
 @dataclass
@@ -25,7 +27,23 @@ class ProcessingReport:
         "total": 0, "success": 0, "retries": 0, "dlq": 0
     }))
     _individual_durations: list[float] = field(default_factory=list)
-    _max_concurrent: int = 2
+    _max_concurrent: int = 5
+    
+    # Golden Answer Accuracy Tracking
+    _golden_answers: dict = field(default_factory=dict)
+    _intent_matches: int = 0
+    _routing_matches: int = 0
+    _outcome_matches: int = 0
+
+    def __post_init__(self):
+        # Load golden answers if available
+        golden_path = Path(__file__).parent.parent.parent / "data" / "golden_answers.json"
+        if golden_path.exists():
+            try:
+                with open(golden_path, "r", encoding="utf-8") as f:
+                    self._golden_answers = json.load(f)
+            except Exception:
+                pass
 
     def add_result(self, state: dict) -> None:
         """Add a ticket result to the report."""
@@ -37,6 +55,22 @@ class ProcessingReport:
             self.escalated += 1
         else:
             self.failed += 1
+
+        # Accuracy Evaluation against Golden Answers
+        ticket_id = state.get("ticket_id")
+        if ticket_id in self._golden_answers:
+            expected = self._golden_answers[ticket_id]
+            
+            intent = state.get("intent", "unknown")
+            if intent == expected.get("expected_intent"):
+                self._intent_matches += 1
+                
+            routing = state.get("routing_decision", "unknown")
+            if routing == expected.get("expected_routing"):
+                self._routing_matches += 1
+                
+            if status == expected.get("expected_outcome"):
+                self._outcome_matches += 1
 
         # Track tool calls
         tool_calls = state.get("tool_calls", [])
@@ -99,6 +133,17 @@ class ProcessingReport:
         lines.append(_pad(f"  Resolved:    {self.resolved}  ({pct_resolved})"))
         lines.append(_pad(f"  Escalated:   {self.escalated}  ({pct_escalated})"))
         lines.append(_pad(f"  DLQ/Failed:  {self.failed}  ({pct_failed})"))
+        
+        if self._golden_answers and self.total > 0:
+            pct_intent = f"{self._intent_matches / self.total * 100:.0f}%"
+            pct_routing = f"{self._routing_matches / self.total * 100:.0f}%"
+            pct_outcome = f"{self._outcome_matches / self.total * 100:.0f}%"
+            lines.append("+" + "-" * W + "+")
+            lines.append(_pad("GOLDEN ACCURACY (EVALUATION)"))
+            lines.append(_pad(f"  Intent Classification:  {self._intent_matches}/{self.total} ({pct_intent})"))
+            lines.append(_pad(f"  Routing Decision:       {self._routing_matches}/{self.total} ({pct_routing})"))
+            lines.append(_pad(f"  Resolution Outcome:     {self._outcome_matches}/{self.total} ({pct_outcome})"))
+
         lines.append("+" + "-" * W + "+")
         lines.append(_pad("TOOL RELIABILITY"))
 

@@ -716,9 +716,42 @@ IMPORTANT RULES:
                     })
                     continue
 
-                # Secondary confidence check for high-value refunds
+                # Refund Amount Cap and Secondary Confidence check
                 if tool_name == "issue_refund":
-                    amount = tool_input.get("amount", 0)
+                    amount = float(tool_input.get("amount", 0))
+                    
+                    # 1. Cap & Eligibility validation from previous check_refund_eligibility tool result
+                    is_eligible = False
+                    max_allowed = 0.0
+                    for tc_msg in messages:
+                        if tc_msg.get("role") == "tool":
+                            try:
+                                data = json.loads(tc_msg["content"])
+                                if isinstance(data, dict) and "eligible" in data:
+                                    is_eligible = bool(data.get("eligible"))
+                                    val = data.get("max_refund_amount")
+                                    if val is not None:
+                                        max_allowed = float(val)
+                            except Exception:
+                                pass
+                                
+                    if not is_eligible:
+                        logger.warning(f"[{state['ticket_id']}] Security block: Attempted refund without eligibility.")
+                        esc_result = await _escalation_path(state)
+                        esc_result["escalation_reason"] = "Attempted to issue refund without eligibility or for an ineligible order."
+                        esc_result["tool_calls"] = new_tool_calls + esc_result.get("tool_calls", [])
+                        esc_result["errors"] = new_errors + esc_result.get("errors", [])
+                        return esc_result
+
+                    if amount > max_allowed:
+                        logger.warning(f"[{state['ticket_id']}] Security block: Requested refund ${amount} exceeds max eligible ${max_allowed}")
+                        esc_result = await _escalation_path(state)
+                        esc_result["escalation_reason"] = f"Refund amount ${amount} exceeds max eligible ${max_allowed}"
+                        esc_result["tool_calls"] = new_tool_calls + esc_result.get("tool_calls", [])
+                        esc_result["errors"] = new_errors + esc_result.get("errors", [])
+                        return esc_result
+
+                    # 2. Secondary confidence check for high-value refunds
                     confidence = state.get("confidence", 0.0)
                     if amount > 100.0 and confidence < 0.80:
                         logger.info(f"[{state['ticket_id']}] High-value refund (${amount}) with low confidence ({confidence}) -- escalating")

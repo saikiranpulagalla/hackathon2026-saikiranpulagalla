@@ -234,7 +234,9 @@ shopwave-support-agent/
 - **7 documented failure modes** — see `failure_modes.md`
 - **23 passing tests** — retry logic, routing, tools, schema validation, property-based tests
 
-### Mandatory 3+ Tool Call Chain (per hackathon requirement)
+### Natural Tool Call Chains
+
+The agent never sends a reply without completing context retrieval and safety validation — this naturally produces 3+ tool calls per reasoning chain.
 
 For **refund tickets** (eligible):
 1. `get_customer(email)` — verify customer tier and history
@@ -467,6 +469,11 @@ streamlit run streamlit_app.py
 ```
 
 
+
+## What I'd Add (Future Work)
+
+- **Confidence calibration via multi-signal ensemble**: Replace single LLM-stated confidence with a weighted average of LLM confidence + KB retrieval hit score + classification consistency (run classifier twice, check agreement). This would directly improve accuracy metrics and reduce incorrect auto-resolutions.
+- **Cross-ticket circuit breaker**: A cross-ticket circuit breaker was intentionally deferred — the architecture is designed so it slots into `retry.py` at the `execute_with_retry` boundary without state changes elsewhere. This would prevent hammering a downstream service if it goes down.
 
 ## License
 

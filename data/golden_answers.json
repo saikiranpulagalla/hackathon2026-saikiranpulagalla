@@ -1,0 +1,102 @@
+{
+  "TKT-001": {
+    "expected_intent": "refund_request",
+    "expected_routing": "auto_resolve",
+    "expected_outcome": "resolved"
+  },
+  "TKT-002": {
+    "expected_intent": "refund_request",
+    "expected_routing": "auto_resolve",
+    "expected_outcome": "resolved"
+  },
+  "TKT-003": {
+    "expected_intent": "refund_request",
+    "expected_routing": "escalate",
+    "expected_outcome": "escalated"
+  },
+  "TKT-004": {
+    "expected_intent": "complaint",
+    "expected_routing": "escalate",
+    "expected_outcome": "escalated"
+  },
+  "TKT-005": {
+    "expected_intent": "refund_request",
+    "expected_routing": "auto_resolve",
+    "expected_outcome": "resolved"
+  },
+  "TKT-006": {
+    "expected_intent": "refund_request",
+    "expected_routing": "auto_resolve",
+    "expected_outcome": "resolved"
+  },
+  "TKT-007": {
+    "expected_intent": "refund_request",
+    "expected_routing": "auto_resolve",
+    "expected_outcome": "resolved"
+  },
+  "TKT-008": {
+    "expected_intent": "refund_request",
+    "expected_routing": "auto_resolve",
+    "expected_outcome": "resolved"
+  },
+  "TKT-009": {
+    "expected_intent": "order_status",
+    "expected_routing": "auto_resolve",
+    "expected_outcome": "resolved"
+  },
+  "TKT-010": {
+    "expected_intent": "order_status",
+    "expected_routing": "auto_resolve",
+    "expected_outcome": "resolved"
+  },
+  "TKT-011": {
+    "expected_intent": "refund_request",
+    "expected_routing": "auto_resolve",
+    "expected_outcome": "resolved"
+  },
+  "TKT-012": {
+    "expected_intent": "refund_request",
+    "expected_routing": "auto_resolve",
+    "expected_outcome": "resolved"
+  },
+  "TKT-013": {
+    "expected_intent": "refund_request",
+    "expected_routing": "auto_resolve",
+    "expected_outcome": "resolved"
+  },
+  "TKT-014": {
+    "expected_intent": "refund_request",
+    "expected_routing": "auto_resolve",
+    "expected_outcome": "resolved"
+  },
+  "TKT-015": {
+    "expected_intent": "refund_request",
+    "expected_routing": "escalate",
+    "expected_outcome": "escalated"
+  },
+  "TKT-016": {
+    "expected_intent": "refund_request",
+    "expected_routing": "auto_resolve",
+    "expected_outcome": "resolved"
+  },
+  "TKT-017": {
+    "expected_intent": "legal_threat",
+    "expected_routing": "escalate",
+    "expected_outcome": "escalated"
+  },
+  "TKT-018": {
+    "expected_intent": "refund_request",
+    "expected_routing": "auto_resolve",
+    "expected_outcome": "resolved"
+  },
+  "TKT-019": {
+    "expected_intent": "other",
+    "expected_routing": "auto_resolve",
+    "expected_outcome": "resolved"
+  },
+  "TKT-020": {
+    "expected_intent": "other",
+    "expected_routing": "auto_resolve",
+    "expected_outcome": "resolved"
+  }
+}
