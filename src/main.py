@@ -92,15 +92,17 @@ async def process_all_tickets(
                 logger.error(f"[{ticket.ticket_id}] Unhandled exception: {e}")
                 return e
 
-    # Stagger ticket launches to avoid Groq rate limit cascades
+    # Stagger ticket execution to avoid Groq rate limit cascades
     # (free tier: 12K TPM / 100K TPD)
     tasks = []
     for i, ticket in enumerate(tickets):
-        tasks.append(run_one(ticket))
+        # Must use create_task to actually start the execution before sleeping
+        task = asyncio.create_task(run_one(ticket))
+        tasks.append(task)
         if i < len(tickets) - 1:
             await asyncio.sleep(1.5)  # spread out LLM calls
 
-    # Run all concurrently (already launched above with staggered starts)
+    # Wait for all staggered tasks to complete
     results = await asyncio.gather(*tasks, return_exceptions=True)
 
 
