@@ -46,9 +46,12 @@ Order ID: {order_id}
 Classify the intent into one of:
 - refund_request: Customer wants a refund or return
 - order_status: Customer asking about order location or delivery
-- product_question: Customer asking about a product's features, availability, or specs
-- billing_issue: Customer has a billing or payment problem
-- account_issue: Customer has an account access or settings problem
+- product_inquiry: Customer asking about a product's features, availability, or specs
+- shipping_inquiry: Customer asking about shipping policies or methods
+- technical_support: Customer has a technical issue, bug, or app crash
+- billing_dispute: Customer has a billing or payment problem
+- account_security: Customer has an account access or security problem
+- legal_threat: Customer is threatening legal action or contacting authorities
 - complaint: General complaint not fitting other categories
 - other: Does not fit any category above
 
