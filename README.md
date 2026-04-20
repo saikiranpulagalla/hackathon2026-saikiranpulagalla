@@ -6,7 +6,7 @@ An autonomous AI customer support agent built with **LangGraph** and **Groq (Lla
 
 > **🚀 Live Dashboard:** [https://hackathon2026-saikiranpulagalla.streamlit.app/](https://hackathon2026-saikiranpulagalla.streamlit.app/)
 > **Quick demo:** `cp .env.example .env && pip install -r requirements.txt && python -m src.main && streamlit run streamlit_app.py`
-> **Demo Video:** [Watch the 5-minute walkthrough here](https://drive.google.com/drive/folders/1KSQd3qdIN0pUEESrvHT7iyJxb5QsUzaV?usp=sharing)
+
 
 ## Architecture
 
